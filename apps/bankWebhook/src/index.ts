@@ -1,16 +1,14 @@
 import express from "express";
+import { router } from "./route";
 
 const app = express();
+app.use(express.json());
+app.use("/api", router);
 
-app.post("/hdfcWebhook", (req, res) => {
-  //TODO: Add zod validation here?
-  // TODO: cross-check secret from bank server
-  const paymentInformation = {
-    token: req.body.token,
-    userId: req.body.user_identifier,
-    amount: req.body.amount,
-  };
-  // Update balance in db, add txn
+app.get("/", (req, res: any) => {
+  return res.json({
+    msg: "Hello mom!",
+  });
 });
 
 app.listen(4000, () => {
