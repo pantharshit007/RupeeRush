@@ -6,13 +6,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "exports": {
-    "./client": "./src/index.ts"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^5.20.0"
+    "@prisma/client": "^5.20.0",
+    "bcrypt": "^5.1.1"
+  },
+  "exports": {
+    "./client": "./src/index.ts"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }

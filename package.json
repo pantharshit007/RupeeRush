@@ -5,7 +5,9 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "dev:web": "turbo dev --filter=\"./apps/user-app\"",
+    "dev:hook": "turbo dev --filter=\"./apps/bankWebhook\""
   },
   "devDependencies": {
     "prettier": "^3.2.5",
