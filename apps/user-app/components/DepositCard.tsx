@@ -6,16 +6,28 @@ import { Button } from "@repo/ui/button";
 import { Select } from "@repo/ui/select";
 import { TextInput } from "@repo/ui/textinput";
 import { SUPPORTED_BANKS } from "../utils/constant";
+import { createOnRampTransaction } from "../app/lib/actions/createOnRampTxn";
 
 function DepositCard() {
   const [redirectUrl, setRedirectUrl] = useState(
     SUPPORTED_BANKS[0]?.redirectUrl
   );
+  const [provider, setProvider] = useState(SUPPORTED_BANKS[0]?.name || "");
+  const [value, setValue] = useState(0);
 
+  // updating the redirectUrl and provider based on bank
   function bankSelection(value: string) {
     setRedirectUrl(
       SUPPORTED_BANKS.find((x) => x.name === value)?.redirectUrl || ""
     );
+    setProvider(SUPPORTED_BANKS.find((x) => x.name === value)?.name || "");
+  }
+
+  // Money Deposit in wallet submission
+  async function onSubmit() {
+    await createOnRampTransaction(provider, value);
+    setValue(0);
+    window.location.href = redirectUrl || "";
   }
 
   return (
@@ -25,7 +37,9 @@ function DepositCard() {
         <TextInput
           label={"Amount"}
           placeholder={"Amount"}
-          onChange={() => {}}
+          value={value || 0}
+          type="number"
+          onChange={(val) => setValue(Number(val))}
         />
 
         <div className="py-4 text-left">Bank</div>
@@ -39,13 +53,7 @@ function DepositCard() {
         />
 
         <div className="pt-4">
-          <Button
-            onClick={() => {
-              window.location.href = redirectUrl || "";
-            }}
-          >
-            Add Money
-          </Button>
+          <Button onClick={onSubmit}>Add Money</Button>
         </div>
       </div>
     </div>

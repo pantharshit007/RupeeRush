@@ -17,7 +17,7 @@ function TransactionHistory({
       {!transactions.length ? (
         <div className="text-center pb-8 pt-8">No Recent transactions</div>
       ) : (
-        <div className="py-2">
+        <div className="py-2 flex flex-col gap-y-2">
           {transactions.map((txn, index) => (
             <TxnHistory transaction={txn} key={index} />
           ))}

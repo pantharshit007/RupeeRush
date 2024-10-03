@@ -34,6 +34,7 @@ async function hdfcWebHook(req: Request, res: Response) {
           amount: {
             increment: Number(paymentInformation.amount),
           },
+          locked: 0,
         },
       }),
 
