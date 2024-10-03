@@ -11,33 +11,6 @@ import { authOptions } from "../../lib/auth";
 import db from "@repo/db/client";
 import { redirect } from "next/navigation";
 
-const demoTxn = [
-  {
-    time: new Date("2023-09-15T10:00:00"),
-    amount: 5000, // Amount in cents (50.00 INR)
-    status: "Success",
-    provider: "HDFC Bank",
-  },
-  {
-    time: new Date("2023-09-14T15:30:00"),
-    amount: 12000, // Amount in cents (120.00 INR)
-    status: "Failure",
-    provider: "ICICI Bank",
-  },
-  {
-    time: new Date("2023-09-13T11:45:00"),
-    amount: 7500, // Amount in cents (75.00 INR)
-    status: "Processing",
-    provider: "SBI Bank",
-  },
-  {
-    time: new Date("2023-09-12T08:20:00"),
-    amount: 15000, // Amount in cents (150.00 INR)
-    status: "Success",
-    provider: "Axis Bank",
-  },
-];
-
 // fetch user's current Balance and locked balance
 async function getBalance() {
   try {
