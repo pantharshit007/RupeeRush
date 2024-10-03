@@ -42,7 +42,7 @@ async function getOnRampTransactions() {
       },
     });
 
-    return transaction.map((txn) => ({
+    return transaction.map((txn: any) => ({
       time: txn.startTime,
       amount: txn.amount,
       status: txn.status,
