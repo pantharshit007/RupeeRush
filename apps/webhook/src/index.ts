@@ -7,7 +7,7 @@ app.use("/api", router);
 
 app.get("/", (req, res: any) => {
   return res.json({
-    msg: "Hello mom!",
+    msg: "Hello mom!!",
   });
 });
 
