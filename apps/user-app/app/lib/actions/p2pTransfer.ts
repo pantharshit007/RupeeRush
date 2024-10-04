@@ -36,7 +36,7 @@ export async function p2pTransfer({ receiverId, amount }: P2PTypes) {
   }
 
   try {
-    await db.$transaction(async (txn) => {
+    await db.$transaction(async (txn: any) => {
       // To prevent paraller request simuntaneously we are locking the particular db row, hence until prev transaction doesnt commit no new request will be processed.
       await txn.$queryRaw`SELECT * FROM "Balance" WHERE "userId"= ${Number(sender)} FOR UPDATE`;
 
