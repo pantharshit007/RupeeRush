@@ -1,5 +1,3 @@
-import React from "react";
-
 function Tab() {
   return (
     <div className="flex bg-slate-30 gap-x-5 rounded-3xl shadow-sm py-3">

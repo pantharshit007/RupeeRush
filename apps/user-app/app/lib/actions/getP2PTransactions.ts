@@ -10,7 +10,7 @@ export async function getP2PTransactions(userId: number | string) {
       },
     });
 
-    return transaction.map((txn) => ({
+    return transaction.map((txn: any) => ({
       time: txn.timestamp,
       amount: txn.amount,
       status: txn.status,

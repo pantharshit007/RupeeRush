@@ -1,5 +1,3 @@
-import React from "react";
-
 interface StatusType {
   status: "Success" | "Failure" | "Processing";
 }
