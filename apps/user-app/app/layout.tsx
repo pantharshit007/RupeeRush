@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "./globals.css";
+import "@repo/ui/globals.css";
 import { Providers } from "../provider";
 import AppBarClient from "../components/AppBarClient";
 
