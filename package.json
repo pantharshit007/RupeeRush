@@ -8,7 +8,9 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "dev:web": "turbo dev --filter=\"./apps/user-app\"",
     "dev:hook": "turbo dev --filter=\"./apps/webhook\"",
-    "db:generate": "cd packages/db && npx prisma generate && cd ../.."
+    "db:generate": "cd packages/db && npx prisma generate && cd ../..",
+    "db:prisma": "cd packages/db && npm run db:migrate && cd ../..",
+    "db:docker": "docker run -e POSTGRES_PASSWORD=mysecretpassword -d -p 3333:5432 postgres"
   },
   "devDependencies": {
     "prettier": "^3.2.5",

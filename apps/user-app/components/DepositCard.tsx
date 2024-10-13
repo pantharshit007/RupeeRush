@@ -2,11 +2,11 @@
 import React from "react";
 import { useState } from "react";
 
-import { Button } from "@repo/ui/button";
-import { Select } from "@repo/ui/select";
-import { TextInput } from "@repo/ui/textinput";
+import { Button } from "@repo/ui/components/button";
+import { Select } from "@repo/ui/components/select";
+import { TextInput } from "@repo/ui/components/textinput";
 import { SUPPORTED_BANKS } from "../utils/constant";
-import { createOnRampTransaction } from "../app/lib/actions/createOnRampTxn";
+import { createOnRampTransaction } from "@/lib/actions/createOnRampTxn";
 
 function DepositCard() {
   const [redirectUrl, setRedirectUrl] = useState(

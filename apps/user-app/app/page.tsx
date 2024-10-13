@@ -1,18 +1,41 @@
 import React from "react";
+import { Poppins } from "next/font/google";
 import { getServerSession } from "next-auth";
-import { authOptions } from "./lib/auth";
+import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { cn } from "@repo/ui/lib/utils";
+import { Button } from "@repo/ui/components/ui/button";
+
+const font = Poppins({
+  subsets: ["latin"],
+  weight: ["600"],
+});
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
-  if (!session?.user) {
-    redirect("/api/auth/signin");
-  }
+  // if (!session?.user) {
+  //   redirect("/api/auth/signin");
+  // }
 
   return (
     <>
-      <div className="text-3xl text-red-400">
-        hi {JSON.stringify(session?.user?.name || session?.user?.email)}
+      <div className="flex h-full flex-col items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-800">
+        <div className="space-y-6 text-center mb-3">
+          <h1
+            className={cn(
+              "text-6xl font-semibold text-white drop-shadow-md",
+              font.className
+            )}
+          >
+            hi {JSON.stringify(session?.user?.name)} 👋
+          </h1>
+        </div>
+
+        <div>
+          <Button variant="secondary" size="lg">
+            Sign In
+          </Button>
+        </div>
       </div>
     </>
   );

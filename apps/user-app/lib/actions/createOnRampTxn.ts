@@ -13,6 +13,7 @@ export async function createOnRampTransaction(
 
   try {
     const session = await getServerSession(authOptions);
+    // @ts-ignore
     const userId = session?.user?.id;
     if (!session?.user || !userId) {
       return {

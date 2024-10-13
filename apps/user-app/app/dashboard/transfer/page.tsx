@@ -1,13 +1,13 @@
 import React from "react";
 
-import Title from "@repo/ui/title";
-import Tab from "@repo/ui/tab";
+import Title from "@repo/ui/components/title";
+import Tab from "@repo/ui/components/tab";
 
-import DepositCard from "../../../components/DepositCard";
-import BalanceCard from "../../../components/BalanceCard";
-import TransactionHistory from "../../../components/TxnHistoryCard";
+import DepositCard from "@/components/DepositCard";
+import BalanceCard from "@/components/BalanceCard";
+import TransactionHistory from "@/components/TxnHistoryCard";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../lib/auth";
+import { authOptions } from "@/lib/auth";
 import db from "@repo/db/client";
 import { redirect } from "next/navigation";
 
@@ -17,6 +17,7 @@ async function getBalance() {
     const session = await getServerSession(authOptions);
     const balance = await db.balance.findFirst({
       where: {
+        // @ts-ignore
         userId: Number(session?.user?.id),
       },
     });
@@ -38,6 +39,7 @@ async function getOnRampTransactions() {
 
     const transaction = await db.onRampTransaction.findMany({
       where: {
+        // @ts-ignore
         userId: Number(session?.user?.id),
       },
     });
@@ -58,6 +60,7 @@ async function page() {
   const session = await getServerSession(authOptions);
 
   // Check if the user is not logged in
+  // @ts-ignore
   if (!session?.user?.id) {
     redirect("/api/auth/signin");
   }

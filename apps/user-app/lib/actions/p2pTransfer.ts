@@ -11,6 +11,7 @@ interface P2PTypes {
 
 export async function p2pTransfer({ receiverId, amount }: P2PTypes) {
   const session = await getServerSession(authOptions);
+  // @ts-ignore
   const sender: string = session?.user?.id;
 
   const receiver = await db.user.findFirst({

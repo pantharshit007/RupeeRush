@@ -7,6 +7,7 @@
 // TODO: UPDATE p2p.tsx for showing transaction data such that receiver also is shown
 // TODO: move db calls to lib/actions
 // TODO: update transfer similarly to p2p.tsx : useffect, moving db to actions
+//? TODO: fix this `session?.user?.id` for now: // @ts-ignore, src: callback auth.ts
 
 //! NEXT: BE
 // TODO: fix locked amount
@@ -18,3 +19,6 @@
 //! BANK: FE
 
 //! BANK: BE
+
+//? NOTE:
+// when adding image from an outside src u need to set them up in next.config.*: https://youtu.be/w2h54xz6Ndw?t=2328

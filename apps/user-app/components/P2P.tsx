@@ -1,11 +1,11 @@
 "use client";
-import { Button } from "@repo/ui/button";
-import { TextInput } from "@repo/ui/textinput";
+import { Button } from "@repo/ui/components/button";
+import { TextInput } from "@repo/ui/components/textinput";
 import React, { useState, useEffect } from "react";
-import { p2pTransfer } from "../app/lib/actions/p2pTransfer";
+import { p2pTransfer } from "@/lib/actions/p2pTransfer";
 import TransactionHistory from "./TxnHistoryCard";
 import { useSession } from "next-auth/react";
-import { getP2PTransactions } from "../app/lib/actions/getP2PTransactions";
+import { getP2PTransactions } from "@/lib/actions/getP2PTransactions";
 
 function P2P() {
   const [receiverId, setReceiverId] = useState("yourname@sbi");
