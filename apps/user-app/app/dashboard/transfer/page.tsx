@@ -3,11 +3,11 @@ import React from "react";
 import Title from "@repo/ui/components/title";
 import Tab from "@repo/ui/components/tab";
 
-import DepositCard from "@/components/DepositCard";
-import BalanceCard from "@/components/BalanceCard";
-import TransactionHistory from "@/components/TxnHistoryCard";
+import DepositCard from "@components/DepositCard";
+import BalanceCard from "@components/BalanceCard";
+import TransactionHistory from "@components/TxnHistoryCard";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { authOptions } from "@lib/auth";
 import db from "@repo/db/client";
 import { redirect } from "next/navigation";
 
@@ -77,10 +77,7 @@ async function page() {
         <DepositCard />
 
         <div className="flex flex-col w-full gap-y-4">
-          <BalanceCard
-            amount={balance?.amount || 0}
-            locked={balance?.lockedBalance || 0}
-          />
+          <BalanceCard amount={balance?.amount || 0} locked={balance?.lockedBalance || 0} />
           {/* @ts-ignore */}
           <TransactionHistory transactions={transaction} />
         </div>

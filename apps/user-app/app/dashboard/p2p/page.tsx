@@ -1,6 +1,6 @@
 import Title from "@repo/ui/components/title";
 import React from "react";
-import P2P from "@/components/P2P";
+import P2P from "@components/P2P";
 
 function page() {
   return (
