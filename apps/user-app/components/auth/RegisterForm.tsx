@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import CardWrapper from "@components/common/CardWrapper";
-import { LoginSchema } from "@repo/schema/authSchema";
+import { RegisterSchema } from "@repo/schema/authSchema";
 import {
   Form,
   FormControl,
@@ -19,20 +19,21 @@ import { Input } from "@repo/ui/components/ui/input";
 import { Button } from "@repo/ui/components/ui/button";
 import FormError from "@components/common/FormError";
 import FormSuccess from "@components/common/FormSuccess";
-import { loginAction } from "@actions/auth/login";
+import { registerAction } from "@actions/auth/register";
 
-function LoginForm() {
+function RegisterForm() {
   const [isPending, startTransition] = useTransition();
   const [success, setSuccess] = useState<string>("");
   const [error, setError] = useState<string>("");
 
-  function submitHandler(values: z.infer<typeof LoginSchema>) {
+  // form submit
+  function submitHandler(values: z.infer<typeof RegisterSchema>) {
     setSuccess("");
     setError("");
 
     startTransition(async () => {
       try {
-        const data = await loginAction(values);
+        const data = await registerAction(values);
 
         if (data?.error) {
           form.reset();
@@ -50,11 +51,13 @@ function LoginForm() {
     });
   }
 
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  // form config
+  const form = useForm<z.infer<typeof RegisterSchema>>({
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
       email: "",
       password: "",
+      name: "",
     },
   });
 
@@ -62,9 +65,9 @@ function LoginForm() {
     <>
       <CardWrapper
         header="🔐 Auth"
-        headerLabel="Welcome Back"
-        backButtonLabel="Don't have an account yet?"
-        backButtonHref="/auth/register"
+        headerLabel="Create an Account"
+        backButtonLabel="Already have an account?"
+        backButtonHref="/auth/login"
         showSocial
       >
         <Form {...form}>
@@ -72,6 +75,26 @@ function LoginForm() {
             {/* prettier-ignore */}
             <div className="space-y-4">
 
+                {/* name */}
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input 
+                          {...field} 
+                          placeholder="John Doe" 
+                          type="name" 
+                          disabled={isPending} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              
                 {/* email */}
                 <FormField
                   control={form.control}
@@ -90,7 +113,7 @@ function LoginForm() {
                       <FormMessage />
                     </FormItem>
                   )}
-              />
+                />
               
                 {/* Password */}
                 <FormField
@@ -117,7 +140,7 @@ function LoginForm() {
             <FormSuccess message={success} />
 
             <Button type={"submit"} className="w-full" disabled={isPending}>
-              Login
+              Create an Account
             </Button>
           </form>
         </Form>
@@ -126,4 +149,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+export default RegisterForm;

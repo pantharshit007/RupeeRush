@@ -1,14 +1,11 @@
 "use server";
 
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth";
+import { authOptions } from "../lib/auth";
 import { randomUUID } from "crypto";
 import db from "@repo/db/client";
 
-export async function createOnRampTransaction(
-  provider: string,
-  amount: number
-) {
+export async function createOnRampTransaction(provider: string, amount: number) {
   //TODO: Ideally the token should come from the banking provider (hdfc/axis)
 
   try {

@@ -6,7 +6,7 @@ import { Button } from "@repo/ui/components/button";
 import { Select } from "@repo/ui/components/select";
 import { TextInput } from "@repo/ui/components/textinput";
 import { SUPPORTED_BANKS } from "../utils/constant";
-import { createOnRampTransaction } from "@lib/actions/createOnRampTxn";
+import { createOnRampTransaction } from "@actions/createOnRampTxn";
 
 function DepositCard() {
   const [redirectUrl, setRedirectUrl] = useState(SUPPORTED_BANKS[0]?.redirectUrl);

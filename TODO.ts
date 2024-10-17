@@ -8,7 +8,7 @@
 // TODO: move db calls to lib/actions
 // TODO: update transfer similarly to p2p.tsx : useffect, moving db to actions
 //? TODO: fix this `session?.user?.id` for now: // @ts-ignore, src: callback auth.ts
-// TODO: add eye for visibility in LoginForm/SignupForm (password)
+// TODO: fix auth form in login/register in 100%
 
 //! NEXT: BE
 // TODO: fix locked amount
