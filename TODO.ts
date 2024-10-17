@@ -14,6 +14,10 @@
 // TODO: fix locked amount
 // TODO: update user schema to includer upi id and include it everywhere including the actions and p2p
 
+//! DB:
+// TODO: updated user id to Int -> String, check for possible errors
+// TODO: before start working with balances, txn and other schemas make sure to update autoincrement -> uuid()
+
 //! WEBHOOK: BE
 // TODO: hdfcwebhook update condition for `Failure`
 

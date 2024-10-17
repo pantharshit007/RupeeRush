@@ -14,15 +14,40 @@ datasource db {
 }
 
 model User {
-  id                Int             @id @default(autoincrement())
+  id                String          @id @default(cuid())  @db.VarChar(30)
   email             String          @unique
+  emailVerified     DateTime?
   name              String?         
   number            String?         @unique
-  password          String
+  password          String?
+  image             String?
+  accounts          Account[]
   OnRampTransaction OnRampTransaction[]
   Balance           Balance[]
   sentTransfer      p2pTransfer[]   @relation(name: "SenderUserRelation")
   receiveTransfer   p2pTransfer[]   @relation(name: "ReceiverUserRelation")
+}
+
+model Account {
+  id                String          @id @default(cuid())  @db.VarChar(30)
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refreshToken      String?         @db.Text
+  accessToken       String?         @db.Text
+  expiresAt         Int?
+  tokenType         String?
+  scope             String?
+  idToken           String?         @db.Text
+  sessionState      String?
+ 
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+ 
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@unique([provider, providerAccountId])
 }
 
 model Merchant {
@@ -39,15 +64,17 @@ model OnRampTransaction {
   provider          String    
   amount            Int   
   startTime         DateTime    
-  userId            Int   
+  userId            String   
+  
   user              User            @relation(fields: [userId], references: [id])
 }
 
 model Balance {
   id                Int             @id @default(autoincrement())
-  userId            Int             @unique
+  userId            String          @unique
   amount            Int       
   locked            Int             //not sure about Locked
+
   user              User            @relation(fields: [userId], references: [id])
 }
 
@@ -56,9 +83,10 @@ model p2pTransfer {
   amount            Int
   timestamp         DateTime
   status            OnRampStatus
-  senderUserId      Int
+  senderUserId      String
+  receiverUserId    String
+
   senderUser        User            @relation(name: "SenderUserRelation", fields: [senderUserId], references: [id])
-  receiverUserId    Int
   receiverUser      User            @relation(name: "ReceiverUserRelation", fields: [receiverUserId], references: [id])
 }
 

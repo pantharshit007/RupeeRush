@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { AuthType, OnRampStatus, PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 const prisma = new PrismaClient();
 
@@ -20,7 +20,7 @@ async function main() {
       OnRampTransaction: {
         create: {
           startTime: new Date(),
-          status: "Success",
+          status: OnRampStatus.Success,
           amount: 20000,
           token: "token_1111",
           provider: "HDFC Bank",
@@ -46,7 +46,7 @@ async function main() {
       OnRampTransaction: {
         create: {
           startTime: new Date(),
-          status: "Failure",
+          status: OnRampStatus.Failure,
           amount: 5000,
           token: "token_2222",
           provider: "ICICI Bank",
@@ -61,7 +61,7 @@ async function main() {
     create: {
       email: "merchant@example.com",
       name: "Jethalal",
-      auth_type: "Google",
+      auth_type: AuthType.Google,
     },
   });
 
