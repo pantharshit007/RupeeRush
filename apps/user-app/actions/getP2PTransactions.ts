@@ -2,11 +2,11 @@
 
 import db from "@repo/db/client";
 
-export async function getP2PTransactions(userId: number | string) {
+export async function getP2PTransactions(userId: string) {
   try {
     const transaction = await db.p2pTransfer.findMany({
       where: {
-        senderUserId: Number(userId),
+        senderUserId: userId,
       },
     });
 

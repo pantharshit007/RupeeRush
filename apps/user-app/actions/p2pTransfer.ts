@@ -16,7 +16,7 @@ export async function p2pTransfer({ receiverId, amount }: P2PTypes) {
 
   const receiver = await db.user.findFirst({
     where: {
-      number: receiverId,
+      phoneNumber: receiverId,
     },
   });
 
@@ -28,7 +28,7 @@ export async function p2pTransfer({ receiverId, amount }: P2PTypes) {
     };
   }
 
-  // wrong user Id: number/upi
+  // wrong user Id: phoneNumber/upi
   if (!receiver) {
     return {
       success: false,

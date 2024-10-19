@@ -7,7 +7,7 @@ async function main() {
     where: { email: "alice@example.com" },
     update: {},
     create: {
-      number: "1111111111",
+      phoneNumber: "1111111111",
       email: "alice@example.com",
       password: await bcrypt.hash("alice123", 10),
       name: "Alice",
@@ -33,7 +33,7 @@ async function main() {
     where: { email: "bob@example.com" },
     update: {},
     create: {
-      number: "2222222222",
+      phoneNumber: "2222222222",
       email: "bob@example.com",
       password: await bcrypt.hash("bob", 10),
       name: "Bob",

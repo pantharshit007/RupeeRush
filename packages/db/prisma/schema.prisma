@@ -18,9 +18,11 @@ model User {
   email             String          @unique
   emailVerified     DateTime?
   name              String?         
-  number            String?         @unique
+  phoneNumber       String?         @unique
   password          String?
   image             String?
+  upiId             String?         @unique
+  bankName          String?
   accounts          Account[]
   OnRampTransaction OnRampTransaction[]
   Balance           Balance[]
@@ -83,11 +85,13 @@ model p2pTransfer {
   amount            Int
   timestamp         DateTime
   status            OnRampStatus
-  senderUserId      String
-  receiverUserId    String
+  senderUserId      String?
+  receiverUserId    String?
+  sendUpiId         String?
+  receiverUpiId     String?
 
-  senderUser        User            @relation(name: "SenderUserRelation", fields: [senderUserId], references: [id])
-  receiverUser      User            @relation(name: "ReceiverUserRelation", fields: [receiverUserId], references: [id])
+  senderUser        User?           @relation(name: "SenderUserRelation", fields: [senderUserId], references: [id], onDelete: SetNull)
+  receiverUser      User?           @relation(name: "ReceiverUserRelation", fields: [receiverUserId], references: [id], onDelete: SetNull)
 }
 
 enum AuthType {
@@ -95,6 +99,12 @@ enum AuthType {
   Github
 }
 
+// todo: change to TransactionStatus
+// enum TransactionStatus {
+//   SUCCESS
+//   FAILURE
+//   PROCESSING
+// }
 enum OnRampStatus {
   Success
   Failure
