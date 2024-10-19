@@ -1,4 +1,4 @@
-import { font } from "@utils/fonts";
+import { font } from "@/utils/fonts";
 import { cn } from "@repo/ui/lib/utils";
 import React from "react";
 

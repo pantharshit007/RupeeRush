@@ -5,7 +5,7 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import CardWrapper from "@components/common/CardWrapper";
+import CardWrapper from "@/components/common/CardWrapper";
 import { LoginSchema } from "@repo/schema/authSchema";
 import {
   Form,
@@ -17,9 +17,9 @@ import {
 } from "@repo/ui/components/ui/form";
 import { Input } from "@repo/ui/components/ui/input";
 import { Button } from "@repo/ui/components/ui/button";
-import FormError from "@components/common/FormError";
-import FormSuccess from "@components/common/FormSuccess";
-import { loginAction } from "@actions/auth/login";
+import FormError from "@/components/common/FormError";
+import FormSuccess from "@/components/common/FormSuccess";
+import { loginAction } from "@/actions/auth/login";
 
 function LoginForm() {
   const [isPending, startTransition] = useTransition();
