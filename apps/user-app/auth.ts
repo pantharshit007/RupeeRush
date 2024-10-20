@@ -1,8 +1,10 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import Google from "next-auth/providers/google";
+import GitHub from "next-auth/providers/github";
 import db from "@repo/db/client";
 import bcrypt from "bcrypt";
-import { NextAuthOptions } from "next-auth";
+import NextAuth, { NextAuthConfig, NextAuthResult } from "next-auth";
 import { randomUUID } from "crypto";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
@@ -13,7 +15,7 @@ if (!NEXTAUTH_SECRET) {
   throw new Error("NEXTAUTH_SECRET is not set");
 }
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthConfig = {
   session: {
     strategy: "jwt",
     maxAge: 60 * 60 * 3, // 3 hr
@@ -84,10 +86,7 @@ export const authOptions: NextAuthOptions = {
           throw new Error("No user found with this email");
         }
 
-        const isPasswordValid = await bcrypt.compare(
-          credentials.password,
-          user.password
-        );
+        const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
 
         if (!isPasswordValid) {
           throw new Error("Invalid password");
@@ -106,12 +105,6 @@ export const authOptions: NextAuthOptions = {
       clientSecret: GOOGLE_CLIENT_SECRET,
     }),
   ],
-
-  // pages: {
-  //   signIn: "/api/auth/signin",
-  //   signOut: "/api/auth/signup",
-  //   newUser: "/api/auth/new-user",
-  // },
 
   secret: NEXTAUTH_SECRET || "secret",
   callbacks: {
@@ -135,11 +128,22 @@ export const authOptions: NextAuthOptions = {
           create: {
             email: email,
             name: name || name || email.split("@")[0],
-            password: randomUUID.toString(),
+            password: randomUUID(),
           },
         });
       }
       return true;
     },
   },
-};
+  pages: {
+    signIn: "/auth/login",
+  },
+} satisfies NextAuthConfig;
+
+const nextAuth = NextAuth(authOptions);
+export const auth: NextAuthResult["auth"] = nextAuth.auth;
+export const {
+  handlers: { GET, POST },
+  signIn,
+  signOut,
+} = nextAuth;
