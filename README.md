@@ -247,7 +247,9 @@ https://nextjs.org/docs/messages/module-not-found
 clone the git repo: `https://github.com/pantharshit007/RupeeRush/tree/authjs-error` use branch `authjs-error`
 
 > npm i
+
 > create `.env`
+
 > add these:
 
 ```
@@ -257,7 +259,9 @@ DATABASE_URL="postgresql://postgres:mysecretpassword@localhost:3333/postgres"
 ```
 
 > npm run db:docker
+
 > npm run db:generate
+
 > npm run db:web
 
 you will see the error before hitting the end point `/auth/register` or `/`
