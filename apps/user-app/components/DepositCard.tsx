@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { ButtonPrimary } from "@repo/ui/components/ButtonPrimary";
 import { Select } from "@repo/ui/components/Select";
-import { TextInput } from "@repo/ui/components/Textinput";
+import { TextInput } from "@repo/ui/components/TextInput";
 import { SUPPORTED_BANKS } from "../utils/constant";
 import { createOnRampTransaction } from "@/actions/createOnRampTxn";
 

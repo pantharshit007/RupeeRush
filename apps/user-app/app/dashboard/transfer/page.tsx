@@ -1,14 +1,13 @@
 import React from "react";
+import { redirect } from "next/navigation";
 
 import Title from "@repo/ui/components/Title";
-import Tab from "@repo/ui/components/tab";
-
+import Tab from "@repo/ui/components/Tab";
 import DepositCard from "@/components/DepositCard";
 import BalanceCard from "@/components/BalanceCard";
 import TransactionHistory from "@/components/TxnHistoryCard";
 import { auth } from "@/lib/auth";
 import db from "@repo/db/client";
-import { redirect } from "next/navigation";
 
 // fetch user's current Balance and locked balance
 async function getBalance() {
