@@ -1,4 +1,4 @@
-import { Button } from "./button";
+import { ButtonPrimary } from "./ButtonPrimary";
 
 interface AppbarProps {
   user?: {
@@ -16,9 +16,9 @@ export const Appbar = ({ user, onSignin, onSignout }: AppbarProps) => {
         RupeeRush
       </div>
       <div className="flex flex-col justify-center pt-2">
-        <Button onClick={user ? onSignout : onSignin}>
+        <ButtonPrimary onClick={user ? onSignout : onSignin}>
           {user ? "Logout" : "Login"}
-        </Button>
+        </ButtonPrimary>
       </div>
     </div>
   );

@@ -2,7 +2,7 @@
 import React from "react";
 import { useState } from "react";
 
-import { Button } from "@repo/ui/components/Button";
+import { ButtonPrimary } from "@repo/ui/components/ButtonPrimary";
 import { Select } from "@repo/ui/components/Select";
 import { TextInput } from "@repo/ui/components/Textinput";
 import { SUPPORTED_BANKS } from "../utils/constant";
@@ -49,7 +49,7 @@ function DepositCard() {
         />
 
         <div className="pt-4">
-          <Button onClick={onSubmit}>Add Money</Button>
+          <ButtonPrimary onClick={onSubmit}>Add Money</ButtonPrimary>
         </div>
       </div>
     </div>

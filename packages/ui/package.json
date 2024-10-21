@@ -36,15 +36,6 @@
     "./postcss.config": "./postcss.config.mjs",
     "./tailwind.config": "./tailwind.config.ts",
     "./components/*": "./src/components/*.tsx",
-    "./lib/*": "./src/lib/*.ts",
-    "./button": "./src/components/button.tsx",
-    "./card": "./src/components/card.tsx",
-    "./code": "./src/components/code.tsx",
-    "./appbar": "./src/components/AppBar.tsx",
-    "./title": "./src/components/Title.tsx",
-    "./tab": "./src/components/Tab.tsx",
-    "./select": "./src/components/Select.tsx",
-    "./textinput": "./src/components/TextInput.tsx",
-    "./status": "./src/components/Status.tsx"
+    "./lib/*": "./src/lib/*.ts"
   }
 }

@@ -1,6 +1,6 @@
 import React from "react";
 
-import Title from "@repo/ui/components/title";
+import Title from "@repo/ui/components/Title";
 import Tab from "@repo/ui/components/tab";
 
 import DepositCard from "@/components/DepositCard";

@@ -36,4 +36,6 @@ export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
     }
     throw err; // required in next-auth to rediect back
   }
+
+  return { success: "Login Success!" };
 };

@@ -1,5 +1,4 @@
 import React from "react";
-import { redirect } from "next/navigation";
 import { cn } from "@repo/ui/lib/utils";
 import { Button } from "@repo/ui/components/ui/button";
 import LoginButton from "@/components/auth/LoginButton";
@@ -8,9 +7,6 @@ import { auth } from "@/lib/auth";
 
 export default async function Home() {
   const session = await auth();
-  // if (!session?.user) {
-  //   redirect("/api/auth/signin");
-  // }
 
   return (
     <>

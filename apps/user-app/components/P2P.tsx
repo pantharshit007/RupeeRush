@@ -1,5 +1,6 @@
 "use client";
-import { Button } from "@repo/ui/components/Button";
+
+import { ButtonPrimary } from "@repo/ui/components/ButtonPrimary";
 import { TextInput } from "@repo/ui/components/Textinput";
 import React, { useState, useEffect } from "react";
 import { p2pTransfer } from "@/actions/p2pTransfer";
@@ -69,7 +70,7 @@ function P2P() {
         </div>
 
         <div className="pt-4">
-          <Button onClick={onSubmit}>Send</Button>
+          <ButtonPrimary onClick={onSubmit}>Send</ButtonPrimary>
         </div>
       </div>
 
