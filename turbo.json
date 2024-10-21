@@ -8,7 +8,7 @@
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "user-app#build": {
-      "env": ["GOOGLE_CLIENT_*", "NEXTAUTH_*"]
+      "env": ["GOOGLE_CLIENT_*", "NEXTAUTH_*", "DATABASE_URL"]
     },
     "lint": {
       "dependsOn": ["^lint"]

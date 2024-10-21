@@ -21,11 +21,15 @@ export default {
 
         const user = await getUserByEmail(email);
         if (!user || !user.password) {
+          console.warn("> Login Error: email not found: " + email);
           return null;
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) return null;
+        if (!isPasswordValid) {
+          console.warn("> Login Error: Invalid password");
+          return null;
+        }
 
         return user;
       },
