@@ -2,9 +2,9 @@
 import React from "react";
 import { useState } from "react";
 
-import { Button } from "@repo/ui/components/button";
-import { Select } from "@repo/ui/components/select";
-import { TextInput } from "@repo/ui/components/textinput";
+import { Button } from "@repo/ui/components/Button";
+import { Select } from "@repo/ui/components/Select";
+import { TextInput } from "@repo/ui/components/Textinput";
 import { SUPPORTED_BANKS } from "../utils/constant";
 import { createOnRampTransaction } from "@/actions/createOnRampTxn";
 

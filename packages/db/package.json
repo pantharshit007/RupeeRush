@@ -18,7 +18,7 @@
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.0",
     "@prisma/client": "^5.20.0",
-    "bcrypt": "^5.1.1"
+    "bcryptjs": "^2.4.3"
   },
   "exports": {
     "./client": "./src/index.ts"
@@ -27,6 +27,7 @@
     "seed": "tsx prisma/seed.ts"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.1"
   }

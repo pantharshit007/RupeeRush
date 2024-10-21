@@ -10,6 +10,7 @@
 //? TODO: fix this `session?.user?.id` for now: // @ts-ignore, src: callback auth.ts
 // TODO: fix auth form in login/register in 100%
 // TODO: make sure no one is able to enter -ve amount in input boxes
+// TODO: look into AppBarClient signout func.
 
 //! NEXT: BE
 // TODO: fix locked amount not updating or something...

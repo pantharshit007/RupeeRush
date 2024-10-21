@@ -1,4 +1,4 @@
-import { hdfcWebHook } from "./controllers/bankController";
+import { hdfcWebHook } from "./controllers/bankController.js";
 
 const express = require("express");
 const router = express.Router();

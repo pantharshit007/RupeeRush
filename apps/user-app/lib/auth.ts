@@ -1,9 +1,4 @@
-import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
-import Google from "next-auth/providers/google";
-import GitHub from "next-auth/providers/github";
 import db, { PrismaAdapter } from "@repo/db/client";
-import bcrypt from "bcrypt";
 import NextAuth, { NextAuthConfig, NextAuthResult } from "next-auth";
 import { randomUUID } from "crypto";
 import authConfig from "@/auth.config";

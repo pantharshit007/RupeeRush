@@ -1,6 +1,6 @@
 "use client";
-import { Button } from "@repo/ui/components/button";
-import { TextInput } from "@repo/ui/components/textinput";
+import { Button } from "@repo/ui/components/Button";
+import { TextInput } from "@repo/ui/components/Textinput";
 import React, { useState, useEffect } from "react";
 import { p2pTransfer } from "@/actions/p2pTransfer";
 import TransactionHistory from "./TxnHistoryCard";

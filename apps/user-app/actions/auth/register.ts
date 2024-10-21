@@ -1,7 +1,7 @@
 "use server";
 
 import * as z from "zod";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 import db from "@repo/db/client";
 import { RegisterSchema } from "@repo/schema/authSchema";

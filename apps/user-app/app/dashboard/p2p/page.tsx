@@ -1,4 +1,4 @@
-import Title from "@repo/ui/components/title";
+import Title from "@repo/ui/components/Title";
 import React from "react";
 import P2P from "@/components/P2P";
 
