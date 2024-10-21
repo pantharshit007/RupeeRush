@@ -1,7 +1,7 @@
 "use server";
 
-import { getServerSession } from "next-auth";
-import { authOptions } from "../lib/auth";
+// import { getServerSession } from "next-auth";
+import { auth } from "@/lib/auth";
 import { randomUUID } from "crypto";
 import db from "@repo/db/client";
 
@@ -9,8 +9,7 @@ export async function createOnRampTransaction(provider: string, amount: number) 
   //TODO: Ideally the token should come from the banking provider (hdfc/axis)
 
   try {
-    const session = await getServerSession(authOptions);
-    // @ts-ignore
+    const session = await auth();
     const userId = session?.user?.id;
     if (!session?.user || !userId) {
       return {

@@ -1,7 +1,7 @@
 "use server";
 
-import { getServerSession } from "next-auth";
-import { authOptions } from "../lib/auth";
+// import { getServerSession } from "next-auth";
+import { auth } from "@/lib/auth";
 import db from "@repo/db/client";
 
 interface P2PTypes {
@@ -10,7 +10,7 @@ interface P2PTypes {
 }
 
 export async function p2pTransfer({ receiverId, amount }: P2PTypes) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   // @ts-ignore
   const sender: string = session?.user?.id;
 
