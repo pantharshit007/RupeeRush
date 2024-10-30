@@ -9,7 +9,7 @@
       "env": ["DATABASE_URL"]
     },
     "user-app#build": {
-      "env": ["GOOGLE_CLIENT_*", "NEXTAUTH_*"]
+      "env": ["GOOGLE_CLIENT_*", "AUTH_GITHUB_*", "NEXTAUTH_*"]
     },
     "lint": {
       "dependsOn": ["^lint"]

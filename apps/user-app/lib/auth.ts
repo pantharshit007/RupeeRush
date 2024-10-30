@@ -4,8 +4,6 @@ import { randomUUID } from "crypto";
 import authConfig from "@/auth.config";
 import CustomUser from "@/@types/next-auth";
 
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
 
 if (!NEXTAUTH_SECRET) {
@@ -27,6 +25,21 @@ if (!NEXTAUTH_SECRET) {
 const authOptions: NextAuthConfig = {
   //! TODO: do we not need the secret now?
   secret: NEXTAUTH_SECRET || "secret",
+
+  pages: {
+    signIn: "/auth/login",
+    error: "/auth/error",
+  },
+
+  events: {
+    async linkAccount({ user }) {
+      await db.user.update({
+        where: { id: user.id },
+        data: { emailVerified: new Date() },
+      });
+    },
+  },
+
   callbacks: {
     async jwt({ token, user }) {
       if (!token.sub) return token;
@@ -97,10 +110,9 @@ const authOptions: NextAuthConfig = {
     //   return true;
     // },
   },
-  pages: {
-    signIn: "/auth/login",
-  },
+
   adapter: PrismaAdapter(db),
+
   session: {
     strategy: "jwt",
     maxAge: 60 * 60 * 3, // 3 hr

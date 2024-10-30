@@ -32,6 +32,10 @@ export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
           return { error: "Invalid credentials!" };
         case "AccessDenied":
           return { error: "Access Denied!" };
+        case "OAuthAccountNotLinked":
+          return { error: "Account already exists with same email!" };
+        case "EmailSignInError":
+          return { error: "Email sign in error!" };
         default:
           return { error: err.message || "Something went wrong!" };
       }

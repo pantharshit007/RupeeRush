@@ -31,12 +31,12 @@ function CardWrapper({
       {/* content */}
       <CardContent>{children}</CardContent>
 
-      {showSocial && <CardFooter></CardFooter>}
-
       {/* Auth providers */}
-      <CardFooter>
-        <Provider />
-      </CardFooter>
+      {showSocial && (
+        <CardFooter>
+          <Provider />
+        </CardFooter>
+      )}
 
       {/* Back to page link */}
       <CardFooter>
