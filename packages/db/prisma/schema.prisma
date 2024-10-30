@@ -21,6 +21,7 @@ model User {
   phoneNumber       String?         @unique
   password          String?
   image             String?
+  role              UserRole        @default(USER)
   upiId             String?         @unique
   bankName          String?
   accounts          Account[]
@@ -109,4 +110,9 @@ enum OnRampStatus {
   Success
   Failure
   Processing
+}
+
+enum UserRole {
+  ADMIN
+  USER
 }

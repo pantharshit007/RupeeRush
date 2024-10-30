@@ -15,6 +15,7 @@
 //! NEXT: BE
 // TODO: fix locked amount not updating or something...
 // TODO: update user schema to includer upi id and include it everywhere including the actions and p2p
+// TODO: sanitize the inputs in forms.
 
 //! DB:
 // TODO: updated user id to Int -> String, check for possible errors

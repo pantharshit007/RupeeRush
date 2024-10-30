@@ -5,10 +5,11 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": ["DATABASE_URL"]
     },
     "user-app#build": {
-      "env": ["GOOGLE_CLIENT_*", "NEXTAUTH_*", "DATABASE_URL"]
+      "env": ["GOOGLE_CLIENT_*", "NEXTAUTH_*"]
     },
     "lint": {
       "dependsOn": ["^lint"]
