@@ -8,7 +8,7 @@
     "db:migrate": "npx prisma migrate dev && npm run db:seed",
     "db:deploy": "npx prisma migrate deploy",
     "db:generate": "npx prisma generate && npm run db:seed",
-    "db:push": "npx prisma db push && npm run db:seed",
+    "db:push": "npx prisma db push",
     "db:seed": "npx prisma db seed",
     "db:reset": "npx prisma migrate reset --force && npx prisma db push",
     "studio": "npx prisma studio"
