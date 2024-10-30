@@ -16,7 +16,7 @@ function Provider() {
   const handleClick = async (provider: "google" | "github") => {
     // console.log("provider", AuthType, provider);
 
-    // TODO: this is wrong make it better, causes problem.
+    // TODO: this is wrong make it better, causes problem. check `seed.ts` and export from there or from `index`
     // if (urlError === "OAuthAccountNotLinked") {
     //   window.alert("Email Already in use with another provide");
     //   return;

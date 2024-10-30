@@ -63,7 +63,7 @@ async function main() {
     create: {
       email: "merchant@example.com",
       name: "Jethalal",
-      auth_type: AuthType.Google,
+      auth_type: AuthType.google,
     },
   });
 

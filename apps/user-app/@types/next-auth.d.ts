@@ -3,7 +3,7 @@ import NextAuth from "next-auth";
 // import { UserRole } from "@repo/db/client";
 
 declare module "next-auth" {
-  // TODO: find a way to user userModel direct form `db/client` instead of custom types.
+  // TODO: find a way to user userModel direct form `db/client` instead of custom types. check `seed.ts` and export from there or from `index`
   interface User extends CustomUser {}
 
   interface Session {
