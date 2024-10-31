@@ -1,20 +1,32 @@
 # #!/usr/bin/env sh
 # . "$(dirname -- "$0")/_/husky.sh"
 
-# Define colors using tput for 256 color support
-if [ -t 1 ]; then
-    # Foreground colors
-    NOTIFY=$(tput setaf 202)    # Orange text
-    SUCCESS=$(tput setaf 2)     # Green text
-    ERROR=$(tput setaf 1)       # Red text
-    INFO=$(tput setaf 6)        # Cyan text
-    
-    # Background colors
-    WARNING=$(tput setab 202)   # Orange background
-    
-    # Reset
-    RESET=$(tput sgr0)
+# First check if we're in a terminal and if it supports colors
+if [ -t 1 ] && tput colors &>/dev/null; then
+    # Check if terminal supports at least 256 colors
+    if [ "$(tput colors)" -ge 256 ]; then
+        # Foreground colors
+        NOTIFY=$(tput setaf 202)    # Orange text
+        SUCCESS=$(tput setaf 2)     # Green text
+        ERROR=$(tput setaf 1)       # Red text
+        INFO=$(tput setaf 6)        # Cyan text
+        
+        # Background colors
+        WARNING=$(tput setab 202)   # Orange background
+        
+        # Reset
+        RESET=$(tput sgr0)
+    else
+        # Fallback to basic ANSI colors if 256 colors not supported
+        NOTIFY='\033[0;33m'     # Orange/Yellow text
+        SUCCESS='\033[0;32m'    # Green text
+        ERROR='\033[0;31m'      # Red text
+        INFO='\033[0;36m'       # Cyan text
+        WARNING='\033[43m'      # Yellow background
+        RESET='\033[0m'
+    fi
 else
+    # No color support
     NOTIFY=""
     SUCCESS=""
     ERROR=""
@@ -23,28 +35,39 @@ else
     RESET=""
 fi
 
+# Export colors so they work in subshells
+export NOTIFY SUCCESS ERROR INFO WARNING RESET
+
 # Main pre-commit script
-echo "${INFO}🔍 Running pre-commit checks...${RESET}"
+printf "${INFO}🔍 Running pre-commit checks...${RESET}\n"
 
 # Run lint-staged for formatting and linting staged files
-npx lint-staged || {
-    echo "${ERROR}❌ Lint-staged failed. Please fix the issues and try committing again.${RESET}"
-    exit 1
-}
+printf "${NOTIFY}Running lint checks...${RESET}\n"
+npx lint-staged
+LINT_EXIT_CODE=$?
 
-# Only run build if changes are detected in source files
-STAGED_SOURCE_FILES=$(git diff --cached --name-only | grep -E '\.(ts|tsx|js|jsx)$')
-if [ -n "$STAGED_SOURCE_FILES" ]; then
-    echo "${NOTIFY}🏗️  Detected source file changes:${RESET}"
-    echo "$STAGED_SOURCE_FILES"
-    echo "${WARNING} You can change build checks to :web or :hook ${RESET}"
-    echo "${NOTIFY}Running build checks...${RESET}"
-    npm run build || {
-        echo "${ERROR}❌ Build failed. Please fix the build issues and try committing again.${RESET}"
-        exit 1
-    }
-else
-    echo "${INFO}ℹ️  No source files changed. Skipping build check.${RESET}"
+if [ $LINT_EXIT_CODE -ne 0 ]; then
+    printf "${ERROR}❌ Lint-staged failed. Please fix the issues and try committing again.${RESET}\n"
+    exit 1
 fi
 
-echo "${SUCCESS}✅ All checks passed successfully!${RESET}"
+# Only run build if changes are detected in source files
+STAGED_SOURCE_FILES=$(git diff --cached --name-only | grep -E '\.(ts|tsx|js|jsx)$' || true)
+if [ -n "$STAGED_SOURCE_FILES" ]; then
+    printf "${NOTIFY}🏗️  Detected source file changes:${RESET}\n"
+    echo "$STAGED_SOURCE_FILES"
+    printf "${WARNING} You can change build checks to :web or :hook ${RESET}\n"
+    printf "${NOTIFY}Running build checks...${RESET}\n"
+    npm run build
+    BUILD_EXIT_CODE=$?
+    
+    if [ $BUILD_EXIT_CODE -ne 0 ]; then
+        printf "${ERROR}❌ Build failed. Please fix the build issues and try committing again.${RESET}\n"
+        exit 1
+    fi
+else
+    printf "${INFO}ℹ️  No source files changed. Skipping build check.${RESET}\n"
+fi
+
+printf "${SUCCESS}✅ All checks passed successfully!${RESET}\n"
+exit 0
