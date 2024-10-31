@@ -11,6 +11,9 @@
 // TODO: fix auth form in login/register in 100%
 // TODO: make sure no one is able to enter -ve amount in input boxes
 // TODO: look into AppBarClient signout func.
+//? TODO: update all card/form from ui to this `import * as ShadcnForm from ''` and use shadcnForm.form / .card 
+`https://github.com/joe-jngigi/next_auth_V5/blob/37823e83412dab6d46fdf91857469cb4b3016fc6/src/components/auth/login-form.tsx#L5`
+// TODO: add loading screen in `provider.tsx` suspense boundary
 
 //! NEXT: BE
 // TODO: fix locked amount not updating or something...
