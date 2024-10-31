@@ -14,6 +14,7 @@
 //? TODO: update all card/form from ui to this `import * as ShadcnForm from ''` and use shadcnForm.form / .card 
 `https://github.com/joe-jngigi/next_auth_V5/blob/37823e83412dab6d46fdf91857469cb4b3016fc6/src/components/auth/login-form.tsx#L5`
 // TODO: add loading screen in `provider.tsx` suspense boundary
+// TODO: add `npm run preview` in readme for husky for new users.
 
 //! NEXT: BE
 // TODO: fix locked amount not updating or something...
@@ -35,7 +36,7 @@
 
 //! END TODO:
 // TODO: add feature QR code support we can use it in mobile and store qr in db
-//? TODO: add a feature of something such that i will have a record of from where this app is accessed like storing ip and displaying on a map to check which part of the map is accessing my website and get analytics n all.
+//? TODO: add a feature of something such that i will have a record of from where this app is accessed like storing ip and displaying on a map to check which part of the map is accessing my website and get analytics n all. 
 
 //? NOTE:
 // when adding image from an outside src u need to set them up in next.config.*: https://youtu.be/w2h54xz6Ndw?t=2328

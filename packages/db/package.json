@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "db:migrate": "npx prisma migrate dev && npm run db:seed",
+    "db:migrate": "npx prisma migrate dev --skip-seed && npm run db:seed",
     "db:deploy": "npx prisma migrate deploy",
     "db:generate": "npx prisma generate && npm run db:seed",
     "db:push": "npx prisma db push",

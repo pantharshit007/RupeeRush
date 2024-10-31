@@ -3,3 +3,13 @@ package.json
 package-lock.json
 apiRoute.ts
 TODO.ts
+
+/.vscode
+/node_modules
+./dist
+
+*.yml
+*.yaml
+*.env
+.env
+.env.*

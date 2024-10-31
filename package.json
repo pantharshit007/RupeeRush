@@ -7,15 +7,19 @@
     "build:hook": "turbo build --filter=webhook...",
     "dev": "turbo dev",
     "lint": "turbo lint",
+    "lint:fix": "turbo lint:fix",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "dev:web": "turbo dev --filter=user-app...",
     "dev:hook": "turbo dev --filter=webhook...",
-    "db:generate": "cd packages/db && npm run db:push && npm run db:generate && cd ../..",
+    "db:generate": "cd packages/db && npm run db:generate && cd ../..",
     "db:push": "cd packages/db && npm run db:push && cd ../..",
     "studio": "cd packages/db && npx prisma studio && cd ../..",
-    "db:docker": "docker run -e POSTGRES_PASSWORD=mysecretpassword -d -p 3333:5432 postgres"
+    "db:docker": "docker run -e POSTGRES_PASSWORD=mysecretpassword -d -p 3333:5432 postgres",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
     "prettier": "^3.2.5",
     "turbo": "^2.1.2",
     "typescript": "^5.4.5"
