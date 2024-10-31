@@ -1,4 +1,4 @@
-export function Card({
+function CardPrimary({
   className,
   title,
   children,
@@ -23,3 +23,5 @@ export function Card({
     </a>
   );
 }
+
+export default CardPrimary;

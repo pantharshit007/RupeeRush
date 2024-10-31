@@ -1,4 +1,4 @@
-export function Code({
+function CodePrimary({
   children,
   className,
 }: {
@@ -7,3 +7,5 @@ export function Code({
 }): JSX.Element {
   return <code className={className}>{children}</code>;
 }
+
+export default CodePrimary;

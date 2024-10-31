@@ -1,4 +1,4 @@
-import Title from "@repo/ui/components/Title";
+import Title from "@repo/ui/components/custom/Title";
 import React from "react";
 
 function page() {

@@ -38,9 +38,7 @@ function Status({ status }: StatusType) {
   }
 
   return (
-    <div
-      className={`flex items-center gap-x-2 px-2 py-1 rounded-3xl w-fit ${bgColor}`}
-    >
+    <div className={`flex items-center gap-x-2 px-2 py-1 rounded-3xl w-fit ${bgColor}`}>
       <div className={`h-2 w-2 rounded-full ${dotColor}`}></div>
       <p className={`font-medium ${textColor}`}>{status}</p>
     </div>

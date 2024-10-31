@@ -1,12 +1,12 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
+  "globalEnv": ["DATABASE_URL"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"],
-      "env": ["DATABASE_URL"]
+      "outputs": [".next/**", "!.next/cache/**"]
     },
     "user-app#build": {
       "env": ["GOOGLE_CLIENT_*", "AUTH_GITHUB_*", "NEXTAUTH_*"]

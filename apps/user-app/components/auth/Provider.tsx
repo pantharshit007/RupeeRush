@@ -1,30 +1,24 @@
 "use client";
-import React from "react";
+
+import React, { Suspense } from "react";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useSearchParams } from "next/navigation";
-import AuthType from "@repo/db/client";
 import { signIn } from "next-auth/react";
 import { DEFAULT_LOGIN_REDIRECT } from "@/utils/apiRoute";
 import { Button } from "@repo/ui/components/ui/button";
 
-function Provider() {
+// Separate client component for handling search params
+const AuthProviderContent = () => {
   const searchParams = useSearchParams();
-  // const urlError = searchParams.get("error");
   const callBackUrl = searchParams.get("callBackUrl");
 
   const handleClick = async (provider: "google" | "github") => {
+    // TODO: check `seed.ts` and export from there or from `index`
     // console.log("provider", AuthType, provider);
 
-    // TODO: this is wrong make it better, causes problem. check `seed.ts` and export from there or from `index`
-    // if (urlError === "OAuthAccountNotLinked") {
-    //   window.alert("Email Already in use with another provide");
-    //   return;
-    // }
-
-    signIn(provider, { redirectTo: DEFAULT_LOGIN_REDIRECT || callBackUrl });
+    await signIn(provider, { redirectTo: DEFAULT_LOGIN_REDIRECT || callBackUrl });
   };
-
   return (
     <div className="flex items-center w-full gap-x-2">
       <Button
@@ -45,6 +39,16 @@ function Provider() {
         <FaGithub className="h-6 w-6" />
       </Button>
     </div>
+  );
+};
+
+// Main provider component with Suspense
+function Provider() {
+  return (
+    // TODO: add loading screen
+    <Suspense fallback={<div>Loading...</div>}>
+      <AuthProviderContent />
+    </Suspense>
   );
 }
 

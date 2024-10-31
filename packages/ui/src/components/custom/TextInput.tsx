@@ -8,18 +8,10 @@ interface TextType {
   type?: string;
 }
 
-export const TextInput = ({
-  placeholder,
-  onChange,
-  label,
-  value,
-  type = "text",
-}: TextType) => {
+const TextInput = ({ placeholder, onChange, label, value, type = "text" }: TextType) => {
   return (
     <div className="pt-2">
-      <label className="block mb-2 text-sm font-medium text-gray-900">
-        {label}
-      </label>
+      <label className="block mb-2 text-sm font-medium text-gray-900">{label}</label>
 
       <input
         onChange={(e) => onChange(e.target.value)}
@@ -32,3 +24,5 @@ export const TextInput = ({
     </div>
   );
 };
+
+export default TextInput;

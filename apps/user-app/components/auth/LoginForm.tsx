@@ -45,13 +45,13 @@ function LoginForm() {
           // Extracts only the relevant part of the error message: before "Read more"
           // TODO: fix this to only show relevant message `action/auth/login.ts`
           const errorMessage = data?.error.match(/^[^\r\n]+/)?.[0];
-          form.reset();
           setError(errorMessage || "Something went wrong!");
+          form.reset();
         }
 
         if (data?.success) {
-          form.reset();
           setSuccess(data?.success);
+          form.reset();
         }
       } catch (err: any) {
         console.error("> Error Logging user: " + err?.message);

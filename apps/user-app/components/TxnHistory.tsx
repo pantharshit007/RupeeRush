@@ -1,4 +1,4 @@
-import Status from "@repo/ui/components/Status";
+import Status from "@repo/ui/components/custom/Status";
 import React from "react";
 
 interface TransactionType {

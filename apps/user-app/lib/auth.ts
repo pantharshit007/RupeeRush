@@ -1,8 +1,6 @@
 import db, { PrismaAdapter } from "@repo/db/client";
 import NextAuth, { NextAuthConfig, NextAuthResult } from "next-auth";
-import { randomUUID } from "crypto";
 import authConfig from "@/auth.config";
-import CustomUser from "@/@types/next-auth";
 
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
 

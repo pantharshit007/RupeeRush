@@ -1,8 +1,8 @@
 import React from "react";
 import { redirect } from "next/navigation";
 
-import Title from "@repo/ui/components/Title";
-import Tab from "@repo/ui/components/Tab";
+import Title from "@repo/ui/components/custom/Title";
+import Tab from "@repo/ui/components/custom/Tab";
 import DepositCard from "@/components/DepositCard";
 import BalanceCard from "@/components/BalanceCard";
 import TransactionHistory from "@/components/TxnHistoryCard";

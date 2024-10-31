@@ -2,12 +2,9 @@ import React from "react";
 
 import CardWrapper from "@/components/common/CardWrapper";
 import FormError from "@/components/common/FormError";
-import { useSearchParams } from "next/navigation";
 
 function ErrorCard() {
-  const searchParams = useSearchParams();
-  const urlError = searchParams.get("error");
-
+  // TODO: add toast to notify based on searchParams
   return (
     <CardWrapper
       header="🔐 Auth"
@@ -15,7 +12,7 @@ function ErrorCard() {
       backButtonLabel="Back to Login"
       backButtonHref="/auth/login"
     >
-      <FormError message={urlError ?? "Something went wrong"} />
+      <FormError message={"Something went wrong"} />
     </CardWrapper>
   );
 }

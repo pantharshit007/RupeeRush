@@ -1,4 +1,4 @@
-import { ButtonPrimary } from "./ButtonPrimary";
+import ButtonPrimary from "./ButtonPrimary";
 
 interface AppbarProps {
   user?: {
@@ -9,7 +9,7 @@ interface AppbarProps {
   onSignout: any;
 }
 
-export const Appbar = ({ user, onSignin, onSignout }: AppbarProps) => {
+const Appbar = ({ user, onSignin, onSignout }: AppbarProps) => {
   return (
     <div className="flex justify-between border-b border-slate-300 px-4 h-[3.5rem] bg-[#f7f7fa]">
       <div className="text-2xl flex flex-col justify-center text-richPurple-600 font-bold italic">
@@ -23,3 +23,5 @@ export const Appbar = ({ user, onSignin, onSignout }: AppbarProps) => {
     </div>
   );
 };
+
+export default Appbar;

@@ -8,7 +8,7 @@ interface SelectType {
   }[];
 }
 
-export const Select = ({ options, onSelect }: SelectType) => {
+const Select = ({ options, onSelect }: SelectType) => {
   return (
     <select
       onChange={(e) => onSelect(e.target.value)}
@@ -22,3 +22,5 @@ export const Select = ({ options, onSelect }: SelectType) => {
     </select>
   );
 };
+
+export default Select;
