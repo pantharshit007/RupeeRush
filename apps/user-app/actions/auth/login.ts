@@ -1,7 +1,10 @@
 "use server";
 
 import { signIn } from "@/lib/auth";
+import { generateVerificationToken } from "@/lib/generateToken";
+import { sendVerificationEmail } from "@/lib/mail";
 import { DEFAULT_LOGIN_REDIRECT } from "@/utils/apiRoute";
+import { getUserByEmail } from "@/utils/userFetch";
 import { LoginSchema } from "@repo/schema/authSchema";
 import { AuthError } from "next-auth";
 import * as z from "zod";
@@ -16,6 +19,25 @@ export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
 
   // destructure fields
   const { email, password } = isValidFields.data;
+
+  // check if user already has an account or not!
+  const existingUser = await getUserByEmail(email);
+
+  if (!existingUser || !existingUser.email) {
+    return { error: "User Does Not Exist" };
+  }
+  if (!existingUser.password) {
+    // TODO: add a check in loginForm to show a toast for this case like: {info: "..."}
+    return { error: "Email already in use, login in with Google/Github" };
+  }
+
+  // though it shouldn't work since we arent creating account without first verifying
+  if (!existingUser.emailVerified) {
+    const verificationToken = await generateVerificationToken(existingUser.email);
+    await sendVerificationEmail(verificationToken.email, verificationToken.token);
+
+    return { success: "Verification email send! Login Failed" };
+  }
 
   try {
     // calling next-auth signin

@@ -81,32 +81,20 @@ const authOptions: NextAuthConfig = {
       return session;
     },
 
-    // async signIn({ account, profile, user }) {
-    //   // GOOGLE signin
-    //   if (account?.provider === "google") {
-    //     const { email, name } = profile as { email?: string; name?: string };
+    async signIn({ account, profile, user }) {
+      // Allow OAuth signin's without email verification
+      if (account?.provider !== "credentials") return true;
 
-    //     if (!email) {
-    //       return false;
-    //     }
+      /**
+       * This checks for an **existingUser** via the user provider, before checking if the user is emailVerified
+       * If the user is not verified, they are denied access through the middleware
+       * This provides an extra layer security, as we have already do the same on the frontend part `/action/login.ts`
+       */
+      if (!user || !user.emailVerified) return false;
 
-    //     await db.user.upsert({
-    //       where: { email },
-    //       update: { name },
-    //       create: {
-    //         email: email,
-    //         name: name || name || email.split("@")[0],
-    //         password: randomUUID(),
-    //       },
-    //     });
-    //   }
-
-    //   if (!user || !user.emailVerified) {
-    //     return false;
-    //   }
-
-    //   return true;
-    // },
+      // TODO Add 2FA checking
+      return true;
+    },
   },
 
   adapter: PrismaAdapter(db),

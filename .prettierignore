@@ -13,3 +13,6 @@ TODO.ts
 *.env
 .env
 .env.*
+
+# ignore email templates
+email.*

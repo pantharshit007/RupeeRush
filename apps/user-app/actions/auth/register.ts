@@ -5,7 +5,9 @@ import bcrypt from "bcryptjs";
 
 import db from "@repo/db/client";
 import { RegisterSchema } from "@repo/schema/authSchema";
-import { getUserByEmail } from "@/lib/userFetch";
+import { getUserByEmail } from "@/utils/userFetch";
+import { generateVerificationToken } from "@/lib/generateToken";
+import { sendVerificationEmail } from "@/lib/mail";
 
 export const registerAction = async (values: z.infer<typeof RegisterSchema>) => {
   const isValidFields = RegisterSchema.safeParse(values);
@@ -24,6 +26,8 @@ export const registerAction = async (values: z.infer<typeof RegisterSchema>) => 
   }
 
   // TODO: email verification: dont create account without first verifying the user
+  const verificationToken = await generateVerificationToken(email);
+  await sendVerificationEmail(verificationToken.email, verificationToken.token);
 
   await db.user.create({
     data: {
@@ -33,5 +37,5 @@ export const registerAction = async (values: z.infer<typeof RegisterSchema>) => 
     },
   });
 
-  return { success: "Email Sent!" };
+  return { success: "Confirmation Email Sent!" };
 };

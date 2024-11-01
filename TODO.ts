@@ -15,6 +15,7 @@
 `https://github.com/joe-jngigi/next_auth_V5/blob/37823e83412dab6d46fdf91857469cb4b3016fc6/src/components/auth/login-form.tsx#L5`
 // TODO: add loading screen in `provider.tsx` suspense boundary
 // TODO: add `npm run preview` in readme for husky for new users.
+// TODO: add toast. `action/login.ts`
 
 //! NEXT: BE
 // TODO: fix locked amount not updating or something...

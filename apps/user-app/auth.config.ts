@@ -5,7 +5,7 @@ import Github from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 
 import { LoginSchema } from "@repo/schema/authSchema";
-import { getUserByEmail } from "./lib/userFetch";
+import { getUserByEmail } from "./utils/userFetch";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
