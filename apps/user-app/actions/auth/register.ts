@@ -26,9 +26,10 @@ export const registerAction = async (values: z.infer<typeof RegisterSchema>) => 
   }
 
   // TODO: email verification: dont create account without first verifying the user
-  const verificationToken = await generateVerificationToken(email);
+  const verificationToken = await generateVerificationToken({ email, name, hashedPassword });
   await sendVerificationEmail(verificationToken.email, verificationToken.token);
 
+  /*
   await db.user.create({
     data: {
       name,
@@ -36,6 +37,7 @@ export const registerAction = async (values: z.infer<typeof RegisterSchema>) => 
       password: hashedPassword,
     },
   });
+  */
 
   return { success: "Confirmation Email Sent!" };
 };
