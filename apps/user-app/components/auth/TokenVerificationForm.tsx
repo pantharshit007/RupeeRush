@@ -47,7 +47,7 @@ function TokenVerificationForm({ existingUser }: TokenVerifyProps) {
       if (data.error) setError(data.error || "Something went wrong");
       if (data.success) setSuccess(data.success);
     } catch (err: any) {
-      console.error("> Error Logging user: " + err?.message);
+      console.error("> Error verifying token: " + err?.message);
       setError("Something went wrong");
     } finally {
       setLoading(false);
@@ -56,8 +56,8 @@ function TokenVerificationForm({ existingUser }: TokenVerifyProps) {
 
   return (
     <CardWrapper
-      header="🔐 Auth | Email Verification"
-      headerLabel="Confirm your email"
+      header="🔐 Auth"
+      headerLabel="Email Verification"
       backButtonLabel="Back to Login"
       backButtonHref="/auth/login"
     >

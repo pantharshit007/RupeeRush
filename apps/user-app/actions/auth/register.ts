@@ -3,7 +3,6 @@
 import * as z from "zod";
 import bcrypt from "bcryptjs";
 
-import db from "@repo/db/client";
 import { RegisterSchema } from "@repo/schema/authSchema";
 import { getUserByEmail } from "@/utils/userFetch";
 import { generateVerificationToken } from "@/lib/generateToken";
@@ -28,16 +27,6 @@ export const registerAction = async (values: z.infer<typeof RegisterSchema>) => 
   // TODO: email verification: dont create account without first verifying the user
   const verificationToken = await generateVerificationToken({ email, name, hashedPassword });
   await sendVerificationEmail(verificationToken.email, verificationToken.token);
-
-  /*
-  await db.user.create({
-    data: {
-      name,
-      email: email,
-      password: hashedPassword,
-    },
-  });
-  */
 
   return { success: "Confirmation Email Sent!" };
 };

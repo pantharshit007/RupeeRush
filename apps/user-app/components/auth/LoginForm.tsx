@@ -21,6 +21,7 @@ import { Button } from "@repo/ui/components/ui/button";
 import FormError from "@/components/common/FormError";
 import FormSuccess from "@/components/common/FormSuccess";
 import { loginAction } from "@/actions/auth/login";
+import Link from "next/link";
 
 function LoginForm() {
   const [isPending, startTransition] = useTransition();
@@ -107,7 +108,7 @@ function LoginForm() {
                   control={form.control}
                   name="password"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="w-full">
                       <FormLabel>Password</FormLabel>
                       <FormControl>
                         <Input
@@ -117,6 +118,19 @@ function LoginForm() {
                           disabled={isPending}
                         />
                       </FormControl>
+
+                      {/* FORGOT PASSWORD */}
+                      <Button
+                        size="sm"
+                        asChild
+                        variant="link"
+                        className="w-full font-normal justify-end -py-1 px-0"
+                      >
+                        <Link href={'/auth/reset'}>
+                        Forgot password
+                        </Link>
+                      </Button>
+
                       <FormMessage />
                     </FormItem>
                   )}

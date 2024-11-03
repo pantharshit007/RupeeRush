@@ -1,6 +1,7 @@
 import { Resend } from "resend";
 
 import { emailVerificationTemplate } from "@/mail/email.VerifcationTemp";
+import { emailPasswordResetTemplate } from "@/mail/email.PassResetTemp";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const prodUrl = process.env.AUTH_PUBLIC_URL;
@@ -29,6 +30,26 @@ export const sendVerificationEmail = async (email: string, token: string) => {
     from: "Jethiya007 <verification@rupeerush.pantharshit007.tech>",
     to: email,
     subject: "Verification Email: RupeeRush",
+    html: body,
+  });
+};
+
+/* ----------------------------------------------------------------------------------------------------*/
+
+/**
+ * This function will be used to send password reset link via email to the user.
+ * @param email
+ * @param token
+ */
+
+export const sendResetPasswordEmail = async (email: string, token: string) => {
+  const confirmationLink = `${domain}/auth/new-password?token=${token}`;
+  const body = emailPasswordResetTemplate(confirmationLink);
+
+  await resend.emails.send({
+    from: "Jethiya007 <password-update@rupeerush.pantharshit007.tech>",
+    to: email,
+    subject: "Password Reset Email: RupeeRush",
     html: body,
   });
 };

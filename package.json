@@ -12,7 +12,7 @@
     "dev:web": "turbo dev --filter=user-app...",
     "dev:hook": "turbo dev --filter=webhook...",
     "db:generate": "cd packages/db && npm run db:generate && cd ../..",
-    "db:push": "cd packages/db && npm run db:push && cd ../..",
+    "db:push": "cd packages/db && npm run db:push && && npm run db:seed && cd ../..",
     "studio": "cd packages/db && npx prisma studio && cd ../..",
     "db:docker": "docker run -e POSTGRES_PASSWORD=mysecretpassword -d -p 3333:5432 postgres",
     "prepare": "husky || true"

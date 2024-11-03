@@ -1,8 +1,6 @@
 "use server";
 
 import { signIn } from "@/lib/auth";
-import { generateVerificationToken } from "@/lib/generateToken";
-import { sendVerificationEmail } from "@/lib/mail";
 import { DEFAULT_LOGIN_REDIRECT } from "@/utils/apiRoute";
 import { getUserByEmail } from "@/utils/userFetch";
 import { LoginSchema } from "@repo/schema/authSchema";
@@ -24,7 +22,7 @@ export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
   const existingUser = await getUserByEmail(email);
 
   if (!existingUser || !existingUser.email) {
-    return { error: "User Does Not Exist" };
+    return { error: "Incorrect Credentials" };
   }
   if (!existingUser.password) {
     // TODO: add a check in loginForm to show a toast for this case like: {info: "..."}
@@ -32,16 +30,18 @@ export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
   }
 
   // though it shouldn't work since we arent creating account without first verifying
-  if (!existingUser.emailVerified) {
-    const verificationToken = await generateVerificationToken({
-      email: existingUser.email,
-      name: existingUser.name!,
-      hashedPassword: existingUser.password,
-    });
-    await sendVerificationEmail(verificationToken.email, verificationToken.token);
-
-    return { success: "Verification email send! Login Failed" };
-  }
+  /*
+   * if (!existingUser.emailVerified) {
+   *  const verificationToken = await generateVerificationToken({
+   *    email: existingUser.email,
+   *    name: existingUser.name!,
+   *    hashedPassword: existingUser.password,
+   *  });
+   *  await sendVerificationEmail(verificationToken.email, verificationToken.token);
+   *
+   *  return { success: "Verification email send!" };
+   *}
+   */
 
   try {
     // calling next-auth signin
@@ -52,7 +52,7 @@ export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
     });
   } catch (err) {
     if (err instanceof AuthError) {
-      console.log("> Login failed: " + err.message);
+      console.warn(new Error("> Login failed: " + err));
       switch (err.type) {
         case "CredentialsSignin":
           return { error: "Invalid credentials!" };

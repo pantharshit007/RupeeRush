@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import CardWrapper from "@/components/common/CardWrapper";
-import { RegisterSchema } from "@repo/schema/authSchema";
+import { ResetSchema } from "@repo/schema/authSchema";
 import {
   Form,
   FormControl,
@@ -19,82 +19,54 @@ import { Input } from "@repo/ui/components/ui/input";
 import { Button } from "@repo/ui/components/ui/button";
 import FormError from "@/components/common/FormError";
 import FormSuccess from "@/components/common/FormSuccess";
-import { registerAction } from "@/actions/auth/register";
+import { resetPasswordAction } from "@/actions/auth/resetPassword";
 
-function RegisterForm() {
+function ResetForm() {
   const [isPending, startTransition] = useTransition();
   const [success, setSuccess] = useState<string>("");
   const [error, setError] = useState<string>("");
 
-  // form submit
-  function submitHandler(values: z.infer<typeof RegisterSchema>) {
+  function submitHandler(values: z.infer<typeof ResetSchema>) {
     setSuccess("");
     setError("");
 
     startTransition(async () => {
       try {
-        const data = await registerAction(values);
+        const data = await resetPasswordAction(values);
 
         if (data?.error) {
+          setError(data.error || "Something went wrong!");
           form.reset();
-          setError(data?.error);
         }
 
         if (data?.success) {
-          form.reset();
           setSuccess(data?.success);
+          form.reset();
         }
       } catch (err: any) {
-        console.error("> Error registering user: " + err?.message);
+        console.error("> Error reseting user password: " + err?.message);
         setError("Something went wrong");
       }
     });
   }
 
-  // form config
-  const form = useForm<z.infer<typeof RegisterSchema>>({
-    resolver: zodResolver(RegisterSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      name: "",
-    },
+  const form = useForm<z.infer<typeof ResetSchema>>({
+    resolver: zodResolver(ResetSchema),
+    defaultValues: { email: "" },
   });
 
   return (
     <>
       <CardWrapper
         header="🔐 Auth"
-        headerLabel="Create an Account"
-        backButtonLabel="Already have an account?"
+        headerLabel="Forgot your password?"
+        backButtonLabel="Back to login"
         backButtonHref="/auth/login"
-        showSocial
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(submitHandler)} className="space-y-6">
             {/* prettier-ignore */}
             <div className="space-y-4">
-
-                {/* name */}
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name</FormLabel>
-                      <FormControl>
-                        <Input 
-                          {...field} 
-                          placeholder="John Doe" 
-                          type="name" 
-                          disabled={isPending} 
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              
                 {/* email */}
                 <FormField
                   control={form.control}
@@ -113,34 +85,14 @@ function RegisterForm() {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
-              
-                {/* Password */}
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="******"
-                          type="password"
-                          disabled={isPending}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              />    
             </div>
 
-            <FormError message={error} />
+            <FormError message={error || ""} />
             <FormSuccess message={success} />
 
             <Button type={"submit"} className="w-full" disabled={isPending}>
-              Create an Account
+              Send reset email
             </Button>
           </form>
         </Form>
@@ -149,4 +101,4 @@ function RegisterForm() {
   );
 }
 
-export default RegisterForm;
+export default ResetForm;

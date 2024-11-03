@@ -12,6 +12,7 @@ async function main() {
       password: await bcrypt.hash("alice123", 10),
       name: "Alice",
       role: "USER",
+      emailVerified: new Date(),
       Balance: {
         create: {
           amount: 20000,
@@ -39,6 +40,7 @@ async function main() {
       password: await bcrypt.hash("bob", 10),
       name: "Bob",
       role: "USER",
+      emailVerified: new Date(),
       Balance: {
         create: {
           amount: 5000,
