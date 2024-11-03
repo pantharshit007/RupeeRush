@@ -32,14 +32,16 @@ export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
   }
 
   // though it shouldn't work since we arent creating account without first verifying
-  /*
-   * if (!existingUser.emailVerified) {
-   *  const verificationToken = await generateVerificationToken(existingUser.email);
-   *  await sendVerificationEmail(verificationToken.email, verificationToken.token);
-   *
-   *  return { success: "Verification email send! Login Failed" };
-   * }
-   */
+  if (!existingUser.emailVerified) {
+    const verificationToken = await generateVerificationToken({
+      email: existingUser.email,
+      name: existingUser.name!,
+      hashedPassword: existingUser.password,
+    });
+    await sendVerificationEmail(verificationToken.email, verificationToken.token);
+
+    return { success: "Verification email send! Login Failed" };
+  }
 
   try {
     // calling next-auth signin

@@ -4,9 +4,15 @@ import { v4 as uuidv4 } from "uuid";
 
 interface RegistrationData {
   email: string;
-  name: string; // Required
-  hashedPassword: string; // Required
+  name: string;
+  hashedPassword: string;
 }
+/**
+ *  Generate Vertification token
+ * @param email user's email
+ * @param name user's name
+ * @param hashedPassword user's hashed password
+ */
 
 export const generateVerificationToken = async ({
   email,

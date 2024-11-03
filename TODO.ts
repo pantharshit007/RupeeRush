@@ -16,12 +16,15 @@
 // TODO: add loading screen in `provider.tsx` suspense boundary
 // TODO: add `npm run preview` in readme for husky for new users.
 // TODO: add toast. `action/login.ts`
+// TODO: use normal html/css based loader as a component instead of react-spinner
 
 //! NEXT: BE
 // TODO: fix locked amount not updating or something...
 // TODO: update user schema to includer upi id and include it everywhere including the actions and p2p
 // TODO: sanitize the inputs in forms.
 // TODO: if i have already login once using github it doesnt ask me which account next time is it coz i only have one account login in that browser?
+// TODO: add alternative to resend using node-mailer so that I dont have to use my domain. Use a feat flag for that
+//? TODO: `/action/verifyEmail.ts` should we use transaction or not?
 
 //! DB:
 // TODO: updated user id to Int -> String, check for possible errors

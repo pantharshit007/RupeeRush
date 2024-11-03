@@ -22,11 +22,11 @@ export const sendVerificationEmail = async (email: string, token: string) => {
    *
    * @token expiration, and whether it exists and change the users email
    */
-  const confirmationLink = `${domain}/auth/new-verification?token=${token}`;
+  const confirmationLink = `${domain}/auth/verification?token=${token}`;
   const body = emailVerificationTemplate(confirmationLink);
 
   await resend.emails.send({
-    from: "Jethiya007 <verification@resend.dev>",
+    from: "Jethiya007 <verification@rupeerush.pantharshit007.tech>",
     to: email,
     subject: "Verification Email: RupeeRush",
     html: body,
