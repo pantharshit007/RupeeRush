@@ -25,6 +25,7 @@
 // TODO: if i have already login once using github it doesnt ask me which account next time is it coz i only have one account login in that browser?
 // TODO: add alternative to resend using node-mailer so that I dont have to use my domain. Use a feat flag for that
 //? TODO: `/action/verifyEmail.ts` should we use transaction or not?
+// TODO: remove the emailverification part in `/action/login.ts` its useless anyway
 
 //! DB:
 // TODO: updated user id to Int -> String, check for possible errors

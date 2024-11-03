@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { BeatLoader } from "react-spinners";
 import CardWrapper from "@/components/common/CardWrapper";
 import { useSearchParams } from "next/navigation";
