@@ -18,8 +18,7 @@ function P2P() {
   useEffect(() => {
     if (session) {
       const fetchTransactions = async () => {
-        //@ts-ignore
-        const txn = await getP2PTransactions(session?.user?.id);
+        const txn = await getP2PTransactions(session?.user?.id!);
         setTransactions(txn);
       };
       fetchTransactions();
@@ -38,8 +37,7 @@ function P2P() {
       setAmount(0);
 
       // Fetch updated transactions after successful transfer
-      // @ts-ignore
-      const txn = await getP2PTransactions(session?.user?.id);
+      const txn = await getP2PTransactions(session?.user?.id!);
       setTransactions(txn);
     } catch (error) {
       console.error("Error during P2P transfer:", error);

@@ -1,13 +1,10 @@
 import db, { PrismaAdapter } from "@repo/db/client";
 import NextAuth, { NextAuthConfig, NextAuthResult } from "next-auth";
+
 import authConfig from "@/auth.config";
-import { getTwoFactorConfirmationByUserId } from "@/utils/tokenFetch";
+// import { getTwoFactorConfirmationByUserId } from "@/utils/tokenFetch";
 
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
-
-if (!NEXTAUTH_SECRET) {
-  throw new Error("NEXTAUTH_SECRET is not set");
-}
 
 /*
  * Normally, this is is usually created like this
@@ -99,13 +96,15 @@ const authOptions: NextAuthConfig = {
        */
 
       if (user.isTwoFactorEnabled) {
-        const twoFactorStatus = await getTwoFactorConfirmationByUserId(user.id!);
-
-        if (!twoFactorStatus?.isTwoFactorConfirmation) return false;
+        if (!user.isTwoFactorConfirmation) return false;
+        /*
+         * const twoFactorStatus = await getTwoFactorConfirmationByUserId(user.id!);
+         * if (!twoFactorStatus?.isTwoFactorConfirmation) return false;
+         */
 
         // update the `twoFactorConfirmation` to false for next sign-in
         await db.user.update({
-          where: { id: twoFactorStatus.id },
+          where: { id: user.id },
           data: { isTwoFactorConfirmation: false },
         });
       }

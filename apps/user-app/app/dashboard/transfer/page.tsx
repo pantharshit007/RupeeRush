@@ -15,8 +15,7 @@ async function getBalance() {
     const session = await auth();
     const balance = await db.balance.findFirst({
       where: {
-        // @ts-ignore
-        userId: Number(session?.user?.id),
+        userId: session?.user?.id,
       },
     });
 
@@ -37,8 +36,7 @@ async function getOnRampTransactions() {
 
     const transaction = await db.onRampTransaction.findMany({
       where: {
-        // @ts-ignore
-        userId: Number(session?.user?.id),
+        userId: session?.user?.id,
       },
     });
 
@@ -58,7 +56,6 @@ async function page() {
   const session = await auth();
 
   // Check if the user is not logged in
-  // @ts-ignore
   if (!session?.user?.id) {
     redirect("/api/auth/signin");
   }
