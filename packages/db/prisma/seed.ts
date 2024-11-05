@@ -13,6 +13,7 @@ async function main() {
       name: "Alice",
       role: "USER",
       emailVerified: new Date(),
+      isTwoFactorEnabled: false,
       Balance: {
         create: {
           amount: 20000,
@@ -41,6 +42,7 @@ async function main() {
       name: "Bob",
       role: "USER",
       emailVerified: new Date(),
+      isTwoFactorEnabled: false,
       Balance: {
         create: {
           amount: 5000,

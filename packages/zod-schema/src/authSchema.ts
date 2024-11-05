@@ -7,6 +7,7 @@ export const LoginSchema = z.object({
   password: z
     .string({ invalid_type_error: "Invalid password" })
     .min(6, { message: "Minimum length is 6 characters" }),
+  twoFactorCode: z.string().length(6).optional(),
 });
 
 export const RegisterSchema = z.object({

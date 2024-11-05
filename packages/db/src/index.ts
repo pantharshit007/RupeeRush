@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import * as SchemaTypes from "@prisma/client";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
 const prismaClientSingleton = () => {
@@ -27,3 +28,4 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 export { db as default, PrismaAdapter };
+export type { SchemaTypes };

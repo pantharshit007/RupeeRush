@@ -17,6 +17,7 @@
 // TODO: add `npm run preview` in readme for husky for new users.
 // TODO: add toast. `action/login.ts`
 // TODO: use normal html/css based loader as a component instead of react-spinner
+// TODO: update the image logo in email template with new custom rupeerush images
 
 //! NEXT: BE
 // TODO: fix locked amount not updating or something...

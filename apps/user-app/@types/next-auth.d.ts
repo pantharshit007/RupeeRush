@@ -1,32 +1,15 @@
 // @types/next-auth.d.ts
 import NextAuth from "next-auth";
-// import { UserRole } from "@repo/db/client";
+import { SchemaTypes } from "@repo/db/client";
 
 declare module "next-auth" {
-  // TODO: find a way to user userModel direct form `db/client` instead of custom types. check `seed.ts` and export from there or from `index`
-  interface User extends CustomUser {}
+  interface User extends SchemaTypes.User {}
 
   interface Session {
     user?: User;
   }
 
   interface JWT {
-    role: User["role"];
+    role: SchemaTypes.AuthType;
   }
 }
-
-// Custom user type for application-specific data
-type CustomUser = {
-  id: string;
-  email: string;
-  emailVerified: Date | null;
-  name: string | null;
-  phoneNumber: string | null;
-  password: string | null;
-  image: string | null;
-  role: "USER" | "ADMIN";
-  upiId: string | null;
-  bankName: string | null;
-};
-
-export { CustomUser };

@@ -7,7 +7,7 @@ export const emailPasswordResetTemplate = (confirmationLink: string) => {
   xmlns:v="urn:schemas-microsoft-com:vml"
 >
   <head>
-    <title></title>
+    <title>Password Reset: Email</title>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <!--[if mso
@@ -190,7 +190,7 @@ export const emailPasswordResetTemplate = (confirmationLink: string) => {
                                     style="line-height: 10px"
                                   >
                                     <div style="max-width: 120px">
-                                      <a href="https://rupeerush.vercel.app/" style="outline: none" tabindex="-1" target="_blank">
+                                      <a href="https://rupeerush.vercel.app" style="outline: none" tabindex="-1" target="_blank">
                                         <img alt="company logo" height="auto" src="https://i.ibb.co/hcg8xwx/logo.png" style="display: block; height: auto; border: 0; width: 100%; margin: 30px 0;" title="company logo" width="120"/>
                                       </a>
                                     </div>
@@ -276,7 +276,7 @@ export const emailPasswordResetTemplate = (confirmationLink: string) => {
                                   >
                                     <div style="max-width: 670px">
                                       <a
-                                        href="https://rupeerush.vercel.app/"
+                                        href="https://rupeerush.vercel.app"
                                         style="outline: none"
                                         tabindex="-1"
                                         target="_blank"
@@ -370,7 +370,7 @@ export const emailPasswordResetTemplate = (confirmationLink: string) => {
                                 <td class="pad">
                                   <div align="center" class="alignment">
                                     <!--[if mso]>
-<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://rupeerush.vercel.app/" style="height:42px;width:87px;v-text-anchor:middle;" arcsize="58%" stroke="false" fillcolor="#37474f">
+<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://rupeerush.vercel.app" style="height:42px;width:87px;v-text-anchor:middle;" arcsize="58%" stroke="false" fillcolor="#37474f">
 <w:anchorlock/>
 <v:textbox inset="0px,0px,0px,0px">
 <center dir="false" style="color:#d6f8f2;font-family:Arial, sans-serif;font-size:16px">
@@ -511,7 +511,7 @@ export const emailPasswordResetTemplate = (confirmationLink: string) => {
                                   >
                                     <div style="max-width: 89.333px">
                                       <a
-                                        href="https://rupeerush.vercel.app/"
+                                        href="https://rupeerush.vercel.app"
                                         style="outline: none"
                                         tabindex="-1"
                                         target="_blank"
@@ -854,7 +854,7 @@ export const emailPasswordResetTemplate = (confirmationLink: string) => {
                                       style="margin: 0; word-break: break-word"
                                     >
                                       <a
-                                        href="http://https://rupeerush.vercel.app/"
+                                        href="https://rupeerush.vercel.app"
                                         rel="noopener"
                                         style="
                                           text-decoration: none;
@@ -906,7 +906,7 @@ export const emailPasswordResetTemplate = (confirmationLink: string) => {
                                       style="margin: 0; word-break: break-word"
                                     >
                                       <a
-                                        href="http://https://rupeerush.vercel.app/"
+                                        href="https://rupeerush.vercel.app"
                                         rel="noopener"
                                         style="
                                           text-decoration: none;
@@ -958,7 +958,7 @@ export const emailPasswordResetTemplate = (confirmationLink: string) => {
                                       style="margin: 0; word-break: break-word"
                                     >
                                       <a
-                                        href="http://https://rupeerush.vercel.app/"
+                                        href="https://rupeerush.vercel.app"
                                         rel="noopener"
                                         style="
                                           text-decoration: underline;

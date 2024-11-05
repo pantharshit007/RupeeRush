@@ -59,8 +59,10 @@ export const getVerificationTokenByToken = async (
   }
 };
 
+/* ----------------------------------------------------------------------------------------------------*/
+
 /**
- * return the data of first related email from table **passwordResetToken**
+ * return the data of first related email from table **PasswordResetToken**
  *
  * @param email
  */
@@ -78,7 +80,7 @@ export const getResetTokenByEmail = async (email: string) => {
 };
 
 /**
- * return the data of unique token from table **passwordResetToken**
+ * return the data of unique token from table **PasswordResetToken**
  *
  * @param token
  */
@@ -90,6 +92,66 @@ export const getResetTokenByToken = async (token: string) => {
     });
 
     return passwordResetToken;
+  } catch (err) {
+    return null;
+  }
+};
+
+/* ----------------------------------------------------------------------------------------------------*/
+
+/**
+ * return the data of first related email from table `TwoFactorCode`
+ *
+ * @param email
+ */
+
+export const getTwoFactorCodeByEmail = async (email: string) => {
+  try {
+    const twoFactorCode = await db.twoFactorCode.findFirst({
+      where: { email: email },
+    });
+
+    return twoFactorCode;
+  } catch (err) {
+    return null;
+  }
+};
+
+/**
+ * return the data of unique token from table `TwoFactorCode`
+ *
+ * @param token
+ */
+
+export const getTwoFactorCodByCode = async (code: string) => {
+  try {
+    const twoFactorCode = await db.twoFactorCode.findUnique({
+      where: { code },
+    });
+
+    return twoFactorCode;
+  } catch (err) {
+    return null;
+  }
+};
+
+/* ----------------------------------------------------------------------------------------------------*/
+
+/**
+ * return the optional data **isTwoFactorConfirmation** from `User` table
+ *
+ * @param userId
+ * @returns `id: string`; `isTwoFactorConfirmation: boolean | null`;
+ */
+
+export const getTwoFactorConfirmationByUserId = async (userId: string) => {
+  try {
+    const twoFactorConfirmationId = await db.user.findUnique({
+      where: { id: userId },
+      select: { isTwoFactorConfirmation: true, id: true },
+    });
+
+    return twoFactorConfirmationId;
   } catch (err) {
     return null;
   }

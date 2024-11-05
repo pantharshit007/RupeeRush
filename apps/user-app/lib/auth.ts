@@ -1,6 +1,7 @@
 import db, { PrismaAdapter } from "@repo/db/client";
 import NextAuth, { NextAuthConfig, NextAuthResult } from "next-auth";
 import authConfig from "@/auth.config";
+import { getTwoFactorConfirmationByUserId } from "@/utils/tokenFetch";
 
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
 
@@ -62,10 +63,6 @@ const authOptions: NextAuthConfig = {
         token.role = user.role;
       }
 
-      // console.log("-----");
-      // console.log({ user });
-      // console.log({ token });
-
       return token;
     },
 
@@ -81,18 +78,38 @@ const authOptions: NextAuthConfig = {
       return session;
     },
 
-    async signIn({ account, profile, user }) {
+    async signIn({ account, user }) {
       // Allow OAuth signin's without email verification
       if (account?.provider !== "credentials") return true;
 
-      /**
-       * This checks for an **existingUser** via the user provider, before checking if the user is emailVerified
+      /*
+       * This checks for an `existingUser` via the user provider, before checking if the user is emailVerified
        * If the user is not verified, they are denied access through the middleware
        * This provides an extra layer security, as we have already do the same on the frontend part `/action/login.ts`
        */
+
       if (!user || !user.emailVerified) return false;
 
-      // TODO Add 2FA checking
+      /*
+       * This check verifies if the user has enabled two-factor authentication (2FA).
+       * If 2FA is enabled, we retrieve the confirmation status. If the status is false,
+       * it means the user hasn't completed the 2FA process, and access is denied.
+       * Only users who pass 2FA verification can proceed with sign-in.
+       * Finally, we update the 2FA confirmation status to false for future logins.
+       */
+
+      if (user.isTwoFactorEnabled) {
+        const twoFactorStatus = await getTwoFactorConfirmationByUserId(user.id!);
+
+        if (!twoFactorStatus?.isTwoFactorConfirmation) return false;
+
+        // update the `twoFactorConfirmation` to false for next sign-in
+        await db.user.update({
+          where: { id: twoFactorStatus.id },
+          data: { isTwoFactorConfirmation: false },
+        });
+      }
+
       return true;
     },
   },

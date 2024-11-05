@@ -5,18 +5,17 @@ import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
+
 import { DEFAULT_LOGIN_REDIRECT } from "@/utils/apiRoute";
 import { Button } from "@repo/ui/components/ui/button";
+import { SchemaTypes } from "@repo/db/client";
 
 // Separate client component for handling search params
 const AuthProviderContent = () => {
   const searchParams = useSearchParams();
   const callBackUrl = searchParams.get("callBackUrl");
 
-  const handleClick = async (provider: "google" | "github") => {
-    // TODO: check `seed.ts` and export from there or from `index`
-    // console.log("provider", AuthType, provider);
-
+  const handleClick = async (provider: SchemaTypes.AuthType) => {
     await signIn(provider, { redirectTo: DEFAULT_LOGIN_REDIRECT || callBackUrl });
   };
   return (

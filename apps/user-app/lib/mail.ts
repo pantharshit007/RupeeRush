@@ -2,6 +2,7 @@ import { Resend } from "resend";
 
 import { emailVerificationTemplate } from "@/mail/email.VerifcationTemp";
 import { emailPasswordResetTemplate } from "@/mail/email.PassResetTemp";
+import { emailTwoFACodeTemplate } from "@/mail/email.TwoFactorCode";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const prodUrl = process.env.AUTH_PUBLIC_URL;
@@ -29,7 +30,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
   await resend.emails.send({
     from: "Jethiya007 <verification@rupeerush.pantharshit007.tech>",
     to: email,
-    subject: "Verification Email: RupeeRush",
+    subject: "Email verification: RupeeRush",
     html: body,
   });
 };
@@ -47,9 +48,28 @@ export const sendResetPasswordEmail = async (email: string, token: string) => {
   const body = emailPasswordResetTemplate(confirmationLink);
 
   await resend.emails.send({
-    from: "Jethiya007 <password-update@rupeerush.pantharshit007.tech>",
+    from: "Jethiya007 <infoupdate@rupeerush.pantharshit007.tech>",
     to: email,
-    subject: "Password Reset Email: RupeeRush",
+    subject: "Password Reset: RupeeRush",
+    html: body,
+  });
+};
+
+/* ----------------------------------------------------------------------------------------------------*/
+
+/**
+ * This function will be used to send 2FA code via email to the user.
+ * @param email
+ * @param code
+ */
+
+export const sendTwoFactorCode = async (email: string, code: string) => {
+  const body = emailTwoFACodeTemplate(code);
+
+  await resend.emails.send({
+    from: "Jethiya007 <accountUpdate@rupeerush.pantharshit007.tech>",
+    to: email,
+    subject: "Two Factor code: RupeeRush",
     html: body,
   });
 };

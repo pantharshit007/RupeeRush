@@ -1,8 +1,12 @@
 "use server";
 
 import { signIn } from "@/lib/auth";
+import { generateTwoFACode } from "@/lib/generateToken";
+import { sendTwoFactorCode } from "@/lib/mail";
 import { DEFAULT_LOGIN_REDIRECT } from "@/utils/apiRoute";
+import { getTwoFactorCodeByEmail } from "@/utils/tokenFetch";
 import { getUserByEmail } from "@/utils/userFetch";
+import db from "@repo/db/client";
 import { LoginSchema } from "@repo/schema/authSchema";
 import { AuthError } from "next-auth";
 import * as z from "zod";
@@ -16,7 +20,7 @@ export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
   }
 
   // destructure fields
-  const { email, password } = isValidFields.data;
+  const { email, password, twoFactorCode } = isValidFields.data;
 
   // check if user already has an account or not!
   const existingUser = await getUserByEmail(email);
@@ -30,7 +34,7 @@ export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
   }
 
   // though it shouldn't work since we arent creating account without first verifying
-  /*
+  /**
    * if (!existingUser.emailVerified) {
    *  const verificationToken = await generateVerificationToken({
    *    email: existingUser.email,
@@ -42,6 +46,43 @@ export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
    *  return { success: "Verification email send!" };
    *}
    */
+
+  // If user enabled 2FA on there account
+  if (existingUser.email && existingUser.isTwoFactorEnabled) {
+    // one 2nd visit user provide the `twoFactorCode`:`CODE`
+    if (twoFactorCode) {
+      const existingCode = await getTwoFactorCodeByEmail(existingUser.email);
+
+      if (existingCode?.code !== twoFactorCode) {
+        return { error: "Invalid Code" };
+      }
+
+      const hasExpired = new Date(existingCode.expires) < new Date();
+      if (hasExpired) {
+        await db.twoFactorCode.delete({
+          where: { id: existingCode.id },
+        });
+
+        return { info: "Re-Login, Code expired!" };
+      }
+
+      // delete the `CODE` from `twoFactorCode` table
+      await db.twoFactorCode.delete({
+        where: { id: existingCode.id },
+      });
+
+      // update `isTwoFactorConfirmation` in user db to true
+      await db.user.update({
+        where: { id: existingUser.id },
+        data: { isTwoFactorConfirmation: true },
+      });
+    } else {
+      const twoFactorCode = await generateTwoFACode(existingUser.email);
+      await sendTwoFactorCode(twoFactorCode.email, twoFactorCode.code);
+
+      return { twoFactorSend: true };
+    }
+  }
 
   try {
     // calling next-auth signin

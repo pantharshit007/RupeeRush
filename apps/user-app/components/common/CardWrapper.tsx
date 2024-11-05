@@ -39,9 +39,11 @@ function CardWrapper({
       )}
 
       {/* Back to page link */}
-      <CardFooter>
-        <BackButton label={backButtonLabel} href={backButtonHref} />
-      </CardFooter>
+      {backButtonLabel && (
+        <CardFooter>
+          <BackButton label={backButtonLabel} href={backButtonHref} />
+        </CardFooter>
+      )}
     </Card>
   );
 }
