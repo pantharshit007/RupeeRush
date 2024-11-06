@@ -1,19 +1,24 @@
-import { auth, signOut } from "@/lib/auth";
+"use client";
+import { logoutAction } from "@/actions/auth/logout";
+import { useSession } from "next-auth/react";
 import React from "react";
 
-async function page() {
-  // TODO: why is logoutAction gives /undefine
-  const session = await auth();
-  const handleSignOut = async () => {
-    "use server";
-    await signOut({ redirectTo: "/auth/login" });
+function page() {
+  const session = useSession();
+
+  const handleSignOut = () => {
+    logoutAction();
   };
+
   return (
-    <div>
-      <p>User Info: {JSON.stringify(session?.user)}</p>
-      <form action={handleSignOut}>
-        <button type="submit">Sign Out</button>
-      </form>
+    <div className="text-white">
+      <p>User Info: {JSON.stringify(session)}</p>
+      {session.status !== "authenticated" ? (
+        <p>you are not signed in!</p>
+      ) : (
+        <p>You are Logged in!</p>
+      )}
+      <button onClick={handleSignOut}>Sign out</button>
     </div>
   );
 }

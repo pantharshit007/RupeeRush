@@ -1,39 +1,35 @@
+import NavBar from "@/components/NavBar";
 import SideBarItem from "../../components/SideBarItem";
 
-export default function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}): JSX.Element {
+export default function Layout({ children }: { children: React.ReactNode }): JSX.Element {
   const size = "w-8 h-8";
   return (
-    <div className="flex">
-      <div className="w-64 border-r border-slate-300 h-[calc(100vh-3.5rem)] mr-4 pt-28 hidden md:block">
-        <div>
-          <SideBarItem
-            link={"/dashboard/home"}
-            icon={<HomeIcon size={size} />}
-            title="Home"
-          />
-          <SideBarItem
-            link={"/dashboard/transfer"}
-            icon={<TransferIcon size={size} />}
-            title="Transfer"
-          />
-          <SideBarItem
-            link={"/dashboard/p2p"}
-            icon={<P2PIcon size={size} />}
-            title="P2P Transfer"
-          />
-          <SideBarItem
-            link={"/dashboard/transactions"}
-            icon={<TransactionsIcon size={size} />}
-            title="Transactions"
-          />
+    <>
+      <NavBar />
+      <div className="flex min-w-screen h-[calc(100vh-3.5rem)] bg-[#f7f7fa]">
+        <div className="w-64 border-r border-slate-300 h-[calc(100vh-3.5rem)] mr-4 pt-28 hidden md:block">
+          <div>
+            <SideBarItem link={"/dashboard/home"} icon={<HomeIcon size={size} />} title="Home" />
+            <SideBarItem
+              link={"/dashboard/transfer"}
+              icon={<TransferIcon size={size} />}
+              title="Transfer"
+            />
+            <SideBarItem
+              link={"/dashboard/p2p"}
+              icon={<P2PIcon size={size} />}
+              title="P2P Transfer"
+            />
+            <SideBarItem
+              link={"/dashboard/transactions"}
+              icon={<TransactionsIcon size={size} />}
+              title="Transactions"
+            />
+          </div>
         </div>
+        {children}
       </div>
-      {children}
-    </div>
+    </>
   );
 }
 
