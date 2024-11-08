@@ -8,6 +8,7 @@ export type ExtendedUser = {
   email: string | null;
   name: string | null;
   image: string | null;
+  isTwoFactorEnabled: boolean;
 };
 
 declare module "next-auth" {

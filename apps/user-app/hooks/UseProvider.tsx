@@ -1,9 +1,11 @@
+import { auth } from "@/lib/auth";
 import { SessionProvider } from "next-auth/react";
 // import { RecoilRoot } from "recoil";
-export const UseProvider = ({ children }: { children: React.ReactNode }) => {
+export const UseProvider = async ({ children }: { children: React.ReactNode }) => {
+  const session = await auth();
   return (
     // <RecoilRoot  />
-    <SessionProvider>{children}</SessionProvider>
+    <SessionProvider session={session}>{children}</SessionProvider>
     // </RecoilRoot>
   );
 };

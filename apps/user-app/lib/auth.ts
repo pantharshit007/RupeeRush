@@ -47,17 +47,17 @@ const authOptions: NextAuthConfig = {
        * - If `user` is undefined (for subsequent requests), token properties persist user data across calls.
        *
        * Properties assigned to `token`:
-       * - `token.email`: User’s email address
-       * - `token.name`: User’s display name
        * - `token.role`: User’s role (e.g., USER, ADMIN)
+       * - `token.isTwoFactorEnabled` : Two factor status
        *
-       * TS doesn't recognizes role, twoFactorAuth, isOAuth for that we create separate type definition `/@types/next-auth.ts`
+       * TS doesn't recognizes role, twoFactorEnabled, isOAuth for that we create separate type definition `/@types/next-auth.ts`
        */
 
       if (user) {
         token.email = user.email;
         token.name = user.name;
         token.role = user.role;
+        token.isTwoFactorEnabled = user.isTwoFactorEnabled;
       }
 
       return token;
@@ -70,6 +70,10 @@ const authOptions: NextAuthConfig = {
 
       if (token.role && session.user) {
         session.user.role = token.role;
+      }
+
+      if (session.user) {
+        session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as Boolean;
       }
 
       return session;
