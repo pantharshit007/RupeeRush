@@ -38,7 +38,7 @@ async function main() {
     create: {
       phoneNumber: "2222222222",
       email: "bob@example.com",
-      password: await bcrypt.hash("bob", 10),
+      password: await bcrypt.hash("bob123", 10),
       name: "Bob",
       role: "USER",
       emailVerified: new Date(),

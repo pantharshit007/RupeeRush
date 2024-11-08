@@ -11,15 +11,12 @@ function page() {
   };
 
   return (
-    <div className="text-white">
-      <p>User Info: {JSON.stringify(session)}</p>
-      {session.status !== "authenticated" ? (
-        <p>you are not signed in!</p>
-      ) : (
-        <p>You are Logged in!</p>
-      )}
-      <button onClick={handleSignOut}>Sign out</button>
-    </div>
+    <>
+      <button onClick={handleSignOut} className="">
+        Sign out
+        {JSON.stringify(session.data?.user)}
+      </button>
+    </>
   );
 }
 

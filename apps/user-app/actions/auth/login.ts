@@ -100,7 +100,7 @@ export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
         case "AccessDenied":
           return { error: "Access Denied!" };
         case "OAuthAccountNotLinked":
-          return { error: "Account already exists with same email!" };
+          return { error: "Email in use with a different provider!" };
         case "EmailSignInError":
           return { error: "Email sign in error!" };
         default:

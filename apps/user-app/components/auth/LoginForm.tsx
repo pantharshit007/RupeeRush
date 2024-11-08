@@ -107,7 +107,7 @@ function LoginForm() {
         showSocial={!showTwoFactor ? true : false}
       >
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(submitHandler)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(submitHandler)} className="space-y-4">
             <div className="space-y-4">
               {/* two Factor Form */}
               {showTwoFactor && (
@@ -191,7 +191,7 @@ function LoginForm() {
 
               {loading && <BeatLoader />}
 
-              {!loading && !success && !error && (
+              {!loading && !success && (
                 <Button type={"submit"} className="w-full" disabled={isPending}>
                   {showTwoFactor ? "Submit" : "Login"}
                 </Button>

@@ -18,6 +18,7 @@
 // TODO: use normal html/css based loader as a component instead of react-spinner
 // TODO: update the image logo in email template with new custom rupeerush images
 // TODO: add similar but better loading screen or suspense boundary like `/login/page.tsx`
+// TODO: add a suspense boundary or loading screen in `LogoutButton.tsx`.
 
 //! NEXT: BE
 // TODO: fix locked amount not updating or something...

@@ -1,5 +1,7 @@
-import { auth } from "@/lib/auth"; // Import your auth configuration
-import { AuthButton } from "@/components/common/AuthButton";
+import { auth } from "@/lib/auth";
+import LoginButton from "./auth/LoginButton";
+import { Button } from "@repo/ui/components/ui/button";
+import UserDropdown from "./common/UserDropdown";
 
 async function NavBar() {
   // Get session data server-side
@@ -11,7 +13,15 @@ async function NavBar() {
         RupeeRush
       </div>
       <div className="flex flex-col justify-center">
-        <AuthButton isAuthenticated={!!session?.user} />
+        {!session?.user ? (
+          // SignIn/Login
+          <LoginButton asChild>
+            <Button size="sm">Sign In</Button>
+          </LoginButton>
+        ) : (
+          // User Profile
+          <UserDropdown />
+        )}
       </div>
     </div>
   );
