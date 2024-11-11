@@ -1,16 +1,18 @@
+//! This is very unpredicatable file as of now it give me random `useContext` errors, but went away if use client
+
 import React from "react";
-import { currentUser } from "@/utils/currentUser";
+import { serverUser } from "@/utils/currentUser";
 import UserInfo from "@/components/common/UserInfo";
-import { BsPerson } from "react-icons/bs";
+import { IoPerson } from "react-icons/io5";
 
 async function ProfilePage() {
-  const user = await currentUser();
+  const user = await serverUser();
 
   return (
     <UserInfo
       user={user}
       label="Profile"
-      logo={<BsPerson className="text-blue-500" size={"30"} />}
+      logo={<IoPerson className="text-blue-500" size={"27"} />}
     />
   );
 }

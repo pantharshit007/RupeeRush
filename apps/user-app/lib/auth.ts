@@ -1,10 +1,12 @@
 import db, { PrismaAdapter } from "@repo/db/client";
 import NextAuth, { NextAuthConfig, NextAuthResult } from "next-auth";
+import type { Adapter } from "next-auth/adapters";
+import type { Session } from "next-auth";
 
 import authConfig from "@/auth.config";
+import { CustomToken } from "@/@types/authTypes";
+import { getUserById } from "@/utils/userFetch";
 // import { getTwoFactorConfirmationByUserId } from "@/utils/tokenFetch";
-
-const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
 
 /*
  * Normally, this is is usually created like this
@@ -19,9 +21,6 @@ const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
  */
 
 const authOptions: NextAuthConfig = {
-  //! TODO: do we not need the secret now?
-  secret: NEXTAUTH_SECRET || "secret",
-
   pages: {
     signIn: "/auth/login",
     error: "/auth/error",
@@ -37,7 +36,7 @@ const authOptions: NextAuthConfig = {
   },
 
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session, profile }) {
       if (!token.sub) return token;
 
       /*
@@ -53,27 +52,60 @@ const authOptions: NextAuthConfig = {
        * TS doesn't recognizes role, twoFactorEnabled, isOAuth for that we create separate type definition `/@types/next-auth.ts`
        */
 
+      // First sign in - set initial token data
       if (user) {
-        token.email = user.email;
-        token.name = user.name;
-        token.role = user.role;
-        token.isTwoFactorEnabled = user.isTwoFactorEnabled;
+        const existingUser = await getUserById(token.sub); //had to call coz of OAuth
+        if (existingUser) {
+          token.name = existingUser.name || user.name;
+          token.email = existingUser.email || user.email;
+          token.role = existingUser.role || user.role;
+          token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled || user.isTwoFactorEnabled;
+          token.isOAuth = !!profile;
+          token.phoneNumber = existingUser.phoneNumber || user.phoneNumber;
+          token.lastUpdate = Date.now();
+        }
+      }
+
+      // Handle update trigger: force session revalvate
+      if (trigger === "update" && session?.user) {
+        // 1st way: using the values passed inside session
+        token.name = session.user.name;
+        token.email = session.user.email;
+        token.phoneNumber = session.user.phoneNumber;
+        token.isTwoFactorEnabled = session.user.isTwoFactorEnabled;
+        token.lastUpdated = Date.now();
+
+        // 2nd way: Only fetch from DB when explicitly updating
+        /*
+         * const updatedUser = await getUserById(token.sub);
+         * if (updatedUser) {
+         *   token.email = updatedUser.email;
+         *   token.name = updatedUser.name;
+         *   token.role = updatedUser.role;
+         *   token.isTwoFactorEnabled = updatedUser.isTwoFactorEnabled;
+         *   token.lastUpdate = Date.now();
+         * }
+         */
       }
 
       return token;
     },
 
-    async session({ token, session }: any) {
+    // before adding new properties to session update `next-auth.d.ts`
+    // @ts-ignore
+    async session({ token, session }: { token: CustomToken; session: Session }) {
       if (token.sub && session.user) {
         session.user.id = token.sub;
-      }
-
-      if (token.role && session.user) {
+        session.user.name = token.name as string;
+        session.user.email = token.email as string;
         session.user.role = token.role;
+        session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
+        session.user.isOAuth = token.isOAuth as boolean;
+        session.user.lastUpdate = token.lastUpdate;
       }
 
-      if (session.user) {
-        session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as Boolean;
+      if (token.phoneNumber && session.user) {
+        session.user.phoneNumber = token.phoneNumber;
       }
 
       return session;
@@ -116,9 +148,7 @@ const authOptions: NextAuthConfig = {
       return true;
     },
   },
-
-  adapter: PrismaAdapter(db),
-
+  adapter: PrismaAdapter(db) as Adapter,
   session: {
     strategy: "jwt",
     maxAge: 60 * 60 * 3, // 3 hr
@@ -130,8 +160,10 @@ const nextAuth = NextAuth(authOptions);
 
 // need to do that coz of: https://github.com/nextauthjs/next-auth/issues/10568
 export const auth: NextAuthResult["auth"] = nextAuth.auth;
+export const signIn: NextAuthResult["signIn"] = nextAuth.signIn;
 export const {
   handlers: { GET, POST },
-  signIn,
+  // signIn, // giving stupid error after just a simple re-install of node_modules
   signOut,
+  unstable_update,
 } = nextAuth;

@@ -1,8 +1,8 @@
 import type { NextAuthConfig } from "next-auth";
-import bcrypt from "bcryptjs";
 import Credentials from "next-auth/providers/credentials";
 import Github from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
+import bcrypt from "bcryptjs";
 
 import { LoginSchema } from "@repo/schema/authSchema";
 import { getUserByEmail } from "./utils/userFetch";
@@ -12,7 +12,7 @@ const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
 const GITHUB_CLIENT_ID = process.env.AUTH_GITHUB_ID!;
 const GITHUB_CLIENT_SECRET = process.env.AUTH_GITHUB_SECRET!;
 
-export default {
+export const authConfig: NextAuthConfig = {
   providers: [
     // GOOGLE
     Google({
@@ -40,13 +40,11 @@ export default {
 
         const user = await getUserByEmail(email);
         if (!user || !user.password) {
-          console.warn("> Login Error: email not found: " + email);
           return null;
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-          console.warn("> Login Error: Invalid password");
           return null;
         }
 
@@ -54,4 +52,6 @@ export default {
       },
     }),
   ],
-} satisfies NextAuthConfig;
+};
+
+export default authConfig;

@@ -12,6 +12,7 @@ interface RegistrationData {
   email: string;
   name?: string;
   hashedPassword?: string;
+  userId?: string;
 }
 /**
  * Generate Vertification token
@@ -24,6 +25,7 @@ export const generateVerificationToken = async ({
   email,
   name,
   hashedPassword,
+  userId,
 }: RegistrationData) => {
   /**
    * Generating a unique uuid for token
@@ -48,10 +50,11 @@ export const generateVerificationToken = async ({
   const createVerificationToken = await db.verificationToken.create({
     data: {
       email,
-      name: name || "",
-      hashedPassword: hashedPassword || "",
+      name,
+      hashedPassword,
       token,
       expires: expiryTime,
+      updateEmailId: userId,
     },
   });
 

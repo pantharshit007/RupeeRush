@@ -1,8 +1,9 @@
+"use client";
+
 import React from "react";
 import { ExtendedUser } from "@/@types/next-auth";
 import { Card, CardContent, CardHeader } from "@repo/ui/components/ui/card";
 import { Badge } from "@repo/ui/components/ui/badge";
-import { IconType } from "react-icons/lib";
 
 interface UserInfoProps {
   user?: ExtendedUser;
@@ -18,9 +19,11 @@ function UserInfo({ user, label, logo }: UserInfoProps) {
           {logo} {label}
         </span>
       </CardHeader>
+
+      {/* prettier-ignore */}
       <CardContent className="space-y-4">
         {/* ADMIN ONLY */}
-        {user?.role === "USER" && (
+        {user?.role === "ADMIN" && (
           <div className="flex-row-between">
             <p className="text-sm font-medium">ID</p>
             <p className="code-block">{user?.id}</p>
@@ -41,13 +44,15 @@ function UserInfo({ user, label, logo }: UserInfoProps) {
           <p className="text-sm font-medium">Role</p>
           <p className="code-block">{user?.role}</p>
         </div>
-
-        <div className="flex-row-between">
-          <p className="text-sm font-medium">Two Factor Authentication</p>
-          <Badge variant={user?.isTwoFactorEnabled ? "success" : "destructive"}>
-            {user?.isTwoFactorEnabled ? "ON" : "OFF"}
-          </Badge>
-        </div>
+        
+        {!user?.isOAuth && (
+          <div className="flex-row-between">
+            <p className="text-sm font-medium">Two Factor Authentication</p>
+            <Badge variant={user?.isTwoFactorEnabled ? "success" : "destructive"}>
+              {user?.isTwoFactorEnabled ? "ON" : "OFF"}
+            </Badge>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

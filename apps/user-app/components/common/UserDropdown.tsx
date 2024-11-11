@@ -13,18 +13,20 @@ import LogoutButton from "../auth/LogoutButton";
 import { LuLogOut } from "react-icons/lu";
 
 function UserDropdown() {
-  const [img, setImg] = useState<string>("NA");
+  const [img, setImg] = useState<string>(
+    "https://api.dicebear.com/8.x/notionists/svg?seed=jethiya&flip=false"
+  );
   const user = useCurrentUser();
 
   useEffect(() => {
     setImg(`https://api.dicebear.com/8.x/notionists/svg?seed=${user?.name}&flip=false`);
-  }, [user]);
+  }, []);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="focus:outline-none">
         <Avatar className="border-2 border-sky-600">
-          <AvatarImage src={user?.image! || img} className="bg-sky-400" />
+          <AvatarImage src={user?.image! || img} alt="User Image" className="bg-sky-400" />
           <AvatarFallback>NA</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

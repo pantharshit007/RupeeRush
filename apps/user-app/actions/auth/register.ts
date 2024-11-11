@@ -24,7 +24,6 @@ export const registerAction = async (values: z.infer<typeof RegisterSchema>) => 
     return { error: "Email already in use!" };
   }
 
-  // TODO: email verification: dont create account without first verifying the user
   const verificationToken = await generateVerificationToken({ email, name, hashedPassword });
   await sendVerificationEmail(verificationToken.email, verificationToken.token);
 

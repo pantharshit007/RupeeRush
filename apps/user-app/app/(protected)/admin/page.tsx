@@ -11,7 +11,7 @@ function AdminPage() {
     <Card className="w-[600px] shadow-md">
       <CardHeader>
         <p className="flex w-full justify-center items-center text-2xl font-semibold gap-x-2">
-          <RiAdminFill size="30" className="text-blue-500" /> Admin
+          <RiAdminFill size="27" className="text-blue-500" /> Admin
         </p>
       </CardHeader>
 

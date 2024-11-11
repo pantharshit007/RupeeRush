@@ -8,11 +8,10 @@ import db from "@repo/db/client";
  * This function is used to check whether the token is expired, and also used to **register** the user in db.
  * It update the user **emailVerified** with the newDate of when it has been verified
  * @param token is recieved from the verification token in the TokenVerification form
- * @param existingUser is used to identify if user is already registered with us or not
  * @returns
  */
 
-export const emailVerifyAction = async (token: string, existingUser: boolean) => {
+export const emailVerifyAction = async (token: string) => {
   const verificationToken = await getVerificationTokenByToken(token);
   if (!verificationToken) {
     return { error: "Token does not exist!" };
@@ -31,8 +30,8 @@ export const emailVerifyAction = async (token: string, existingUser: boolean) =>
   // NOTE: no 3rd party can use another person's token since we will be deleting it after verification
   // for case where user created but token is not deleted we can use transactions,
   try {
-    // create a new verified user in db
-    if (!existingUser) {
+    // create a new verified user in db: on signIn
+    if (!verificationToken.updateEmailId && verificationToken.hashedPassword) {
       await db.user.create({
         data: {
           name: verificationToken.name,
@@ -41,19 +40,15 @@ export const emailVerifyAction = async (token: string, existingUser: boolean) =>
           emailVerified: new Date(),
         },
       });
+    }
 
-      // update the user detail: email and emailVerified
-    } else {
-      const registeredUser = await getUserByEmail(verificationToken.email);
-      if (!registeredUser) {
-        return { error: "User Email does not exist" };
-      }
-
+    // update user email: settings email update
+    if (verificationToken.updateEmailId) {
       await db.user.update({
-        where: { id: registeredUser.id },
+        where: { id: verificationToken.updateEmailId },
         data: {
           emailVerified: new Date(),
-          email: registeredUser.email, // when we update user's email
+          email: verificationToken.email, // when we update user's email
         },
       });
     }

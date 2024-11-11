@@ -19,6 +19,9 @@
 // TODO: update the image logo in email template with new custom rupeerush images
 // TODO: add similar but better loading screen or suspense boundary like `/login/page.tsx`
 // TODO: add a suspense boundary or loading screen in `LogoutButton.tsx`.
+// TODO: replace this NA in navbar
+// TODO: fix the name of authSchema to Schema.ts in a separate chore commit
+// TODO: add email template to inform user about email change if it is him or other.
 
 //! NEXT: BE
 // TODO: fix locked amount not updating or something...
@@ -43,8 +46,32 @@
 
 //! END TODO:
 // TODO: add feature QR code support we can use it in mobile and store qr in db
-//? TODO: add a feature of something such that i will have a record of from where this app is accessed like storing ip and displaying on a map to check which part of the map is accessing my website and get analytics n all. 
+//? TODO: add a feature of something such that i will have a record of from where this app is accessed like storing ip and displaying on a map to check which part of the map is accessing my website and get analytics n all.
 
 //? NOTE:
 // when adding image from an outside src u need to set them up in next.config.*: https://youtu.be/w2h54xz6Ndw?t=2328
 
+
+
+
+//ui/package.json
+// "peerDependencies": {
+//   "react": "^18.2.0",
+//   "react-dom": "^18.2.0"
+// },
+// "dependencies": {
+//   "@hookform/resolvers": "^3.9.0",
+//   "@radix-ui/react-avatar": "^1.1.1",
+//   "@radix-ui/react-dropdown-menu": "^2.1.2",
+//   "@radix-ui/react-icons": "^1.3.1",
+//   "@radix-ui/react-label": "^2.1.0",
+//   "@radix-ui/react-slot": "^1.1.0",
+//   "@radix-ui/react-switch": "^1.1.1",
+//   "class-variance-authority": "^0.7.0",
+//   "clsx": "^2.1.1",
+//   "lucide-react": "^0.395.0",
+//   "react-hook-form": "^7.53.0",
+//   "tailwind-merge": "^2.3.0",
+//   "tailwindcss-animate": "^1.0.7",
+//   "zod": "^3.23.8"
+// },

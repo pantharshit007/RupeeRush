@@ -3,10 +3,11 @@ import db from "@repo/db/client";
 interface getTokenByEmail {
   id: string;
   email: string;
-  name: string;
-  hashedPassword: string;
+  name: string | null;
+  hashedPassword: string | null;
   token: string;
   expires: Date;
+  updateEmailId: string | null;
 }
 
 /**
@@ -32,10 +33,11 @@ export const getVerificationTokenByEmail = async (
 interface getTokenByToken {
   id: string;
   email: string;
-  name: string;
-  hashedPassword: string;
+  name: string | null;
+  hashedPassword: string | null;
   token: string;
   expires: Date;
+  updateEmailId: string | null;
 }
 
 /**

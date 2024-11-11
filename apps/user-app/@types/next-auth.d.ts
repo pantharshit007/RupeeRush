@@ -9,6 +9,9 @@ export type ExtendedUser = {
   name: string | null;
   image: string | null;
   isTwoFactorEnabled: boolean;
+  isOAuth: boolean;
+  phoneNumber: string | null;
+  lastUpdate?: number;
 };
 
 declare module "next-auth" {
@@ -22,5 +25,9 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT {
     role: SchemaTypes.UserRole;
+    isTwoFactorEnabled: boolean;
+    isOAuth: boolean;
+    phoneNumber: string | null;
+    lastUpdate?: number;
   }
 }

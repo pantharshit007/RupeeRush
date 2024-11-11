@@ -61,10 +61,11 @@ model Account {
 model VerificationToken{
   id                  String          @id @default(cuid())  @db.VarChar(30)
   email               String
-  name                String
-  hashedPassword      String
+  name                String?
+  hashedPassword      String?
   token               String          @unique
   expires             DateTime
+  updateEmailId       String?  
 
   @@unique([email, token])
 }

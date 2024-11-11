@@ -8,17 +8,14 @@ import { emailVerifyAction } from "@/actions/auth/verifyEmail";
 import FormSuccess from "@/components/common/FormSuccess";
 import FormError from "@/components/common/FormError";
 import { Button } from "@repo/ui/components/ui/button";
-
-interface TokenVerifyProps {
-  existingUser: boolean;
-}
+import { InfoTooltipComponent } from "@/components/common/InfoTooltip";
 
 /**
  * Verify user's token for email verification
  * @param existingUser whether user is logged in or not
  * @type {boolean}
  */
-function TokenVerificationForm({ existingUser }: TokenVerifyProps) {
+function TokenVerificationForm() {
   const [error, setError] = useState<string | null>();
   const [success, setSuccess] = useState<string | null>();
   const [loading, setLoading] = useState(false);
@@ -42,7 +39,7 @@ function TokenVerificationForm({ existingUser }: TokenVerifyProps) {
     }
 
     try {
-      const data = await emailVerifyAction(token, existingUser);
+      const data = await emailVerifyAction(token);
 
       if (data.error) setError(data.error || "Something went wrong");
       if (data.success) setSuccess(data.success);
@@ -52,7 +49,7 @@ function TokenVerificationForm({ existingUser }: TokenVerifyProps) {
     } finally {
       setLoading(false);
     }
-  }, [token, existingUser]);
+  }, [token]);
 
   return (
     <CardWrapper
@@ -61,7 +58,7 @@ function TokenVerificationForm({ existingUser }: TokenVerifyProps) {
       backButtonLabel="Back to Login"
       backButtonHref="/auth/login"
     >
-      <div className="flex flex-col items-center w-full justify-center">
+      <div className="flex flex-col items-center w-full justify-center relative">
         {/* Show loader only if verifying */}
         {loading && <BeatLoader />}
 
@@ -71,6 +68,10 @@ function TokenVerificationForm({ existingUser }: TokenVerifyProps) {
 
         {/* Show button only if no success or error message */}
         {!loading && !success && !error && <Button onClick={onSubmit}>Confirm your Email</Button>}
+
+        <div className="absolute translate-x-24 -translate-y-6">
+          <InfoTooltipComponent message="After updating the email re-login! keep only 1 tab alive!" />
+        </div>
       </div>
     </CardWrapper>
   );

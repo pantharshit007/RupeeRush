@@ -9,6 +9,7 @@ export async function GET() {
       return NextResponse.json({
         success: true,
         message: "You are logged in!",
+        sessionSide: "Server",
         user: session.user,
       });
     }

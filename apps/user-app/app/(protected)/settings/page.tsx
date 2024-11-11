@@ -1,22 +1,14 @@
-"use client";
-import { logoutAction } from "@/actions/auth/logout";
-import { useSession } from "next-auth/react";
-import React from "react";
+import { Suspense } from "react";
 
+import LoadingState from "@/components/common/LoadingState";
+import SettingsForm from "@/components/settings/SettingsForm";
+
+// Loading component for better UX/suppress unwanted behavious: CSR bailout issues
 function page() {
-  const session = useSession();
-
-  const handleSignOut = () => {
-    logoutAction();
-  };
-
   return (
-    <>
-      <button onClick={handleSignOut} className="">
-        Sign out
-        {JSON.stringify(session.data?.user)}
-      </button>
-    </>
+    <Suspense fallback={<LoadingState />}>
+      <SettingsForm />
+    </Suspense>
   );
 }
 
