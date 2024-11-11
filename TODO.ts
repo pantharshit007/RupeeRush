@@ -50,28 +50,3 @@
 
 //? NOTE:
 // when adding image from an outside src u need to set them up in next.config.*: https://youtu.be/w2h54xz6Ndw?t=2328
-
-
-
-
-//ui/package.json
-// "peerDependencies": {
-//   "react": "^18.2.0",
-//   "react-dom": "^18.2.0"
-// },
-// "dependencies": {
-//   "@hookform/resolvers": "^3.9.0",
-//   "@radix-ui/react-avatar": "^1.1.1",
-//   "@radix-ui/react-dropdown-menu": "^2.1.2",
-//   "@radix-ui/react-icons": "^1.3.1",
-//   "@radix-ui/react-label": "^2.1.0",
-//   "@radix-ui/react-slot": "^1.1.0",
-//   "@radix-ui/react-switch": "^1.1.1",
-//   "class-variance-authority": "^0.7.0",
-//   "clsx": "^2.1.1",
-//   "lucide-react": "^0.395.0",
-//   "react-hook-form": "^7.53.0",
-//   "tailwind-merge": "^2.3.0",
-//   "tailwindcss-animate": "^1.0.7",
-//   "zod": "^3.23.8"
-// },
