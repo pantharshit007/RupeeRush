@@ -9,14 +9,15 @@ import { signIn } from "next-auth/react";
 import { DEFAULT_LOGIN_REDIRECT } from "@/utils/apiRoute";
 import { Button } from "@repo/ui/components/ui/button";
 import { SchemaTypes } from "@repo/db/client";
+import LoadingState from "@/components/common/LoadingState";
 
 // Separate client component for handling search params
 const AuthProviderContent = () => {
   const searchParams = useSearchParams();
-  const callBackUrl = searchParams.get("callBackUrl");
+  const callbackUrl = searchParams.get("callbackUrl");
 
   const handleClick = async (provider: SchemaTypes.AuthType) => {
-    await signIn(provider, { redirectTo: DEFAULT_LOGIN_REDIRECT || callBackUrl });
+    await signIn(provider, { redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT });
   };
   return (
     <div className="flex items-center w-full gap-x-2">
@@ -45,7 +46,7 @@ const AuthProviderContent = () => {
 function Provider() {
   return (
     // TODO: add loading screen
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingState />}>
       <AuthProviderContent />
     </Suspense>
   );

@@ -1,17 +1,21 @@
 "use server";
 
+import { AuthError } from "next-auth";
+import * as z from "zod";
+import db from "@repo/db/client";
+
 import { signIn } from "@/lib/auth";
 import { generateTwoFACode } from "@/lib/generateToken";
 import { sendTwoFactorCode } from "@/lib/mail";
 import { DEFAULT_LOGIN_REDIRECT } from "@/utils/apiRoute";
 import { getTwoFactorCodeByEmail } from "@/utils/tokenFetch";
 import { getUserByEmail } from "@/utils/userFetch";
-import db from "@repo/db/client";
 import { LoginSchema } from "@repo/schema/authSchema";
-import { AuthError } from "next-auth";
-import * as z from "zod";
 
-export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
+export const loginAction = async (
+  values: z.infer<typeof LoginSchema>,
+  callbackUrl?: string | null
+) => {
   const isValidFields = LoginSchema.safeParse(values);
 
   // invalid login creds
@@ -89,7 +93,7 @@ export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
     await signIn("credentials", {
       email: email,
       password: password,
-      redirectTo: DEFAULT_LOGIN_REDIRECT,
+      redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
     });
   } catch (err) {
     if (err instanceof AuthError) {

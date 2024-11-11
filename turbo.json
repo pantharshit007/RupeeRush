@@ -9,7 +9,7 @@
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "user-app#build": {
-      "env": ["GOOGLE_CLIENT_*", "AUTH_GITHUB_*", "NEXTAUTH_*", "RESEND_API_KEY", "AUTH_*"]
+      "env": ["AUTH_*", "RESEND_API_KEY"]
     },
     "lint": {
       "dependsOn": ["^lint"]

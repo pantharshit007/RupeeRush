@@ -15,7 +15,8 @@
     "db:push": "cd packages/db && npm run db:push && npm run db:seed && cd ../..",
     "studio": "cd packages/db && npx prisma studio && cd ../..",
     "db:docker": "docker run -e POSTGRES_PASSWORD=mysecretpassword -d -p 3333:5432 postgres",
-    "prepare": "husky || true"
+    "prepare": "husky || true",
+    "postinstall": "cd packages/db && npm run db:push && cd ../.."
   },
   "devDependencies": {
     "husky": "^9.1.6",

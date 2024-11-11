@@ -20,7 +20,7 @@ export default async function Home() {
         </div>
 
         <div>
-          <LoginButton asChild>
+          <LoginButton asChild mode="modal">
             <Button variant="secondary" size="lg">
               Sign In
             </Button>

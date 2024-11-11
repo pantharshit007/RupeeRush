@@ -7,10 +7,10 @@ import bcrypt from "bcryptjs";
 import { LoginSchema } from "@repo/schema/authSchema";
 import { getUserByEmail } from "./utils/userFetch";
 
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
-const GITHUB_CLIENT_ID = process.env.AUTH_GITHUB_ID!;
-const GITHUB_CLIENT_SECRET = process.env.AUTH_GITHUB_SECRET!;
+const GOOGLE_CLIENT_ID = process.env.AUTH_GOOGLE_CLIENT_ID!;
+const GOOGLE_CLIENT_SECRET = process.env.AUTH_GOOGLE_CLIENT_SECRET!;
+const GITHUB_CLIENT_ID = process.env.AUTH_GITHUB_CLIENT_ID!;
+const GITHUB_CLIENT_SECRET = process.env.AUTH_GITHUB_CLIENT_SECRET!;
 
 export const authConfig: NextAuthConfig = {
   providers: [

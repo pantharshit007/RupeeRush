@@ -36,6 +36,7 @@ function LoginForm() {
     searchParams.get("showTwoFactor") === "true"
   );
 
+  const callbackUrl = searchParams.get("callbackUrl");
   const urlError =
     searchParams.get("error") === "OAuthAccountNotLinked"
       ? "Email already in user with different provider!"
@@ -61,7 +62,7 @@ function LoginForm() {
 
     startTransition(async () => {
       try {
-        const data = await loginAction(values);
+        const data = await loginAction(values, callbackUrl);
 
         // TODO: fix this to only show relevant message `action/auth/login.ts` in catch
         if (data?.error) {

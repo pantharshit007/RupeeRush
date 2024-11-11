@@ -31,7 +31,7 @@ export default auth((req) => {
     return NextResponse.next();
   }
 
-  // Auth routes - redirect to /settings if logged in
+  // Auth routes - redirect to /profile if logged in
   if (isAuthRoute) {
     if (isLoggedIn) {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
@@ -41,7 +41,15 @@ export default auth((req) => {
 
   // Protected routes - redirect to login if not logged in
   if (!isLoggedIn && !isPublicRoute) {
-    return Response.redirect(new URL(DEFAULT_REDIRECT, nextUrl));
+    let callbackUrl = nextUrl.pathname;
+    if (nextUrl.search) {
+      callbackUrl += nextUrl.search;
+    }
+
+    const encoudedCallbackUrl = encodeURIComponent(callbackUrl);
+    return Response.redirect(
+      new URL(`${DEFAULT_REDIRECT}?callbackUrl=${encoudedCallbackUrl}`, nextUrl)
+    );
   }
 
   return NextResponse.next();
