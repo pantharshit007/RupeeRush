@@ -4,16 +4,29 @@
   "private": true,
   "scripts": {
     "lint": "eslint . --max-warnings 10",
+    "lint:fix": "eslint --fix .",
     "generate:component": "turbo gen react-component"
   },
+  "peerDependencies": {
+    "react": "^18.2.0"
+  },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
+    "@radix-ui/react-avatar": "^1.1.1",
+    "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-dropdown-menu": "^2.1.2",
+    "@radix-ui/react-icons": "^1.3.1",
+    "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-switch": "^1.1.1",
+    "@radix-ui/react-tooltip": "^1.1.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.395.0",
-    "react": "^18.2.0",
+    "react-hook-form": "^7.53.0",
     "tailwind-merge": "^2.3.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
@@ -32,15 +45,6 @@
     "./postcss.config": "./postcss.config.mjs",
     "./tailwind.config": "./tailwind.config.ts",
     "./components/*": "./src/components/*.tsx",
-    "./lib/*": "./src/lib/*.ts",
-    "./button": "./src/components/button.tsx",
-    "./card": "./src/components/card.tsx",
-    "./code": "./src/components/code.tsx",
-    "./appbar": "./src/components/AppBar.tsx",
-    "./title": "./src/components/Title.tsx",
-    "./tab": "./src/components/Tab.tsx",
-    "./select": "./src/components/Select.tsx",
-    "./textinput": "./src/components/TextInput.tsx",
-    "./status": "./src/components/Status.tsx"
+    "./lib/*": "./src/lib/*.ts"
   }
 }

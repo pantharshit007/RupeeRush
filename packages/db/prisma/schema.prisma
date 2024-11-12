@@ -14,61 +14,140 @@ datasource db {
 }
 
 model User {
-  id                Int             @id @default(autoincrement())
-  email             String          @unique
-  name              String?         
-  number            String?         @unique
-  password          String
-  OnRampTransaction OnRampTransaction[]
-  Balance           Balance[]
-  sentTransfer      p2pTransfer[]   @relation(name: "SenderUserRelation")
-  receiveTransfer   p2pTransfer[]   @relation(name: "ReceiverUserRelation")
+  id                  String          @id @default(cuid())  @db.VarChar(30)
+  email               String          @unique
+  emailVerified       DateTime?
+  name                String?         
+  phoneNumber         String?         @unique
+  password            String?
+  image               String?
+  role                UserRole        @default(USER)
+  isTwoFactorEnabled  Boolean         @default(false)
+  isTwoFactorConfirmation Boolean?
+  upiId               String?         @unique
+  bankName            String?
+  accounts            Account[]
+  OnRampTransaction   OnRampTransaction[]
+  Balance             Balance[]
+
+  sentTransfer        p2pTransfer[]   @relation(name: "SenderUserRelation")
+  receiveTransfer     p2pTransfer[]   @relation(name: "ReceiverUserRelation")
+
+}
+
+model Account {
+
+  id                  String          @id @default(cuid())  @db.VarChar(30)
+  userId              String
+  type                String
+  provider            String
+  providerAccountId   String
+  refresh_token       String?         @db.Text
+  access_token        String?         @db.Text
+  expires_at          Int?
+  token_type          String?
+  scope               String?
+  id_token            String?         @db.Text
+  session_state       String?
+  
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  
+  user                User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@unique([provider, providerAccountId])
+}
+
+model VerificationToken{
+  id                  String          @id @default(cuid())  @db.VarChar(30)
+  email               String
+  name                String?
+  hashedPassword      String?
+  token               String          @unique
+  expires             DateTime
+  updateEmailId       String?  
+
+  @@unique([email, token])
+}
+
+model PasswordResetToken{
+  id                  String          @id @default(cuid()) @db.VarChar(30)
+  email               String
+  token               String          @unique
+  expires             DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorCode{
+  id                  String          @id @default(cuid()) @db.VarChar(30)
+  email               String
+  code                String          @unique
+  expires             DateTime
+
+  @@unique([email, code])
 }
 
 model Merchant {
-  id                Int             @id @default(autoincrement())
-  email             String          @unique
-  name              String?
-  auth_type         AuthType   
+  id                  Int             @id @default(autoincrement())
+  email               String          @unique
+  name                String?
+  auth_type           AuthType   
 }
 
 model OnRampTransaction {
-  id                Int             @id @default(autoincrement())
-  status            OnRampStatus    
-  token             String          @unique
-  provider          String    
-  amount            Int   
-  startTime         DateTime    
-  userId            Int   
-  user              User            @relation(fields: [userId], references: [id])
+  id                  Int             @id @default(autoincrement())
+  status              OnRampStatus    
+  token               String          @unique
+  provider            String    
+  amount              Int   
+  startTime           DateTime    
+  userId              String   
+  
+  user                User            @relation(fields: [userId], references: [id])
 }
 
 model Balance {
-  id                Int             @id @default(autoincrement())
-  userId            Int             @unique
-  amount            Int       
-  locked            Int             //not sure about Locked
-  user              User            @relation(fields: [userId], references: [id])
+  id                  Int             @id @default(autoincrement())
+  userId              String          @unique
+  amount              Int       
+  locked              Int             //not sure about Locked
+
+  user                User            @relation(fields: [userId], references: [id])
 }
 
 model p2pTransfer {
-  id                String          @id @default(uuid())
-  amount            Int
-  timestamp         DateTime
-  status            OnRampStatus
-  senderUserId      Int
-  senderUser        User            @relation(name: "SenderUserRelation", fields: [senderUserId], references: [id])
-  receiverUserId    Int
-  receiverUser      User            @relation(name: "ReceiverUserRelation", fields: [receiverUserId], references: [id])
+  id                  String          @id @default(uuid())
+  amount              Int
+  timestamp           DateTime
+  status              OnRampStatus
+  senderUserId        String?
+  receiverUserId      String?
+  sendUpiId           String?
+  receiverUpiId       String?
+
+  senderUser          User?           @relation(name: "SenderUserRelation", fields: [senderUserId], references: [id], onDelete: SetNull)
+  receiverUser        User?           @relation(name: "ReceiverUserRelation", fields: [receiverUserId], references: [id], onDelete: SetNull)
 }
 
 enum AuthType {
-  Google
-  Github
+  google
+  github
 }
 
+// todo: change to TransactionStatus
+// enum TransactionStatus {
+//   SUCCESS
+//   FAILURE
+//   PROCESSING
+// }
 enum OnRampStatus {
   Success
   Failure
   Processing
+}
+
+enum UserRole {
+  ADMIN
+  USER
 }

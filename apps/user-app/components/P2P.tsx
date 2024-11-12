@@ -1,11 +1,12 @@
 "use client";
-import { Button } from "@repo/ui/button";
-import { TextInput } from "@repo/ui/textinput";
+
+import ButtonPrimary from "@repo/ui/components/custom/ButtonPrimary";
+import TextInput from "@repo/ui/components/custom/TextInput";
 import React, { useState, useEffect } from "react";
-import { p2pTransfer } from "../app/lib/actions/p2pTransfer";
+import { p2pTransfer } from "@/actions/p2pTransfer";
 import TransactionHistory from "./TxnHistoryCard";
 import { useSession } from "next-auth/react";
-import { getP2PTransactions } from "../app/lib/actions/getP2PTransactions";
+import { getP2PTransactions } from "@/actions/getP2PTransactions";
 
 function P2P() {
   const [receiverId, setReceiverId] = useState("yourname@sbi");
@@ -17,8 +18,7 @@ function P2P() {
   useEffect(() => {
     if (session) {
       const fetchTransactions = async () => {
-        //@ts-ignore
-        const txn = await getP2PTransactions(session?.user?.id);
+        const txn = await getP2PTransactions(session?.user?.id!);
         setTransactions(txn);
       };
       fetchTransactions();
@@ -37,8 +37,7 @@ function P2P() {
       setAmount(0);
 
       // Fetch updated transactions after successful transfer
-      // @ts-ignore
-      const txn = await getP2PTransactions(session?.user?.id);
+      const txn = await getP2PTransactions(session?.user?.id!);
       setTransactions(txn);
     } catch (error) {
       console.error("Error during P2P transfer:", error);
@@ -69,7 +68,7 @@ function P2P() {
         </div>
 
         <div className="pt-4">
-          <Button onClick={onSubmit}>Send</Button>
+          <ButtonPrimary onClick={onSubmit}>Send</ButtonPrimary>
         </div>
       </div>
 

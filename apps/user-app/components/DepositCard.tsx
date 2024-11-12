@@ -2,24 +2,20 @@
 import React from "react";
 import { useState } from "react";
 
-import { Button } from "@repo/ui/button";
-import { Select } from "@repo/ui/select";
-import { TextInput } from "@repo/ui/textinput";
+import ButtonPrimary from "@repo/ui/components/custom/ButtonPrimary";
+import Select from "@repo/ui/components/custom/Select";
+import TextInput from "@repo/ui/components/custom/TextInput";
 import { SUPPORTED_BANKS } from "../utils/constant";
-import { createOnRampTransaction } from "../app/lib/actions/createOnRampTxn";
+import { createOnRampTransaction } from "@/actions/createOnRampTxn";
 
 function DepositCard() {
-  const [redirectUrl, setRedirectUrl] = useState(
-    SUPPORTED_BANKS[0]?.redirectUrl
-  );
+  const [redirectUrl, setRedirectUrl] = useState(SUPPORTED_BANKS[0]?.redirectUrl);
   const [provider, setProvider] = useState(SUPPORTED_BANKS[0]?.name || "");
   const [value, setValue] = useState(0);
 
   // updating the redirectUrl and provider based on bank
   function bankSelection(value: string) {
-    setRedirectUrl(
-      SUPPORTED_BANKS.find((x) => x.name === value)?.redirectUrl || ""
-    );
+    setRedirectUrl(SUPPORTED_BANKS.find((x) => x.name === value)?.redirectUrl || "");
     setProvider(SUPPORTED_BANKS.find((x) => x.name === value)?.name || "");
   }
 
@@ -53,7 +49,7 @@ function DepositCard() {
         />
 
         <div className="pt-4">
-          <Button onClick={onSubmit}>Add Money</Button>
+          <ButtonPrimary onClick={onSubmit}>Add Money</ButtonPrimary>
         </div>
       </div>
     </div>

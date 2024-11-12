@@ -28,13 +28,14 @@ async function hdfcWebHook(req: Request, res: Response) {
       // update balance db
       db.balance.update({
         where: {
-          userId: Number(paymentInformation.userId),
+          userId: paymentInformation.userId,
         },
         data: {
           amount: {
+            // TODO: why type conversion?
             increment: Number(paymentInformation.amount),
           },
-          locked: 0,
+          locked: Number(paymentInformation.amount),
         },
       }),
 

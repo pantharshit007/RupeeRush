@@ -1,5 +1,5 @@
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcrypt";
+import { AuthType, OnRampStatus, PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
@@ -7,10 +7,13 @@ async function main() {
     where: { email: "alice@example.com" },
     update: {},
     create: {
-      number: "1111111111",
+      phoneNumber: "1111111111",
       email: "alice@example.com",
       password: await bcrypt.hash("alice123", 10),
       name: "Alice",
+      role: "USER",
+      emailVerified: new Date(),
+      isTwoFactorEnabled: false,
       Balance: {
         create: {
           amount: 20000,
@@ -20,7 +23,7 @@ async function main() {
       OnRampTransaction: {
         create: {
           startTime: new Date(),
-          status: "Success",
+          status: OnRampStatus.Success,
           amount: 20000,
           token: "token_1111",
           provider: "HDFC Bank",
@@ -33,10 +36,13 @@ async function main() {
     where: { email: "bob@example.com" },
     update: {},
     create: {
-      number: "2222222222",
+      phoneNumber: "2222222222",
       email: "bob@example.com",
-      password: await bcrypt.hash("bob", 10),
+      password: await bcrypt.hash("bob123", 10),
       name: "Bob",
+      role: "USER",
+      emailVerified: new Date(),
+      isTwoFactorEnabled: false,
       Balance: {
         create: {
           amount: 5000,
@@ -46,7 +52,7 @@ async function main() {
       OnRampTransaction: {
         create: {
           startTime: new Date(),
-          status: "Failure",
+          status: OnRampStatus.Failure,
           amount: 5000,
           token: "token_2222",
           provider: "ICICI Bank",
@@ -61,7 +67,7 @@ async function main() {
     create: {
       email: "merchant@example.com",
       name: "Jethalal",
-      auth_type: "Google",
+      auth_type: AuthType.google,
     },
   });
 

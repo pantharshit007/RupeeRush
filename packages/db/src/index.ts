@@ -1,14 +1,31 @@
 import { PrismaClient } from "@prisma/client";
+import * as SchemaTypes from "@prisma/client";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 
 const prismaClientSingleton = () => {
   return new PrismaClient();
 };
 
+type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>;
+
 declare global {
-  var prismaGlobal: undefined | ReturnType<typeof prismaClientSingleton>;
+  var prismaGlobal: PrismaClientSingleton | undefined;
 }
 
-const db: ReturnType<typeof prismaClientSingleton> = globalThis.prismaGlobal ?? prismaClientSingleton();
-export default db;
+/**
+ * @initialize @param globalThis used during the development because of hot reloading in nextJS.
+ * If we don't do that, it will always initialize a new PrismaClient
+ * everytime it reloads that we have too may active prisma clients.
+ * In production, we always initialize it like this:
+ * @param export const @var db = new @function PrismaClient()
+ */
 
-if (process.env.NODE_ENV !== "production") globalThis.prismaGlobal = db;
+const db = globalThis.prismaGlobal ?? prismaClientSingleton();
+
+// in order to avoid creating too many prisma instances in development.
+if (process.env.NODE_ENV !== "production") {
+  globalThis.prismaGlobal = db;
+}
+
+export { db as default, PrismaAdapter };
+export type { SchemaTypes };

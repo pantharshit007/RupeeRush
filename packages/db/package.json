@@ -3,20 +3,34 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "db:migrate": "npx prisma migrate dev --skip-seed && npm run db:seed",
+    "db:deploy": "npx prisma migrate deploy",
+    "db:generate": "npx prisma generate && npm run db:seed",
+    "db:push": "npx prisma db push",
+    "db:seed": "npx prisma db seed",
+    "db:reset": "npx prisma migrate reset --force && npx prisma db push",
+    "studio": "npx prisma studio"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@auth/prisma-adapter": "^2.7.0",
     "@prisma/client": "^5.20.0",
-    "bcrypt": "^5.1.1"
+    "bcryptjs": "^2.4.3"
   },
   "exports": {
     "./client": "./src/index.ts"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "tsx prisma/seed.ts"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "prisma": "^5.22.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.1"
   }
 }

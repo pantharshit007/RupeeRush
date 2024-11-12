@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body,
+:root {
+    height: 100%;
+}
+
 @layer base {
     :root {
         --background: 0 0% 100%;
@@ -66,5 +72,19 @@
 
     body {
         @apply bg-background text-foreground;
+    }
+}
+
+.bgBlue {
+    background: radial-gradient(ellipse at top, #38bdf8, #1e3a8a);
+}
+
+@layer utilities {
+    .flex-row-between {
+        @apply flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm
+    }
+
+    .code-block {
+        @apply truncate text-xs max-w-[180px] font-mono p-1 bg-slate-100 rounded-md
     }
 }

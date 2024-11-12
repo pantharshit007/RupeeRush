@@ -1,0 +1,8 @@
+# .eslintignore
+TODO.ts
+node_modules
+dist
+build
+.next
+email.*
+packages/db/**/*

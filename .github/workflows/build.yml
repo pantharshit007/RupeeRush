@@ -16,11 +16,13 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install Dependencies
+      - name: Install Dependencies (Ignore Postinstall)
         run: npm install
+        env:
+          npm_config_ignore_scripts: true
 
       - name: Generate prisma client
-        run: npm run db:generate
+        run: npm run db:prisma
 
       - name: Run Build
         run: npm run build
