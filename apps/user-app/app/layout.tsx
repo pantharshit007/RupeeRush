@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "@repo/ui/globals.css";
 import { UseProvider } from "@/hooks/UseProvider";
+import { Analytics } from "@vercel/analytics/react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,7 +27,10 @@ export default function RootLayout({
     <html lang="en">
       <UseProvider>
         <body className={`${geistSans.variable} ${geistMono.variable}`}>
-          <div className="h-full">{children}</div>
+          <div className="h-full">
+            {children}
+            <Analytics />
+          </div>
         </body>
       </UseProvider>
     </html>
