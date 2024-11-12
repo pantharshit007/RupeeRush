@@ -11,6 +11,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "dev:web": "turbo dev --filter=user-app...",
     "dev:hook": "turbo dev --filter=webhook...",
+    "db:prisma": "cd packages/db && npx prisma generate && cd ../..",
     "db:generate": "cd packages/db && npm run db:generate && cd ../..",
     "db:push": "cd packages/db && npm run db:push && npm run db:seed && cd ../..",
     "studio": "cd packages/db && npx prisma studio && cd ../..",

@@ -22,7 +22,7 @@ jobs:
           npm_config_ignore_scripts: true
 
       - name: Generate prisma client
-        run: npm run db:generate
+        run: npm run db:prisma
 
       - name: Run Build
         run: npm run build
