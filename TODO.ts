@@ -35,7 +35,7 @@
 //! DB:
 // TODO: updated user id to Int -> String, check for possible errors
 // TODO: before start working with balances, txn and other schemas make sure to update autoincrement -> uuid()
-// TODO: create an admit role to monitor the website
+///// TODO: create an admin role to monitor the website
 
 //! WEBHOOK: BE
 // TODO: hdfcwebhook update condition for `Failure`
