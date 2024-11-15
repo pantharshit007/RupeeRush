@@ -35,7 +35,9 @@ async function hdfcWebHook(req: Request, res: Response) {
             // TODO: why type conversion?
             increment: Number(paymentInformation.amount),
           },
-          locked: Number(paymentInformation.amount),
+          locked: {
+            decrement: Number(paymentInformation.amount),
+          },
         },
       }),
 

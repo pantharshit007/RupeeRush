@@ -6,12 +6,14 @@ import ButtonPrimary from "@repo/ui/components/custom/ButtonPrimary";
 import Select from "@repo/ui/components/custom/Select";
 import TextInput from "@repo/ui/components/custom/TextInput";
 import { SUPPORTED_BANKS } from "../utils/constant";
-import { createOnRampTransaction } from "@/actions/createOnRampTxn";
+import { createOnRampTransaction } from "@/actions/transaction/createOnRampTxn";
+import { useCurrentUser } from "@/hooks/UseCurrentUser";
 
 function DepositCard() {
   const [redirectUrl, setRedirectUrl] = useState(SUPPORTED_BANKS[0]?.redirectUrl);
   const [provider, setProvider] = useState(SUPPORTED_BANKS[0]?.name || "");
   const [value, setValue] = useState(0);
+  const userId = useCurrentUser();
 
   // updating the redirectUrl and provider based on bank
   function bankSelection(value: string) {
@@ -21,7 +23,7 @@ function DepositCard() {
 
   // Money Deposit in wallet submission
   async function onSubmit() {
-    await createOnRampTransaction(provider, value);
+    await createOnRampTransaction(provider, value, userId?.id!);
     setValue(0);
     window.location.href = redirectUrl || "";
   }

@@ -1,8 +1,10 @@
 import { hdfcWebHook } from "./controllers/bankController.js";
 
-const express = require("express");
-const router = express.Router();
+import { Router } from "express";
+const router = Router();
 
-router.post("/hdfcWebHook", hdfcWebHook);
+router.post("/hdfcWebHook", async (req, res) => {
+  await hdfcWebHook(req, res);
+});
 
 export { router };

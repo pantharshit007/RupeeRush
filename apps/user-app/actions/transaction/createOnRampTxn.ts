@@ -5,7 +5,7 @@ import { auth } from "@/lib/auth";
 import { randomUUID } from "crypto";
 import db from "@repo/db/client";
 
-export async function createOnRampTransaction(provider: string, amount: number) {
+export async function createOnRampTransaction(provider: string, amount: number, userId: string) {
   //TODO: Ideally the token should come from the banking provider (hdfc/axis)
 
   try {
@@ -27,6 +27,13 @@ export async function createOnRampTransaction(provider: string, amount: number) 
         token: token,
         userId: userId,
         amount: amount * 100,
+      },
+    });
+
+    await db.balance.update({
+      where: { userId },
+      data: {
+        locked: { increment: amount },
       },
     });
 

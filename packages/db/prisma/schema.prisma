@@ -18,7 +18,7 @@ model User {
   id                  String          @id @default(cuid())  @db.VarChar(30)
   email               String          @unique
   emailVerified       DateTime?
-  name                String?         
+  name                String         
   phoneNumber         String?         @unique
   password            String?
   image               String?
@@ -26,18 +26,25 @@ model User {
   isTwoFactorEnabled  Boolean         @default(false)
   isTwoFactorConfirmation Boolean?
   upiId               String?         @unique
-  bankName            String?
+  walletPin           String?           
+  walletPinAttempts   Int             @default(0)
+  walletLockUntil     DateTime?        
+
+  bankAccount         BankAccount?
+  walletBalance       WalletBalance?
+
   accounts            Account[]
   OnRampTransaction   OnRampTransaction[]
-  Balance             Balance[]
 
-  sentTransfer        p2pTransfer[]   @relation(name: "SenderUserRelation")
-  receiveTransfer     p2pTransfer[]   @relation(name: "ReceiverUserRelation")
+  sentTransfer        P2pTransaction[]   @relation(name: "SenderUserRelation")
+  receiveTransfer     P2pTransaction[]   @relation(name: "ReceiverUserRelation")
+
+  sentBankTransfers     B2bTransaction[]   @relation("SenderBankRelation")
+  receivedBankTransfers B2bTransaction[]   @relation("ReceiverBankRelation")
 
 }
 
 model Account {
-
   id                  String          @id @default(cuid())  @db.VarChar(30)
   userId              String
   type                String
@@ -90,45 +97,109 @@ model TwoFactorCode{
 }
 
 model Merchant {
-  id                  Int             @id @default(autoincrement())
+  id                  String          @id @default(cuid()) @db.VarChar(30)
   email               String          @unique
   name                String?
   auth_type           AuthType   
 }
 
 model OnRampTransaction {
-  id                  Int             @id @default(autoincrement())
-  status              OnRampStatus    
+  id                  String          @id @default(uuid())
+  userId              String   
   token               String          @unique
-  provider            String    
+  provider            Bank    
   amount              Int   
   startTime           DateTime    
-  userId              String   
+  status              TransactionStatus    
   
   user                User            @relation(fields: [userId], references: [id])
 }
 
-model Balance {
-  id                  Int             @id @default(autoincrement())
-  userId              String          @unique
-  amount              Int       
-  locked              Int             //not sure about Locked
-
-  user                User            @relation(fields: [userId], references: [id])
+model WalletBalance {
+  id              String    @id @default(cuid())
+  userId          String    @unique
+  balance         Int       
+  locked          Int       
+  
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model p2pTransfer {
+model BankAccount {
+  id              String    @id @default(cuid())
+  userId          String    @unique  
+  phoneNumber     String    @unique  
+  bankName        Bank
+  accountNumber   String    @unique
+  balance         Int       
+  
+  // Optional debit card details
+  cardNumber      String?   @unique
+  cardExpiryMonth Int?
+  cardExpiryYear  Int?
+  cardPinHash     String?  
+  
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([accountNumber])
+}
+
+model P2pTransaction {
   id                  String          @id @default(uuid())
   amount              Int
-  timestamp           DateTime
-  status              OnRampStatus
+  timestamp           DateTime        @default(now())
+  status              TransactionStatus
+
+  webhookId           String?         @unique
+  webhookStatus       WebhookStatus?
+  webhookAttempts     Int             @default(0)
+  lastWebhookAttempt  DateTime?
+
   senderUserId        String?
   receiverUserId      String?
-  sendUpiId           String?
-  receiverUpiId       String?
+
+  senderIdentifier    String?
+  receiverIdentifier  String?
+  transferMethod      TransferMethod
+
+  initiatedFromIp    String?  // FOR SECURITY AUDIT: not sure to use
+  userAgent          String?
 
   senderUser          User?           @relation(name: "SenderUserRelation", fields: [senderUserId], references: [id], onDelete: SetNull)
   receiverUser        User?           @relation(name: "ReceiverUserRelation", fields: [receiverUserId], references: [id], onDelete: SetNull)
+
+  @@index([senderUserId])
+  @@index([receiverUserId])
+  @@index([webhookId])
+}
+
+model B2bTransaction {
+  id                 String            @id @default(uuid())
+  amount             Int               
+  timestamp          DateTime          @default(now())
+  status             TransactionStatus
+
+  webhookId          String?          @unique  // To track webhook processing
+  webhookStatus      WebhookStatus?
+  webhookAttempts    Int              @default(0)
+  lastWebhookAttempt DateTime?
+  
+  senderUserId       String?
+  receiverUserId     String?
+  
+  senderAccountNumber    String?     
+  receiverAccountNumber  String?     
+  
+  senderBankName        String
+  receiverBankName      String
+  
+  
+  senderUser         User?     @relation("SenderBankRelation", fields: [senderUserId], references: [id], onDelete: SetNull)
+  receiverUser       User?     @relation("ReceiverBankRelation", fields: [receiverUserId], references: [id], onDelete: SetNull)
+  
+  @@index([senderUserId])
+  @@index([receiverUserId])
+  @@index([webhookId])
 }
 
 enum AuthType {
@@ -136,19 +207,30 @@ enum AuthType {
   github
 }
 
-// todo: change to TransactionStatus
-// enum TransactionStatus {
-//   SUCCESS
-//   FAILURE
-//   PROCESSING
-// }
-enum OnRampStatus {
-  Success
-  Failure
-  Processing
+enum TransactionStatus {
+  SUCCESS
+  FAILURE
+  PROCESSING
+}
+
+enum WebhookStatus {
+  PENDING
+  SENT
+  FAILED
+  COMPLETED
+}
+
+enum TransferMethod {
+  UPI
+  PHONE
 }
 
 enum UserRole {
   ADMIN
   USER
+}
+
+enum Bank {
+  HDFC
+  AXIS
 }
