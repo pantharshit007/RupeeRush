@@ -11,19 +11,19 @@ import { useCurrentUser } from "@/hooks/UseCurrentUser";
 
 function DepositCard() {
   const [redirectUrl, setRedirectUrl] = useState(SUPPORTED_BANKS[0]?.redirectUrl);
-  const [provider, setProvider] = useState(SUPPORTED_BANKS[0]?.name || "");
+  const [provider, setProvider] = useState(SUPPORTED_BANKS[0]?.name);
   const [value, setValue] = useState(0);
-  const userId = useCurrentUser();
+  const user = useCurrentUser();
 
   // updating the redirectUrl and provider based on bank
   function bankSelection(value: string) {
     setRedirectUrl(SUPPORTED_BANKS.find((x) => x.name === value)?.redirectUrl || "");
-    setProvider(SUPPORTED_BANKS.find((x) => x.name === value)?.name || "");
+    setProvider(SUPPORTED_BANKS.find((x) => x.name === value)?.name);
   }
 
   // Money Deposit in wallet submission
   async function onSubmit() {
-    await createOnRampTransaction(provider, value, userId?.id!);
+    await createOnRampTransaction(provider!, value, user?.id!);
     setValue(0);
     window.location.href = redirectUrl || "";
   }

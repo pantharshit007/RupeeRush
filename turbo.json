@@ -27,6 +27,10 @@
       "cache": false,
       "persistent": true,
       "inputs": [".env*"]
+    },
+    "type-check": {
+      "cache": false,
+      "outputs": []
     }
   }
 }

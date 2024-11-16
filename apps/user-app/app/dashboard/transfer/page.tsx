@@ -13,14 +13,14 @@ import db from "@repo/db/client";
 async function getBalance() {
   try {
     const session = await auth();
-    const balance = await db.balance.findFirst({
+    const balance = await db.walletBalance.findFirst({
       where: {
         userId: session?.user?.id,
       },
     });
 
     return {
-      amount: balance?.amount || 0,
+      amount: balance?.balance || 0,
       lockedBalance: balance?.locked || 0,
     };
   } catch (err: any) {

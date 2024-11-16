@@ -34,7 +34,7 @@ export const emailVerifyAction = async (token: string) => {
     if (!verificationToken.updateEmailId && verificationToken.hashedPassword) {
       await db.user.create({
         data: {
-          name: verificationToken.name,
+          name: verificationToken.name!,
           email: verificationToken.email,
           password: verificationToken.hashedPassword,
           emailVerified: new Date(),

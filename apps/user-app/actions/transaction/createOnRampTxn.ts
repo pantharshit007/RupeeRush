@@ -3,9 +3,13 @@
 // import { getServerSession } from "next-auth";
 import { auth } from "@/lib/auth";
 import { randomUUID } from "crypto";
-import db from "@repo/db/client";
+import db, { SchemaTypes } from "@repo/db/client";
 
-export async function createOnRampTransaction(provider: string, amount: number, userId: string) {
+export async function createOnRampTransaction(
+  provider: SchemaTypes.Bank,
+  amount: number,
+  userId: string
+) {
   //TODO: Ideally the token should come from the banking provider (hdfc/axis)
 
   try {
@@ -22,7 +26,7 @@ export async function createOnRampTransaction(provider: string, amount: number, 
     await db.onRampTransaction.create({
       data: {
         provider: provider,
-        status: "Processing",
+        status: "PROCESSING",
         startTime: new Date(),
         token: token,
         userId: userId,
@@ -30,7 +34,7 @@ export async function createOnRampTransaction(provider: string, amount: number, 
       },
     });
 
-    await db.balance.update({
+    await db.walletBalance.update({
       where: { userId },
       data: {
         locked: { increment: amount },
