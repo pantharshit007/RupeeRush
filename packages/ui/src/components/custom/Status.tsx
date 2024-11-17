@@ -1,47 +1,29 @@
-interface StatusType {
-  status: "Success" | "Failure" | "Processing";
-}
+import { Badge } from "@repo/ui/components/ui/badge";
 
-enum StatusState {
-  Success = "Success",
-  Failure = "Failure",
-  Processing = "Processing",
-}
+function Status({ status }: { status: "SUCCESS" | "FAILURE" | "PROCESSING" }) {
+  let variants: "successOutline" | "processingOutline" | "errorOutline" | "default";
 
-function Status({ status }: StatusType) {
-  let bgColor, dotColor, textColor;
-
-  // Determine the colors based on the status
   switch (status) {
-    case StatusState.Success:
-      bgColor = "bg-green-200";
-      dotColor = "bg-green-600";
-      textColor = "text-green-600";
+    case "SUCCESS":
+      variants = "successOutline";
       break;
 
-    case StatusState.Failure:
-      bgColor = "bg-red-200";
-      dotColor = "bg-red-600";
-      textColor = "text-red-600";
+    case "FAILURE":
+      variants = "errorOutline";
       break;
 
-    case StatusState.Processing:
-      bgColor = "bg-orange-200";
-      dotColor = "bg-orange-600";
-      textColor = "text-orange-600";
+    case "PROCESSING":
+      variants = "processingOutline";
       break;
 
     default:
-      bgColor = "bg-gray-200";
-      dotColor = "bg-gray-600";
-      textColor = "text-gray-600";
+      variants = "default";
   }
 
   return (
-    <div className={`flex items-center gap-x-2 px-2 py-1 rounded-3xl w-fit ${bgColor}`}>
-      <div className={`h-2 w-2 rounded-full ${dotColor}`}></div>
-      <p className={`font-medium ${textColor}`}>{status}</p>
-    </div>
+    <Badge variant={variants} className="px-2 py-[4px] rounded-md ">
+      {status}
+    </Badge>
   );
 }
 

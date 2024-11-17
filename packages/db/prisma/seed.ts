@@ -15,7 +15,7 @@ async function main() {
       role: UserRole.USER,
       emailVerified: new Date(),
       isTwoFactorEnabled: false,
-      walletPin: await bcrypt.hash("1234", 10),
+      walletPin: await bcrypt.hash("123456", 10),
       walletBalance: {
         create: {
           balance: 20000,
@@ -27,7 +27,7 @@ async function main() {
           phoneNumber: "1111111111",
           bankName: Bank.HDFC,
           accountNumber: "1234567890",
-          balance: 20000,
+          balance: 200000,
           cardNumber: "4111111111111111",
           cardExpiryMonth: 12,
           cardExpiryYear: 2025,
@@ -58,7 +58,7 @@ async function main() {
       role: UserRole.USER,
       emailVerified: new Date(),
       isTwoFactorEnabled: false,
-      walletPin: await bcrypt.hash("5678", 10),
+      walletPin: await bcrypt.hash("654321", 10),
       walletBalance: {
         create: {
           balance: 5000,
@@ -70,7 +70,7 @@ async function main() {
           phoneNumber: "2222222222",
           bankName: Bank.AXIS,
           accountNumber: "0987654321",
-          balance: 5000,
+          balance: 100000,
           cardNumber: "5555555555554444",
           cardExpiryMonth: 6,
           cardExpiryYear: 2026,

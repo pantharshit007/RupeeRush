@@ -15,3 +15,6 @@ export const SUPPORTED_BANKS: BanksProps[] = [
     redirectUrl: "https://www.axisbank.com/",
   },
 ];
+
+export const REGEXP_ONLY_DIGITS_AND_CHARS = "^[a-zA-Z0-9]+$";
+export const REGEXP_ONLY_DIGITS = "^\\d+$";

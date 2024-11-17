@@ -1,4 +1,4 @@
-import ButtonPrimary from "./ButtonPrimary";
+import ButtonPrimary from "./ButtonPrimary.js";
 
 interface AppbarProps {
   user?: {

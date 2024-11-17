@@ -1,3 +1,5 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
+
 interface BalanceType {
   amount: number;
   locked: number;
@@ -5,22 +7,25 @@ interface BalanceType {
 
 function BalanceCard({ amount, locked }: BalanceType) {
   return (
-    <div className="px-3 py-2 rounded-2xl bg-slate-200">
-      <div className="flex justify-between border-b border-slate-400 pb-2 font-medium">
-        <div>Unlocked balance</div>
-        <div>{amount / 100} INR</div>
-      </div>
-
-      <div className="flex justify-between border-b border-slate-400 py-2 font-medium">
-        <div>Total Locked Balance</div>
-        <div>{locked / 100} INR</div>
-      </div>
-
-      <div className="flex justify-between pt-2 font-medium">
-        <div>Total Balance</div>
-        <div>{(locked + amount) / 100} INR</div>
-      </div>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-azureBlue-400 font-semibold">Balance</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-2">
+        <div className="flex justify-between">
+          <span>Current balance</span>
+          <span className="text-emerald-500 font-medium">{amount / 100} INR</span>
+        </div>
+        <div className="flex justify-between">
+          <span>Locked Balance</span>
+          <span>{locked / 100} INR</span>
+        </div>
+        <div className="flex justify-between font-bold">
+          <span>Total Balance</span>
+          <span>{(locked + amount) / 100} INR</span>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
