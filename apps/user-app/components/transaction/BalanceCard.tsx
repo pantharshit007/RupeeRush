@@ -1,11 +1,12 @@
+// "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
 
 interface BalanceType {
-  amount: number;
-  locked: number;
+  walletBalance: number;
+  bankBalance: number;
 }
 
-function BalanceCard({ amount, locked }: BalanceType) {
+function BalanceCard({ walletBalance, bankBalance }: BalanceType) {
   return (
     <Card>
       <CardHeader>
@@ -13,16 +14,16 @@ function BalanceCard({ amount, locked }: BalanceType) {
       </CardHeader>
       <CardContent className="space-y-2">
         <div className="flex justify-between">
-          <span>Current balance</span>
-          <span className="text-emerald-500 font-medium">{amount / 100} INR</span>
+          <span>Wallet balance</span>
+          <span className="text-emerald-500 font-medium">{walletBalance / 100} INR</span>
         </div>
         <div className="flex justify-between">
-          <span>Locked Balance</span>
-          <span>{locked / 100} INR</span>
+          <span>Bank Balance</span>
+          <span className="text-azureBlue-400 font-medium">{bankBalance / 100} INR</span>
         </div>
         <div className="flex justify-between font-bold">
           <span>Total Balance</span>
-          <span>{(locked + amount) / 100} INR</span>
+          <span>{(bankBalance + walletBalance) / 100} INR</span>
         </div>
       </CardContent>
     </Card>

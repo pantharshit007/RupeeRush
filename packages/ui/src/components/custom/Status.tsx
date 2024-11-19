@@ -1,6 +1,12 @@
 import { Badge } from "@repo/ui/components/ui/badge";
+import { cn } from "@repo/ui/lib/utils";
 
-function Status({ status }: { status: "SUCCESS" | "FAILURE" | "PROCESSING" }) {
+interface StatusProps {
+  status: "SUCCESS" | "FAILURE" | "PROCESSING";
+  className?: string;
+}
+
+function Status({ status, className }: StatusProps) {
   let variants: "successOutline" | "processingOutline" | "errorOutline" | "default";
 
   switch (status) {
@@ -21,7 +27,7 @@ function Status({ status }: { status: "SUCCESS" | "FAILURE" | "PROCESSING" }) {
   }
 
   return (
-    <Badge variant={variants} className="px-2 py-[4px] rounded-md ">
+    <Badge variant={variants} className={cn("px-2 py-[4px] rounded-md ", className)}>
       {status}
     </Badge>
   );

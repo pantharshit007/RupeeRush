@@ -1,4 +1,11 @@
-import { AuthType, Bank, PrismaClient, TransactionStatus, UserRole } from "@prisma/client";
+import {
+  AuthType,
+  Bank,
+  PrismaClient,
+  TransactionStatus,
+  UserRole,
+  TransactionType,
+} from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
@@ -36,13 +43,15 @@ async function main() {
       },
       upiId: "1111111111@hdfcbank",
       OnRampTransaction: {
-        create: {
-          startTime: new Date(),
-          status: TransactionStatus.SUCCESS,
-          amount: 20000,
-          token: "token_1111",
-          provider: Bank.HDFC,
-        },
+        create: [
+          {
+            startTime: new Date(),
+            status: TransactionStatus.SUCCESS,
+            amount: 20000,
+            provider: Bank.HDFC,
+            type: TransactionType.DEPOSIT,
+          },
+        ],
       },
     },
   });
@@ -79,13 +88,15 @@ async function main() {
       },
       upiId: "2222222222@axisbank",
       OnRampTransaction: {
-        create: {
-          startTime: new Date(),
-          status: TransactionStatus.FAILURE,
-          amount: 5000,
-          token: "token_2222",
-          provider: Bank.AXIS,
-        },
+        create: [
+          {
+            startTime: new Date(),
+            status: TransactionStatus.FAILURE,
+            amount: 5000,
+            provider: Bank.AXIS,
+            type: TransactionType.DEPOSIT,
+          },
+        ],
       },
     },
   });

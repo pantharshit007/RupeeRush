@@ -105,14 +105,16 @@ model Merchant {
 
 model OnRampTransaction {
   id                  String          @id @default(uuid())
-  userId              String   
-  token               String          @unique
+  userId              String
   provider            Bank    
   amount              Int   
   startTime           DateTime    
-  status              TransactionStatus    
+  status              TransactionStatus
+  type                TransactionType    
   
   user                User            @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 model WalletBalance {
@@ -161,6 +163,7 @@ model P2pTransaction {
   senderIdentifier    String?
   receiverIdentifier  String?
   transferMethod      TransferMethod
+  type                TransactionType
 
   initiatedFromIp    String?  // FOR SECURITY AUDIT: not sure to use
   userAgent          String?
@@ -178,6 +181,7 @@ model B2bTransaction {
   amount             Int               
   timestamp          DateTime          @default(now())
   status             TransactionStatus
+  type               TransactionType
 
   webhookId          String?          @unique  // To track webhook processing
   webhookStatus      WebhookStatus?
@@ -233,4 +237,11 @@ enum UserRole {
 enum Bank {
   HDFC
   AXIS
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAW
+  TRANSFER
+  RECEIVE 
 }
