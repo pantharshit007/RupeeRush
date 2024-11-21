@@ -38,11 +38,12 @@ export async function p2pTransfer({ receiverId, amount }: P2PTypes) {
 
   try {
     await db.$transaction(async (txn: any) => {
+      //? TODO: do we need now if we are deducting the amount and locking it.
       // To prevent paraller request simuntaneously we are locking the particular db row, hence until prev transaction doesnt commit no new request will be processed.
-      await txn.$queryRaw`SELECT * FROM "Balance" WHERE "userId"= ${Number(sender)} FOR UPDATE`;
+      await txn.$queryRaw`SELECT * FROM "Balance" WHERE "userId"= ${sender} FOR UPDATE`;
 
       const senderBalance = await txn.balance.findUnique({
-        where: { userId: Number(sender) },
+        where: { userId: sender },
       });
 
       if (!senderBalance || senderBalance.amount < amount) {
@@ -54,7 +55,7 @@ export async function p2pTransfer({ receiverId, amount }: P2PTypes) {
 
       // deduct amount from sender's wallet balance
       await txn.balance.update({
-        where: { userId: Number(sender) },
+        where: { userId: sender },
         data: { amount: { decrement: amount } },
       });
 
@@ -68,7 +69,7 @@ export async function p2pTransfer({ receiverId, amount }: P2PTypes) {
       // add new entry to P2P db as a transaction
       await txn.p2pTransfer.create({
         data: {
-          senderUserId: Number(sender),
+          senderUserId: sender,
           receiverUserId: receiver.id,
           amount: amount,
           timestamp: new Date(),

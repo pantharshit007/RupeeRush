@@ -22,12 +22,12 @@
 // TODO: replace this NA in navbar
 // TODO: fix the name of authSchema to Schema.ts in a separate chore commit
 // TODO: add email template to inform user about email change if it is him or other.
+// TODO: why when someone clicks on signin he modal popus up but user is still redirected to `/auth/login` in loginButton.tsx
 
 //! NEXT: BE
 // TODO: fix locked amount not updating or something...
 // TODO: update user schema to includer upi id and include it everywhere including the actions and p2p
 // TODO: sanitize the inputs in forms.
-// TODO: if i have already login once using github it doesnt ask me which account next time is it coz i only have one account login in that browser?
 // TODO: add alternative to resend using node-mailer so that I dont have to use my domain. Use a feat flag for that
 //? TODO: `/action/verifyEmail.ts` should we use transaction or not?
 // TODO: remove the emailverification part in `/action/login.ts` its useless anyway
@@ -47,6 +47,7 @@
 //! END TODO:
 // TODO: add feature QR code support we can use it in mobile and store qr in db
 //? TODO: add a feature of something such that i will have a record of from where this app is accessed like storing ip and displaying on a map to check which part of the map is accessing my website and get analytics n all.
+//? TODO: add a ignore step in send email where it will return if email: ___, ____ similar in setting disable settings 
 
 //? NOTE:
 // when adding image from an outside src u need to set them up in next.config.*: https://youtu.be/w2h54xz6Ndw?t=2328

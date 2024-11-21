@@ -6,3 +6,4 @@ build
 .next
 email.*
 packages/db/**/*
+packages/store/**/*

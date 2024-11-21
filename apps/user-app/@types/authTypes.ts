@@ -14,3 +14,9 @@ export interface CustomToken {
   exp: number;
   jti: string;
 }
+
+//https://dribbble.com/shots/19397965-Transaction-History-UI-Design
+export interface PaymentStatus {
+  // what do you call when you add money in your wallet?
+  type: "Deposit" | "Withdraw" | "Transfer" | "Recieve";
+}

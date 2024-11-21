@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "@repo/ui/globals.css";
-import { UseProvider } from "@/hooks/UseProvider";
+import { Provider } from "@/components/Provider";
 import { Analytics } from "@vercel/analytics/react";
+// import { SessionProvider } from "next-auth/react";
+import { auth } from "@/lib/auth";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -18,21 +20,22 @@ export const metadata: Metadata = {
   description: "Send and Recieve money, rushingly fast! ",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
   return (
     <html lang="en">
-      <UseProvider>
-        <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <Provider session={session}>
           <div className="h-full">
             {children}
             <Analytics />
           </div>
-        </body>
-      </UseProvider>
+        </Provider>
+      </body>
     </html>
   );
 }

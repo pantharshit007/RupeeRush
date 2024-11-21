@@ -9,6 +9,8 @@ const CACHE_TTL = 30 * 1000; // 30 SEC
  *
  * @param userId
  */
+
+// TODO: remove this already did that in packages/db
 export async function getCachedUserData(userId: string) {
   const cached = userCache.get(userId);
   const currentTime = Date.now();

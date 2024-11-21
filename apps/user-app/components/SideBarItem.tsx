@@ -16,7 +16,7 @@ function SideBarItem({ link, icon, title }: SideBar): React.ReactNode {
   return (
     <div
       onClick={() => router.push(link)}
-      className={`flex items-center ${currentUrl ? "text-richPurple-600 " : "text-slate-500"} cursor-pointer p-2 pl-8 hover:text-slate-600`}
+      className={`flex items-center ${currentUrl ? "text-azureBlue-600 " : "text-slate-500"} cursor-pointer p-2 pl-8 hover:text-slate-600`}
     >
       <div className="pr-2 ">{icon}</div>
       <div className="font-bold text-xl pl-1">{title}</div>

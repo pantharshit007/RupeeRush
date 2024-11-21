@@ -9,10 +9,11 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
+  "peerDependencies": {
     "recoil": "^0.7.7"
   },
   "exports": {
-    "./balance": "./src/hooks/useBalance.ts"
+    "./balance": "./src/hooks/useBalanceHook.ts",
+    "./store": "./src/index.ts"
   }
 }
