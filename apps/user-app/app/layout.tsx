@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "@repo/ui/globals.css";
-import { Provider } from "@/components/Provider";
+import { Provider, ThemeProvider } from "@/components/Provider";
 import { Analytics } from "@vercel/analytics/react";
 // import { SessionProvider } from "next-auth/react";
 import { auth } from "@/lib/auth";
+import { Toaster } from "@/components/common/Toaster";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,12 +30,18 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Provider session={session}>
-          <div className="h-full">
-            {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Provider session={session}>
+            <div className="h-full">{children}</div>
             <Analytics />
-          </div>
-        </Provider>
+          </Provider>
+          <Toaster richColors />
+        </ThemeProvider>
       </body>
     </html>
   );

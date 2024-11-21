@@ -28,6 +28,8 @@ import DialogWrapper from "@/components/common/DialogWrapper";
 import DepositWithdrawCard from "@/components/common/DepositWithdrawWrapper";
 import { SchemaTypes } from "@repo/db/client";
 import { useBalanceState } from "@repo/store/balance";
+import { toast } from "sonner";
+import { useTheme } from "next-themes";
 
 function DepositCard({ type }: { type: "deposit" | "withdraw" }) {
   const [isPending, startTransition] = useTransition();
@@ -51,7 +53,6 @@ function DepositCard({ type }: { type: "deposit" | "withdraw" }) {
     }
   }
 
-  // TODO: add toast for success
   function submitTransaction(values: z.infer<typeof FormSchema>) {
     setLoading(true);
     setError("");
@@ -77,6 +78,7 @@ function DepositCard({ type }: { type: "deposit" | "withdraw" }) {
             setAmount("");
             setBalance(data.res);
             setIsDialogOpen(false);
+            toast.success("Transaction Success!");
             form.reset();
           }
         }
@@ -126,7 +128,7 @@ function DepositCard({ type }: { type: "deposit" | "withdraw" }) {
         </Select>
       </div>
 
-      <Button onClick={handleSubmit} className="w-full bg-sky-500 hover:bg-sky-600">
+      <Button onClick={handleSubmit} className="w-full text-white">
         {type === "deposit" ? "Add Money" : "Withdraw Money"}
       </Button>
 
@@ -161,7 +163,7 @@ function DepositCard({ type }: { type: "deposit" | "withdraw" }) {
             />
             <div className="flex flex-col items-center w-full justify-center gap-y-2">
               {!loading && <FormError message={error || ""} />}
-              {loading && <BeatLoader />}
+              {loading && <BeatLoader color={"#1BA4FF"} />}
             </div>
 
             <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">

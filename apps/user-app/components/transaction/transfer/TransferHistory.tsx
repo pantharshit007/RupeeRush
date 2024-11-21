@@ -32,7 +32,7 @@ function TransferHistory({ transactions }: { transactions: TransactionType[] }) 
               </div>
               <div className="text-right">
                 <p
-                  className={`font-medium ${txn.type === "DEPOSIT" ? "text-emerald-500" : "text-destructive"}`}
+                  className={`font-medium ${txn.type === "DEPOSIT" ? "text-emerald-400" : "text-rose-600"}`}
                 >
                   {txn.type === "DEPOSIT" ? "+ " : "- "}₹ {txn.amount / 100}
                 </p>
