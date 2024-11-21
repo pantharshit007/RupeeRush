@@ -1,29 +1,13 @@
-import TxnHistory from "./TxnHistory";
+import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
 
-interface TransactionType {
-  time: Date;
-  amount: number;
-  status: "Success" | "Failure" | "Processing";
-  provider: string;
-}
-
-function TransactionHistory({
-  transactions,
-}: {
-  transactions: TransactionType[];
-}) {
+function TransactionHistory({ children }: { children: React.ReactNode }) {
   return (
-    <div className="px-3 py-2 rounded-2xl bg-slate-200 max-md:mb-5">
-      {!transactions.length ? (
-        <div className="text-center pb-8 pt-8">No Recent transactions</div>
-      ) : (
-        <div className="py-2 flex flex-col gap-y-2">
-          {transactions.map((txn, index) => (
-            <TxnHistory transaction={txn} key={index} />
-          ))}
-        </div>
-      )}
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-azureBlue-400 font-semibold">Recent Transactions</CardTitle>
+      </CardHeader>
+      <CardContent>{children}</CardContent>
+    </Card>
   );
 }
 

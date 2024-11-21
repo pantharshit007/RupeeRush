@@ -15,3 +15,5 @@ app.get("/", (req, res: any) => {
 app.listen(4000, () => {
   console.info("> Server started on port 4000");
 });
+
+export default app;

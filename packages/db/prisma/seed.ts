@@ -1,5 +1,13 @@
-import { AuthType, OnRampStatus, PrismaClient } from "@prisma/client";
+import {
+  AuthType,
+  Bank,
+  PrismaClient,
+  TransactionStatus,
+  UserRole,
+  TransactionType,
+} from "@prisma/client";
 import bcrypt from "bcryptjs";
+
 const prisma = new PrismaClient();
 
 async function main() {
@@ -11,23 +19,39 @@ async function main() {
       email: "alice@example.com",
       password: await bcrypt.hash("alice123", 10),
       name: "Alice",
-      role: "USER",
+      role: UserRole.USER,
       emailVerified: new Date(),
       isTwoFactorEnabled: false,
-      Balance: {
+      walletPin: await bcrypt.hash("123456", 10),
+      walletBalance: {
         create: {
-          amount: 20000,
+          balance: 20000,
           locked: 5000,
         },
       },
-      OnRampTransaction: {
+      bankAccount: {
         create: {
-          startTime: new Date(),
-          status: OnRampStatus.Success,
-          amount: 20000,
-          token: "token_1111",
-          provider: "HDFC Bank",
+          phoneNumber: "1111111111",
+          bankName: Bank.HDFC,
+          accountNumber: "1234567890",
+          balance: 200000,
+          cardNumber: "4111111111111111",
+          cardExpiryMonth: 12,
+          cardExpiryYear: 2025,
+          cardPinHash: await bcrypt.hash("1234", 10),
         },
+      },
+      upiId: "1111111111@hdfcbank",
+      OnRampTransaction: {
+        create: [
+          {
+            startTime: new Date(),
+            status: TransactionStatus.SUCCESS,
+            amount: 20000,
+            provider: Bank.HDFC,
+            type: TransactionType.DEPOSIT,
+          },
+        ],
       },
     },
   });
@@ -40,23 +64,39 @@ async function main() {
       email: "bob@example.com",
       password: await bcrypt.hash("bob123", 10),
       name: "Bob",
-      role: "USER",
+      role: UserRole.USER,
       emailVerified: new Date(),
       isTwoFactorEnabled: false,
-      Balance: {
+      walletPin: await bcrypt.hash("654321", 10),
+      walletBalance: {
         create: {
-          amount: 5000,
+          balance: 5000,
           locked: 1000,
         },
       },
-      OnRampTransaction: {
+      bankAccount: {
         create: {
-          startTime: new Date(),
-          status: OnRampStatus.Failure,
-          amount: 5000,
-          token: "token_2222",
-          provider: "ICICI Bank",
+          phoneNumber: "2222222222",
+          bankName: Bank.AXIS,
+          accountNumber: "0987654321",
+          balance: 100000,
+          cardNumber: "5555555555554444",
+          cardExpiryMonth: 6,
+          cardExpiryYear: 2026,
+          cardPinHash: await bcrypt.hash("5678", 10),
         },
+      },
+      upiId: "2222222222@axisbank",
+      OnRampTransaction: {
+        create: [
+          {
+            startTime: new Date(),
+            status: TransactionStatus.FAILURE,
+            amount: 5000,
+            provider: Bank.AXIS,
+            type: TransactionType.DEPOSIT,
+          },
+        ],
       },
     },
   });

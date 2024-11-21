@@ -3,10 +3,14 @@
   "compilerOptions": {
     "outDir": "dist",
     "module": "ESNext", // Added to support ES Modules
-    "moduleResolution": "Bundler",
+    "moduleResolution": "bundler",
     "target": "ES2020",
     "lib": ["ES2020"],
-    "esModuleInterop": true // Added to enable ES Module interop
+    "esModuleInterop": true, // Added to enable ES Module interop
+    "sourceMap": true
+  },
+  "ts-node": {
+    "esm": true
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

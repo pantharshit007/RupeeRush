@@ -54,24 +54,21 @@ export const settingsAction = async (values: z.infer<typeof SettingsSchema>, use
       return { success: "Verification email sent!" };
     }
 
-    let hashedPassword = "";
+    let updateData: { [key: string]: unknown } = { ...values };
     if (values.oldPassword && values.newPassword && dbUser.password) {
       const validPassword = await compare(values.oldPassword, dbUser.password);
       if (!validPassword) {
         return { error: "Incorrect Password!" };
       }
 
-      hashedPassword = await hash(values.newPassword, 10);
-      values.oldPassword = undefined;
-      values.newPassword = undefined;
+      updateData.password = await hash(values.newPassword, 10);
+      updateData.oldPassword = undefined;
+      updateData.newPassword = undefined;
     }
 
     const updatedUser = await db.user.update({
       where: { id: dbUser.id },
-      data: {
-        ...values,
-        password: hashedPassword,
-      },
+      data: updateData,
     });
 
     //!BUGGY: This is really unstable
