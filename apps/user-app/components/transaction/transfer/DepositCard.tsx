@@ -27,6 +27,7 @@ import FormError from "@/components/common/FormError";
 import DialogWrapper from "@/components/common/DialogWrapper";
 import DepositWithdrawCard from "@/components/common/DepositWithdrawWrapper";
 import { SchemaTypes } from "@repo/db/client";
+import { useBalanceState } from "@repo/store/balance";
 
 function DepositCard({ type }: { type: "deposit" | "withdraw" }) {
   const [isPending, startTransition] = useTransition();
@@ -35,6 +36,7 @@ function DepositCard({ type }: { type: "deposit" | "withdraw" }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [_, setBalance] = useBalanceState();
 
   const user = useCurrentUser();
 
@@ -73,6 +75,7 @@ function DepositCard({ type }: { type: "deposit" | "withdraw" }) {
 
           if (data.success) {
             setAmount("");
+            setBalance(data.res);
             setIsDialogOpen(false);
             form.reset();
           }
@@ -124,7 +127,7 @@ function DepositCard({ type }: { type: "deposit" | "withdraw" }) {
       </div>
 
       <Button onClick={handleSubmit} className="w-full bg-sky-500 hover:bg-sky-600">
-        Add Money
+        {type === "deposit" ? "Add Money" : "Withdraw Money"}
       </Button>
 
       <DialogWrapper

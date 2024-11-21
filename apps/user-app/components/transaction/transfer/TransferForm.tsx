@@ -18,22 +18,26 @@ function TransferForm() {
   const user = useCurrentUser();
 
   useEffect(() => {
-    const fetchBalance = async () => {
-      if (user?.id) {
-        const res = await getBalanceAction(user.id);
-        setBalance(res);
-      }
-    };
-
-    const getWalletTransaction = async () => {
-      if (user?.id) {
-        const res = await getOnRampTxnAction(user.id);
-        setTransactions(res);
-      }
-    };
-    fetchBalance();
-    getWalletTransaction();
+    if (user?.id) {
+      const fetchBalance = async () => {
+        const balanceRes = await getBalanceAction(user.id);
+        setBalance(balanceRes);
+      };
+      fetchBalance();
+    }
+    return () => {};
   }, [user?.id, setBalance]);
+
+  useEffect(() => {
+    if (user?.id && balance.walletBalance) {
+      const fetchTransactions = async () => {
+        const transactionRes = await getOnRampTxnAction(user.id);
+        setTransactions(transactionRes);
+      };
+      fetchTransactions();
+    }
+    return () => {};
+  }, [user?.id, balance.walletBalance, setTransactions]);
 
   return (
     <div className="">
@@ -60,7 +64,10 @@ function TransferForm() {
         </Tabs>
 
         <div className="space-y-4">
-          <BalanceCard walletBalance={balance.walletBalance} bankBalance={balance.bankBalance} />
+          <BalanceCard
+            walletBalance={balance.walletBalance ?? 0}
+            bankBalance={balance.bankBalance ?? 0}
+          />
           <TransferHistory transactions={transactions} />
         </div>
       </div>

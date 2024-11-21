@@ -1,7 +1,9 @@
 "use server";
 
-import db, { SchemaTypes } from "@repo/db/client";
 import { compare } from "bcryptjs";
+import db, { SchemaTypes } from "@repo/db/client";
+import { cache } from "@repo/db/cache";
+import { auth } from "@/lib/auth";
 
 /**
  * Fetch user's Transaction of withdraw/deposit
@@ -9,14 +11,30 @@ import { compare } from "bcryptjs";
  * @returns a list of last 3 transactions
  */
 export const getOnRampTxnAction = async (userId: string) => {
+  const session = await auth();
   try {
+    if (!session?.user) {
+      throw new Error("Unauthorized!");
+    }
+    if (session.user.id !== userId) {
+      throw new Error("Forbidden!");
+    }
+
+    const txnValue = await cache.get("onRampTransaction", [userId]);
+    if (txnValue) {
+      return txnValue;
+    }
+
     const transactions = await db.onRampTransaction.findMany({
       where: { userId },
       orderBy: { startTime: "desc" },
       take: 3,
     });
+
+    await cache.set("onRampTransaction", [userId], transactions);
+
     return transactions.map((txn: any) => ({
-      time: txn.startTime,
+      startTime: txn.startTime,
       amount: txn.amount,
       status: txn.status,
       type: txn.type,
@@ -52,7 +70,17 @@ export const createOnRampTxnAction = async ({
   pin,
   type,
 }: CreateOnRampTransactionProps) => {
+  const session = await auth();
+
   try {
+    if (!session || !session?.user?.id) {
+      throw new Error("Unauthrized!");
+    }
+
+    if (session.user.id !== userId) {
+      throw new Error("Forbidden!");
+    }
+
     const userData = await db.user.findUnique({
       where: { id: userId },
       select: {
@@ -94,8 +122,8 @@ export const createOnRampTxnAction = async ({
 
     const rampTxn = await db.onRampTransaction.create({ data: txnData });
 
-    await db.$transaction(async (txn) => {
-      await txn.walletBalance.update({
+    const result = await db.$transaction(async (txn) => {
+      const wallet = await txn.walletBalance.update({
         where: { userId },
         data: {
           balance: {
@@ -104,7 +132,7 @@ export const createOnRampTxnAction = async ({
         },
       });
 
-      await txn.bankAccount.update({
+      const bankAccount = await txn.bankAccount.update({
         where: { userId: userData.id },
         data: {
           balance: {
@@ -119,15 +147,28 @@ export const createOnRampTxnAction = async ({
           status: "SUCCESS" as SchemaTypes.TransactionStatus,
         },
       });
+
+      // setting cache again
+      const transactions = await txn.onRampTransaction.findMany({
+        where: { userId },
+        orderBy: { startTime: "desc" },
+        take: 3,
+      });
+
+      await cache.evict("onRampTransaction", [userId]);
+      await cache.set("onRampTransaction", [userId], transactions);
+
+      return { wallet: wallet.balance, bankAccount: bankAccount.balance };
     });
 
     return {
       success: `Money ${type === "deposit" ? "Added to" : "Withdrawn from"} Wallet`,
+      res: { walletBalance: result.wallet, bankBalance: result.bankAccount },
     };
   } catch (err: any) {
     console.error(`> Failed to ${type} money:`, err.message);
     return {
-      error: `Failed to ${type} money`,
+      error: `Failed to ${type} money: ` + err.message,
     };
   }
 };

@@ -19,10 +19,12 @@
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.0",
     "@prisma/client": "^5.20.0",
-    "bcryptjs": "^2.4.3"
+    "bcryptjs": "^2.4.3",
+    "ioredis": "^5.4.1"
   },
   "exports": {
-    "./client": "./src/index.ts"
+    "./client": "./src/index.ts",
+    "./cache": "./src/caches/cache.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

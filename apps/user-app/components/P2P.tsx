@@ -74,6 +74,7 @@ function P2P() {
 
       {/* Transaction history */}
       <div>
+        {/* @ts-expect-error */}
         <TransactionHistory transactions={transactions} />
       </div>
     </div>
