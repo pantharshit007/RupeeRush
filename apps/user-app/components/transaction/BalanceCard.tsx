@@ -21,7 +21,7 @@ function BalanceCard({ walletBalance, bankBalance }: BalanceType) {
           <span>Bank Balance</span>
           <span className="text-azureBlue-400 font-medium">{bankBalance / 100} INR</span>
         </div>
-        <div className="flex justify-between font-bold">
+        <div className="flex justify-between font-semibold">
           <span>Total Balance</span>
           <span>{(bankBalance + walletBalance) / 100} INR</span>
         </div>

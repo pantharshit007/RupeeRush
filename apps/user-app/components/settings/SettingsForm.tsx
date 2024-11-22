@@ -241,9 +241,9 @@ function SettingsForm() {
               {!loading && <FormError message={error || ""} />}
               {!loading && <FormSuccess message={success} />}
 
-              {loading && <BeatLoader />}
+              {loading && <BeatLoader color={"#1BA4FF"}/>}
 
-              <Button type="submit" disabled={isPending} className="ml-auto bg-sky-600">
+              <Button type="submit" disabled={isPending} className="ml-auto text-white">
                 Update Settings
               </Button>
             </div>

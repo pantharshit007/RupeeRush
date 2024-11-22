@@ -46,10 +46,16 @@ function TransferForm() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
         <Tabs defaultValue="deposit" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="deposit" className=" data-[state=active]:text-sky-600">
+            <TabsTrigger
+              value="deposit"
+              className=" data-[state=active]:text-sky-500 data-[state=active]:font-bold"
+            >
               Deposit
             </TabsTrigger>
-            <TabsTrigger value="withdraw" className="data-[state=active]:text-sky-600">
+            <TabsTrigger
+              value="withdraw"
+              className="data-[state=active]:text-sky-500 data-[state=active]:font-bold"
+            >
               Withdraw
             </TabsTrigger>
           </TabsList>

@@ -20,6 +20,7 @@ import { Button } from "@repo/ui/components/ui/button";
 import FormError from "@/components/common/FormError";
 import FormSuccess from "@/components/common/FormSuccess";
 import { registerAction } from "@/actions/auth/register";
+import { toast } from "sonner";
 
 function RegisterForm() {
   const [isPending, startTransition] = useTransition();
@@ -38,11 +39,13 @@ function RegisterForm() {
         if (data?.error) {
           form.reset();
           setError(data?.error);
+          toast.error(data?.error);
         }
 
         if (data?.success) {
           form.reset();
           setSuccess(data?.success);
+          toast.success(data?.success);
         }
       } catch (err: any) {
         console.error("> Error registering user: " + err?.message);

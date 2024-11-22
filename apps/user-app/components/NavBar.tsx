@@ -1,19 +1,22 @@
 import { auth } from "@/lib/auth";
-import LoginButton from "./auth/LoginButton";
+import LoginButton from "@/components/auth/LoginButton";
 import { Button } from "@repo/ui/components/ui/button";
-import UserDropdown from "./common/UserDropdown";
+import UserDropdown from "@/components/common/UserDropdown";
+import ThemeModal from "@/components/ThemeModal";
+import { ThemeBackgroundNavbar } from "@/components/common/ThemeBackground";
 
 async function NavBar() {
   // Get session data server-side
   const session = await auth();
 
   return (
-    <div className="flex justify-center items-center border-b border-slate-300 px-4 h-[3.5rem] bg-[#f7f7fa]">
+    <ThemeBackgroundNavbar>
       <div className="w-11/12 max-w-maxContent flex items-center justify-between">
-        <div className="text-2xl flex flex-col justify-center text-azureBlue-600 font-bold italic">
+        <div className="text-2xl flex flex-col justify-center text-azureBlue-500 font-bold italic">
           RupeeRush
         </div>
-        <div className="flex flex-col justify-center">
+        <div className="flex gap-x-2 justify-center">
+          <ThemeModal />
           {!session?.user ? (
             // SignIn/Login
             <LoginButton asChild>
@@ -25,7 +28,7 @@ async function NavBar() {
           )}
         </div>
       </div>
-    </div>
+    </ThemeBackgroundNavbar>
   );
 }
 

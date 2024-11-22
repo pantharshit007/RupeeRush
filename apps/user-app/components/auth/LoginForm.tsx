@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { BeatLoader } from "react-spinners";
+import { toast } from "sonner";
 
 import CardWrapper from "@/components/common/CardWrapper";
 import { LoginSchema } from "@repo/schema/authSchema";
@@ -69,11 +70,13 @@ function LoginForm() {
           // Extracts only the relevant part of the error message: before "Read more"
           const errorMessage = data?.error.match(/^[^\r\n]+/)?.[0];
           setError(errorMessage || "Something went wrong!");
+          toast.error(errorMessage || "Something went wrong!");
           form.reset();
         }
 
         if (data?.success) {
           setSuccess(data?.success);
+          toast.success(data?.success);
           form.reset();
         }
 
@@ -190,7 +193,7 @@ function LoginForm() {
               <FormError message={error || urlError || ""} />
               <FormSuccess message={success} />
 
-              {loading && <BeatLoader />}
+              {loading && <BeatLoader color={"#1BA4FF"} />}
 
               {!loading && !success && (
                 <Button type={"submit"} className="w-full" disabled={isPending}>

@@ -3,7 +3,7 @@ import { InMemoryCache } from "./in-memory-cache";
 import { RedisCache } from "./redis-cache";
 
 // TODO: turning off redis for now
-const redisUrl = process.env.REDIS_URL_OFF;
+const redisUrl = process.env.REDIS_URL;
 class Cache implements CacheProps {
   private delegate: CacheProps;
   private static instance: Cache;

@@ -60,7 +60,7 @@ function TokenVerificationForm() {
     >
       <div className="flex flex-col items-center w-full justify-center relative">
         {/* Show loader only if verifying */}
-        {loading && <BeatLoader />}
+        {loading && <BeatLoader color={"#1BA4FF"} />}
 
         {/* Display success or error message */}
         <FormSuccess message={success || ""} />
