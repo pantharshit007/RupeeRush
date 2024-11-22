@@ -41,7 +41,7 @@ function TransferForm() {
 
   return (
     <div className="">
-      <Title title={"Transfer"} />
+      <Title title={"Wallet Transfer"} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
         <Tabs defaultValue="deposit" className="w-full">
