@@ -2,7 +2,7 @@ import React from "react";
 
 import { SchemaTypes } from "@repo/db/client";
 import Status from "@repo/ui/components/custom/Status";
-import TransactionHistory from "@/components/TxnHistoryCard";
+import TransactionHistory from "@/components/transaction/TxnHistoryCard";
 export interface TransactionType {
   startTime: Date | string;
   amount: number;

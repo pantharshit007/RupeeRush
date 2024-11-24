@@ -4,7 +4,7 @@ import { SchemaTypes } from "@repo/db/client";
 
 export const mainNavItems = [
   { title: "Home", icon: Home, href: "/dashboard/home" },
-  { title: "Wallet Transfer", icon: WalletIcon, href: "/dashboard/transfer" },
+  { title: "Wallet Transfer", icon: WalletIcon, href: "/dashboard/wallet-transfer" },
   { title: "P2P Transfer", icon: Users, href: "/dashboard/p2p-transfer" },
   { title: "B2B Transfer", icon: B2BTransferIcon, href: "/dashboard/b2b-transfer" },
   { title: "Transactions", icon: TransferIcon, href: "/dashboard/transactions" },

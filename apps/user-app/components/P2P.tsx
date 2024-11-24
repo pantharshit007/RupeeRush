@@ -4,9 +4,9 @@ import ButtonPrimary from "@repo/ui/components/custom/ButtonPrimary";
 import TextInput from "@repo/ui/components/custom/TextInput";
 import React, { useState, useEffect } from "react";
 import { p2pTransfer } from "@/actions/transaction/p2pTransfer";
-import TransactionHistory from "./TxnHistoryCard";
+import TransactionHistory from "./transaction/TxnHistoryCard";
 import { useSession } from "next-auth/react";
-import { getP2PTransactions } from "@/actions/transaction/getP2PTransactions";
+import { getP2PTransactions } from "@/actions/transaction/P2P/getP2PTransactions";
 
 function P2P() {
   const [receiverId, setReceiverId] = useState("yourname@sbi");
