@@ -8,13 +8,16 @@ export async function getP2PTransactions(userId: string) {
       where: {
         senderUserId: userId,
       },
+      orderBy: {
+        timestamp: "desc",
+      },
+      take: 3,
     });
 
     return transaction.map((txn: any) => ({
       time: txn.timestamp,
       amount: txn.amount,
       status: txn.status,
-      provider: "HDFC",
     }));
   } catch (err: any) {
     console.error("> Error while fetching P2P Transaction:", err.message);

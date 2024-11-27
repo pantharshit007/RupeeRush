@@ -4,11 +4,17 @@ import { router } from "./route.js";
 
 const app = express();
 app.use(express.json());
-app.use("/api", router);
+app.use("/api/v1", router);
 
 app.get("/", (req, res: any) => {
   return res.json({
     msg: "Hello mom!!",
+  });
+});
+
+app.get("/ping", (req, res: any) => {
+  return res.json({
+    msg: "pong",
   });
 });
 

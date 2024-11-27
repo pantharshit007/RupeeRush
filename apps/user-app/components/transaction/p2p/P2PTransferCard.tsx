@@ -19,6 +19,7 @@ import { FormSchema, P2PFormSchema } from "@repo/schema/authSchema";
 import FormError from "@/components/common/FormError";
 import DialogWrapper from "@/components/common/DialogWrapper";
 import PaymentWrapper from "@/components/transaction/PaymentWrapper";
+import { createP2PTxnAction } from "@/actions/transaction/P2P/p2p";
 
 function P2PTransferCard({ type }: { type: "phone" | "upi" }) {
   const [isPending, startTransition] = useTransition();
@@ -61,40 +62,36 @@ function P2PTransferCard({ type }: { type: "phone" | "upi" }) {
       value = { ...payDetail, ...values };
 
       try {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        console.log("Transaction values:", value);
-        toast.success("Transaction processed!");
-        // if (user?.id) {
-        //   const data = await createP2PTxnAction({
-        //     recipientId: value.recipient,
-        //     amount: value.amount,
-        //     userId: user.id,
-        //     pin: value.pin,
-        //     type,
-        //   });
+        if (user?.id) {
+          const data = await createP2PTxnAction({
+            receiverIdentifier: value.recipient,
+            amount: value.amount * 100,
+            userId: user.id,
+            pin: value.pin,
+            transferMethod: type === "phone" ? "PHONE" : "UPI",
+          });
 
-        //   if (data.error) {
-        //     setError(data.error);
-        //     form.reset();
-        //     return;
-        //   }
+          if (data.error) {
+            setError(data.error);
+            toast.error(data.error);
+            form.reset();
+            return;
+          }
 
-        //   if (data.success) {
-        //     setBalance(data.res);
-        //     setIsDialogOpen(false);
-        //     toast.success("Transaction Success!");
-        //     form.reset();
-        //   }
-        // }
+          if (data.success) {
+            setBalance((prevState) => ({ ...prevState, walletBalance: data?.res?.balance }));
+            toast.success("Transaction Success!");
+            form.reset();
+          }
+        }
       } catch (err: any) {
         setError(err.message);
-        form.reset();
-        paymentForm.reset();
       } finally {
         setIsDialogOpen(false);
         form.reset();
         paymentForm.reset();
         setLoading(false);
+        setError("");
       }
     });
   }
