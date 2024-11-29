@@ -1,13 +1,7 @@
 "use server";
 
-import { compare } from "bcryptjs";
-
 import { auth } from "@/lib/auth";
-import { cache, cacheType } from "@repo/db/cache";
 import db, { SchemaTypes } from "@repo/db/client";
-import { WALLET_LOCK_DURATION, WALLET_PIN_ATTEMPTS_LIMIT } from "@/utils/constant";
-import { encryptData } from "@/utils/data";
-import { callWebhook } from "@/lib/api";
 import {
   checkWalletBalance,
   createP2PTransaction,
@@ -80,32 +74,17 @@ export const createP2PTxnAction = async ({ ...props }: CreateP2PTxnProps) => {
         success: true,
         transactionId: tx.id,
         payload: webhookPayload,
-        balance: tx.wallet.balance,
+        balance: walletBalance.balance,
       };
     });
 
     // Calling webhook API
     await processTransactionWebhook(result.transactionId, result.payload, userId, amount);
 
-    // const response: WebhookResponse = await callWebhook(result.payload);
-    // if (!response.success) {
-    //   await db.$transaction(async (txn) => {
-    //     await txn.p2pTransaction.update({
-    //       where: { id: result.transactionId },
-    //       data: { status: "FAILURE", webhookStatus: "FAILED" },
-    //     });
-
-    //   });
-
-    //   throw new Error(`Transaction failed: ${response.message}`);
-    // } else {
-    //   await db.p2pTransaction.update({
-    //     where: { id: result.transactionId },
-    //     data: { status: "SUCCESS", webhookStatus: "COMPLETED" },
-    //   });
-    // }
-
-    return { success: true, res: { balance: result.balance, transactionId: result.transactionId } };
+    return {
+      success: true,
+      res: { balance: result.balance + amount, transactionId: result.transactionId },
+    };
 
     // Compensating transaction: (handle failure)
   } catch (err: any) {

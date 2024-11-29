@@ -15,7 +15,7 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "@repo/ui/components/ui/in
 
 import { useBalanceState } from "@repo/store/balance";
 import { useCurrentUser } from "@/hooks/UseCurrentUser";
-import { FormSchema, P2PFormSchema } from "@repo/schema/authSchema";
+import { FormSchema, P2PFormSchema } from "@repo/schema/txnSchema";
 import FormError from "@/components/common/FormError";
 import DialogWrapper from "@/components/common/DialogWrapper";
 import PaymentWrapper from "@/components/transaction/PaymentWrapper";

@@ -179,16 +179,7 @@ export const createP2PTransaction = async ({ txn, ...props }: CreateP2PTxnProps)
     },
   });
 
-  // Lock the wallet amount
-  const wallet = await txn.walletBalance.update({
-    where: { userId: props.userId },
-    data: { balance: { decrement: props.amount }, locked: { increment: props.amount } },
-  });
-
-  // update cache
-  cache.set(cacheType.WALLET_BALANCE, [props.userId], wallet.balance);
-
-  return { ...transaction, wallet };
+  return { ...transaction };
 };
 
 export const prepareWebhookPayload = async ({

@@ -221,7 +221,6 @@ enum TransactionStatus {
 
 enum WebhookStatus {
   PENDING
-  SENT
   FAILED
   COMPLETED
 }

@@ -1,7 +1,12 @@
 import crypto from "crypto";
 import "dotenv/config";
 
-function p2pController(req: any, res: any) {
+import { P2PWebhookPayload, WebhookResponse } from "@repo/schema/types";
+import { checkIdempotency, validateSignature } from "../lib/validation";
+import { cache, cacheType } from "@repo/db/cache";
+import { processP2PTransaction } from "../lib/processTxn";
+
+async function p2pController(req: any, res: any): Promise<WebhookResponse> {
   try {
     if (!req.body) {
       return res.status(401).json({
@@ -9,36 +14,32 @@ function p2pController(req: any, res: any) {
         message: "No request body found",
       });
     }
-    console.log("> Request Body", req.body);
+
+    const body: P2PWebhookPayload = req.body;
+    const idempotencyKey = req.headers["x-idempotency-key"];
+
+    console.log("> Request Body", body);
     console.log("> Request Headers", req.headers);
 
-    // Generate HMAC signature for webhook payload
-    const generateSignature = (payload: any, secretKey: string): string => {
-      return crypto.createHmac("sha256", secretKey).update(JSON.stringify(payload)).digest("hex");
-    };
+    const response = validateSignature(body, req);
+    if (!response.success) {
+      return res.status(401).json(response);
+    }
 
-    if (!process.env.WEBHOOK_SECRET) {
-      console.log("> Webhook secret not configured");
-      return res.status(401).json({
-        success: false,
-        message: "Webhook secret not configured",
+    const { isProcessed, existingResult } = await checkIdempotency(idempotencyKey);
+    if (isProcessed) {
+      return res.status(200).json({
+        success: true,
+        message: "Transaction already processed",
+        ...existingResult,
       });
     }
 
-    const signature = generateSignature(req.body, process.env.WEBHOOK_SECRET);
+    // process transaction
+    const transactionResult = await processP2PTransaction(req.body);
 
-    const incomingSignature: string = req.headers["x-signature"];
-    console.log("> Signature Valid:", incomingSignature === signature);
-
-    if (incomingSignature !== signature) {
-      console.error("> Signature verification failed");
-      return res.status(401).json({
-        success: false,
-        message: "Signature verification failed",
-      });
-    }
-
-    throw new Error("Test error");
+    const cacheData = { ...transactionResult, processedAt: new Date().toISOString() };
+    await cache.set(cacheType.IDEMPOTENCY_KEY, [idempotencyKey], cacheData, 1200); // cache for 20 minutes
 
     return res.status(200).json({
       success: true,

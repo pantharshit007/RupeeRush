@@ -8,7 +8,7 @@ import { BeatLoader } from "react-spinners";
 
 import { Label } from "@repo/ui/components/ui/label";
 import { Input } from "@repo/ui/components/ui/input";
-import { FormSchema } from "@repo/schema/authSchema";
+import { FormSchema } from "@repo/schema/txnSchema";
 import {
   Select,
   SelectContent,
