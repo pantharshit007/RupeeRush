@@ -31,15 +31,16 @@ export const getOnRampTxnAction = async (userId: string) => {
       take: 3,
     });
 
-    await cache.set(cacheType.ON_RAMP_TRANSACTION, [userId], transactions);
-
-    return transactions.map((txn: any) => ({
+    const txn = transactions.map((txn: any) => ({
       startTime: txn.startTime,
       amount: txn.amount,
       status: txn.status,
       type: txn.type,
       provider: txn.provider,
     }));
+
+    await cache.set(cacheType.ON_RAMP_TRANSACTION, [userId], txn);
+    return txn;
   } catch (err: any) {
     console.error("> Error while fetching Transaction:", err.message);
     return [];
@@ -157,6 +158,8 @@ export const createOnRampTxnAction = async ({
 
       await cache.evict(cacheType.ON_RAMP_TRANSACTION, [userId]);
       await cache.set(cacheType.ON_RAMP_TRANSACTION, [userId], transactions);
+      await cache.evict(cacheType.WALLET_BALANCE, [userId]);
+      await cache.evict(cacheType.BANK_BALANCE, [userId]);
 
       return { wallet: wallet.balance, bankAccount: bankAccount.balance };
     });

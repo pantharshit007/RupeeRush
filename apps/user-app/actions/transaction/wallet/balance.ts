@@ -28,18 +28,22 @@ export const getBalanceAction = async (userId: string): Promise<Balance> => {
     }
 
     // get balance from db
-    const walletBalance = await db.walletBalance.findUnique({
-      where: { userId },
-      select: { balance: true },
-    });
+    const walletBalance =
+      wallet ??
+      (await db.walletBalance.findUnique({
+        where: { userId },
+        select: { balance: true },
+      }));
     if (!walletBalance) {
       return { walletBalance: 0, bankBalance: 0 };
     }
 
-    const bankAccount = await db.bankAccount.findUnique({
-      where: { userId },
-      select: { balance: true },
-    });
+    const bankAccount =
+      bank ??
+      (await db.bankAccount.findUnique({
+        where: { userId },
+        select: { balance: true },
+      }));
     if (!bankAccount) {
       return { walletBalance: 0, bankBalance: 0 };
     }
@@ -54,7 +58,7 @@ export const getBalanceAction = async (userId: string): Promise<Balance> => {
 
     return allBalance;
   } catch (err) {
-    console.error("> Error getting balance: ", err);
+    console.error("> Error getting balance:", err);
     return { walletBalance: 0, bankBalance: 0 };
   }
 };

@@ -27,7 +27,8 @@ import FormError from "@/components/common/FormError";
 import DialogWrapper from "@/components/common/DialogWrapper";
 import PaymentWrapper from "@/components/transaction/PaymentWrapper";
 import { SchemaTypes } from "@repo/db/client";
-import { useBalanceState } from "@repo/store/balance";
+import { useSetBalance } from "@repo/store/balance";
+import { useSetTrigger } from "@repo/store/trigger";
 import { toast } from "sonner";
 
 function WalletTransferCard({ type }: { type: "deposit" | "withdraw" }) {
@@ -37,8 +38,9 @@ function WalletTransferCard({ type }: { type: "deposit" | "withdraw" }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [_, setBalance] = useBalanceState();
 
+  const setBalance = useSetBalance();
+  const trigger = useSetTrigger();
   const user = useCurrentUser();
 
   // updating the redirectUrl and provider based on bank
@@ -76,6 +78,7 @@ function WalletTransferCard({ type }: { type: "deposit" | "withdraw" }) {
 
           if (data.success) {
             setAmount("");
+            trigger(new Date().getTime());
             setBalance(data.res);
             setIsDialogOpen(false);
             toast.success("Transaction Success!");

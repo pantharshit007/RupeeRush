@@ -1,9 +1,10 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 
 import Title from "@repo/ui/components/custom/Title";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs";
 import { useBalanceState } from "@repo/store/balance";
+import { useTrigger } from "@repo/store/trigger";
 
 import BalanceCard from "@/components/transaction/BalanceCard";
 import WalletTransferCard from "@/components/transaction/transfer/WalletTransferCard";
@@ -13,31 +14,31 @@ import { getOnRampTxnAction } from "@/actions/transaction/wallet/onRampTransacti
 import TransferHistory from "./TransferHistory";
 
 function WalletForm() {
+  // TODO: remove this damn balance atom state
   const [balance, setBalance] = useBalanceState();
   const [transactions, setTransactions] = React.useState<any>([]);
   const user = useCurrentUser();
+  const trigger = useTrigger();
+
+  const fetchData = useCallback(async () => {
+    if (!user?.id) return;
+
+    try {
+      const [balanceRes, transactionRes] = await Promise.all([
+        getBalanceAction(user.id),
+        getOnRampTxnAction(user.id),
+      ]);
+
+      setBalance(balanceRes);
+      setTransactions(transactionRes);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, [user?.id, setBalance, trigger]);
 
   useEffect(() => {
-    if (user?.id) {
-      const fetchBalance = async () => {
-        const balanceRes = await getBalanceAction(user.id);
-        setBalance(balanceRes);
-      };
-      fetchBalance();
-    }
-    return () => {};
-  }, [user?.id, setBalance]);
-
-  useEffect(() => {
-    if (user?.id && balance.walletBalance) {
-      const fetchTransactions = async () => {
-        const transactionRes = await getOnRampTxnAction(user.id);
-        setTransactions(transactionRes);
-      };
-      fetchTransactions();
-    }
-    return () => {};
-  }, [user?.id, balance.walletBalance, setTransactions]);
+    fetchData();
+  }, [fetchData]);
 
   return (
     <div className="">
@@ -70,10 +71,7 @@ function WalletForm() {
         </Tabs>
 
         <div className="space-y-4">
-          <BalanceCard
-            walletBalance={balance.walletBalance ?? 0}
-            bankBalance={balance.bankBalance ?? 0}
-          />
+          <BalanceCard walletBalance={balance.walletBalance} bankBalance={balance.bankBalance} />
           <TransferHistory transactions={transactions} />
         </div>
       </div>

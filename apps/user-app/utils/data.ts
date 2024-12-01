@@ -18,3 +18,32 @@ export const encryptData = (data: any, webhookSecret: string) => {
     authTag: authTag.toString("hex"),
   };
 };
+
+// Custom date formatting function
+export function formatDate(timestamp: Date | string) {
+  const date = new Date(timestamp);
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const day = date.getDate();
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  // Format as "Dec 1, 2024, 10:30 AM"
+  const formattedDate = `${month} ${day}, ${year}, ${hours}:${minutes < 10 ? "0" + minutes : minutes}`;
+
+  return formattedDate;
+}

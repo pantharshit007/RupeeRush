@@ -37,6 +37,7 @@
 // TODO: remove the emailverification part in `/action/login.ts` its useless anyway
 // TODO: update the current webhookAttempts before reseting into the p2pTransaction in `action/transaction/p2p/p2p.ts`
 // TODO: find a way to update webhookAttempts in the db for p2p/b2b transactions
+// TODO: since now i am using trigger atom to update the balance atom use and make it a single state
 
 //! DB:
 // TODO: updated user id to Int -> String, check for possible errors

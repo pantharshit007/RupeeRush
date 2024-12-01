@@ -2,6 +2,7 @@
 
 import { auth } from "@/lib/auth";
 import db, { SchemaTypes } from "@repo/db/client";
+import { cache, cacheType } from "@repo/db/cache";
 import {
   checkWalletBalance,
   createP2PTransaction,
@@ -21,7 +22,7 @@ interface CreateP2PTxnProps {
   userAgent?: string;
 }
 
-// TODO: seperate logic of checking recipient and directly do that in first form from p2pCard
+// TODO: seperate logic of checking recipient and directly do that in first form from p2pCard:use ipAddress and userAgent
 export const createP2PTxnAction = async ({ ...props }: CreateP2PTxnProps) => {
   const { userId, amount, transferMethod, receiverIdentifier, pin, ipAddress, userAgent } = props;
 
@@ -81,9 +82,10 @@ export const createP2PTxnAction = async ({ ...props }: CreateP2PTxnProps) => {
     // Calling webhook API
     await processTransactionWebhook(result.transactionId, result.payload, userId, amount);
 
+    await cache.set(cacheType.WALLET_BALANCE, [userId], result.balance - amount);
     return {
       success: true,
-      res: { balance: result.balance + amount, transactionId: result.transactionId },
+      res: { balance: result.balance - amount, transactionId: result.transactionId },
     };
 
     // Compensating transaction: (handle failure)
@@ -93,6 +95,8 @@ export const createP2PTxnAction = async ({ ...props }: CreateP2PTxnProps) => {
 
     // disconnect from db
   } finally {
+    // evicting cache
+    await cache.evict(cacheType.P2P_TRANSACTION, [userId]);
     await db.$disconnect();
   }
 };

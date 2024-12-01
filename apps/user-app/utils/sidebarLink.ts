@@ -1,4 +1,4 @@
-import { Home, Users, UserCircle, Shield, Settings, ArrowLeftToLine } from "lucide-react";
+import { Home, Users, UserCircle, Shield, Settings } from "lucide-react";
 import { WalletIcon, TransferIcon, B2BTransferIcon } from "@/components/transaction/Icons";
 import { SchemaTypes } from "@repo/db/client";
 

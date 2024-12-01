@@ -169,7 +169,7 @@ export const createP2PTransaction = async ({ txn, ...props }: CreateP2PTxnProps)
       senderIdentifier: props.userUPI,
       receiverIdentifier: props.receiverIdentifier,
       transferMethod: props.transferMethod,
-      type: "DEPOSIT",
+      type: "TRANSFER",
       webhookId: crypto.randomUUID(),
       webhookStatus: "PENDING",
       lastWebhookAttempt: new Date(),
@@ -239,13 +239,6 @@ export const processTransactionWebhook = async (
     }
 
     // Rollback transaction
-    const prevBalance = await db.walletBalance.update({
-      where: { userId },
-      data: { balance: { increment: amount }, locked: { decrement: amount } },
-    });
-
-    await cache.set(cacheType.WALLET_BALANCE, [userId], prevBalance.balance);
-
     await db.p2pTransaction.update({
       where: { id: transactionId },
       data: { status: "FAILURE", webhookStatus: "FAILED" },

@@ -60,10 +60,13 @@ export const callWebhook = async (webhookPayload: any): Promise<WebhookResponse>
 
       // If it's the last attempt or not retryable, return failure
       if (attempt === RETRY_CONFIG.maxRetries || !isRetryable) {
-        console.error(`> Webhook call failed after ${attempt} attempts:`, error.message);
+        console.error(
+          `> Webhook call failed after ${attempt} attempts:`,
+          error.response.data.message
+        );
         return {
           success: false,
-          message: error instanceof WebhookError ? error.message : "Webhook failed",
+          message: error.response.data.message || error.message || "Webhook failed",
         };
       }
 
@@ -78,6 +81,7 @@ export const callWebhook = async (webhookPayload: any): Promise<WebhookResponse>
       );
 
       // Wait before retrying
+      console.log("> Waiting for", backoffMs, "ms before retrying");
       await new Promise((resolve) => setTimeout(resolve, backoffMs));
     }
   }

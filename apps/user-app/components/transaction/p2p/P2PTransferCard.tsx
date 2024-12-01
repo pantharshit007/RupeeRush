@@ -11,9 +11,12 @@ import { Label } from "@repo/ui/components/ui/label";
 import { Input } from "@repo/ui/components/ui/input";
 import { Button } from "@repo/ui/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@repo/ui/components/ui/form";
+import { useSetP2PTxn } from "@repo/store/p2pTransaction";
+import { useSetBalance } from "@repo/store/balance";
+import { useSetTrigger } from "@repo/store/trigger";
+
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@repo/ui/components/ui/input-otp";
 
-import { useBalanceState } from "@repo/store/balance";
 import { useCurrentUser } from "@/hooks/UseCurrentUser";
 import { FormSchema, P2PFormSchema } from "@repo/schema/txnSchema";
 import FormError from "@/components/common/FormError";
@@ -27,8 +30,11 @@ function P2PTransferCard({ type }: { type: "phone" | "upi" }) {
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [payDetail, setPayDetail] = useState<any>({ recipient: "", amount: 0 });
-  const [_, setBalance] = useBalanceState();
+
   const user = useCurrentUser();
+  const setBalance = useSetBalance();
+  const setp2pTxnUpdated = useSetP2PTxn();
+  const trigger = useSetTrigger();
 
   const paymentForm = useForm<z.infer<typeof P2PFormSchema>>({
     resolver: zodResolver(P2PFormSchema),
@@ -72,16 +78,16 @@ function P2PTransferCard({ type }: { type: "phone" | "upi" }) {
           });
 
           if (data.error) {
+            setp2pTxnUpdated({ timestamp: Date.now() });
             setError(data.error);
             toast.error(data.error);
-            form.reset();
             return;
           }
 
           if (data.success) {
+            trigger(new Date().getTime());
             setBalance((prevState) => ({ ...prevState, walletBalance: data?.res?.balance }));
             toast.success("Transaction Success!");
-            form.reset();
           }
         }
       } catch (err: any) {

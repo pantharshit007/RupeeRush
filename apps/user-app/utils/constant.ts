@@ -21,7 +21,7 @@ export const REGEXP_ONLY_DIGITS = "^\\d+$";
 
 export const WALLET_PIN_ATTEMPTS_LIMIT = 3;
 export const WALLET_LOCK_DURATION = 30 * 60 * 1000; // 30 minutes
-export const WEBHOOK_TIMEOUT = 30000; // 30 seconds timeout for webhook request
+export const WEBHOOK_TIMEOUT = 10000; // 10 seconds timeout for webhook request
 
 // Exponential backoff configuration
 export const RETRY_CONFIG = {

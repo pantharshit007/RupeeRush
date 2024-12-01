@@ -1,46 +1,43 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 
 import Title from "@repo/ui/components/custom/Title";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs";
+import { useBalanceState } from "@repo/store/balance";
+import { useP2PTxn } from "@repo/store/p2pTransaction";
 
 import BalanceCard from "@/components/transaction/BalanceCard";
-import TransferHistory from "@/components/transaction/transfer/TransferHistory";
-import { useBalanceState } from "@repo/store/balance";
 
 import { useCurrentUser } from "@/hooks/UseCurrentUser";
 import { getBalanceAction } from "@/actions/transaction/wallet/balance";
-import { getP2PTransactions } from "@/actions/transaction/P2P/getP2PTransactions";
+import { getP2PTransActions } from "@/actions/transaction/P2P/getP2PTransactions";
 import P2PTransferCard from "@/components/transaction/p2p/P2PTransferCard";
+import P2PTransferHistory from "@/components/transaction/p2p/P2PTranferHistory";
+import { useTrigger } from "@repo/store/trigger";
 
 function P2PForm() {
   const [balance, setBalance] = useBalanceState();
   const [transactions, setTransactions] = React.useState<any>([]);
+
   const user = useCurrentUser();
+  const p2pTxnUpdated = useP2PTxn();
+  const trigger = useTrigger();
+
+  const fetchData = useCallback(async () => {
+    if (!user?.id) return;
+
+    const [balanceRes, transactionRes] = await Promise.all([
+      getBalanceAction(user.id),
+      getP2PTransActions(user.id),
+    ]);
+    setBalance(balanceRes);
+    setTransactions(transactionRes);
+  }, [user?.id, setBalance, p2pTxnUpdated.timestamp, trigger]);
 
   useEffect(() => {
-    if (user?.id) {
-      const fetchBalance = async () => {
-        const balanceRes = await getBalanceAction(user.id);
-        setBalance(balanceRes);
-      };
-      fetchBalance();
-    }
-    return () => {};
-  }, [user?.id, setBalance]);
-
-  useEffect(() => {
-    if (user?.id && balance.walletBalance) {
-      const fetchTransactions = async () => {
-        //   TODO: change this action to: getP2PTransactionsAction
-        const transactionRes = await getP2PTransactions(user.id);
-        setTransactions(transactionRes);
-      };
-      fetchTransactions();
-    }
-    return () => {};
-  }, [user?.id, balance.walletBalance, setTransactions]);
+    fetchData();
+  }, [fetchData]);
 
   return (
     <div>
@@ -75,11 +72,8 @@ function P2PForm() {
 
         {/* Right Side */}
         <div className="space-y-4">
-          <BalanceCard
-            walletBalance={balance.walletBalance ?? 0}
-            bankBalance={balance.bankBalance ?? 0}
-          />
-          <TransferHistory transactions={transactions} />
+          <BalanceCard walletBalance={balance.walletBalance} bankBalance={balance.bankBalance} />
+          <P2PTransferHistory transactions={transactions} userId={user?.id!} />
         </div>
       </div>
     </div>
