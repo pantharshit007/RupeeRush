@@ -60,6 +60,16 @@ function P2PTransferCard({ type }: { type: "phone" | "upi" }) {
     setIsDialogOpen(true);
   }
 
+  // fetch user's userAgent and ipAddress
+  async function getUserAgentAndIP() {
+    const userAgent = navigator.userAgent;
+
+    const response = await fetch("https://api.ipify.org/");
+    const userIp = await response.text();
+
+    return { userAgent, userIp };
+  }
+
   function submitTransaction(values: z.infer<typeof FormSchema>) {
     setLoading(true);
     setError("");
@@ -69,12 +79,16 @@ function P2PTransferCard({ type }: { type: "phone" | "upi" }) {
 
       try {
         if (user?.id) {
+          const { userAgent, userIp } = await getUserAgentAndIP();
+
           const data = await createP2PTxnAction({
             receiverIdentifier: value.recipient,
             amount: value.amount * 100,
             userId: user.id,
             pin: value.pin,
             transferMethod: type === "phone" ? "PHONE" : "UPI",
+            userAgent,
+            ipAddress: userIp,
           });
 
           if (data.error) {

@@ -22,7 +22,7 @@ interface CreateP2PTxnProps {
   userAgent?: string;
 }
 
-// TODO: seperate logic of checking recipient and directly do that in first form from p2pCard:use ipAddress and userAgent
+// TODO: seperate logic of checking recipient
 export const createP2PTxnAction = async ({ ...props }: CreateP2PTxnProps) => {
   const { userId, amount, transferMethod, receiverIdentifier, pin, ipAddress, userAgent } = props;
 
