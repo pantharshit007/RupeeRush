@@ -2,7 +2,8 @@ import React from "react";
 
 import { SchemaTypes } from "@repo/db/client";
 import Status from "@repo/ui/components/custom/Status";
-import TransactionHistory from "@/components/TxnHistoryCard";
+import TransactionHistory from "@/components/transaction/TxnHistoryCard";
+import { formatDate } from "@/utils/data";
 export interface TransactionType {
   startTime: Date | string;
   amount: number;
@@ -25,10 +26,7 @@ function TransferHistory({ transactions }: { transactions: TransactionType[] }) 
             >
               <div>
                 <p className="font-medium">{txn.type === "DEPOSIT" ? "Deposit" : "Withdraw"} INR</p>
-                <p className="text-sm text-muted-foreground ">
-                  {/* txn.startTime can be a date object or a string due to caching */}
-                  {new Date(txn.startTime).toDateString()}
-                </p>
+                <p className="text-sm text-muted-foreground ">{formatDate(txn.startTime)}</p>
               </div>
               <div className="text-right">
                 <p

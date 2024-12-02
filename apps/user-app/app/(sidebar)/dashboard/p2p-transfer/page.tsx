@@ -1,14 +1,9 @@
-import Title from "@repo/ui/components/custom/Title";
 import React from "react";
-import P2P from "@/components/P2P";
+
+import P2PForm from "@/components/transaction/p2p/P2PForm";
 
 function page() {
-  return (
-    <div className="w-full">
-      <Title title={"Peer to Peer"} />
-      <P2P />
-    </div>
-  );
+  return <P2PForm />;
 }
 
 export default page;

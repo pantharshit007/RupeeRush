@@ -8,7 +8,7 @@ import { BeatLoader } from "react-spinners";
 
 import { Label } from "@repo/ui/components/ui/label";
 import { Input } from "@repo/ui/components/ui/input";
-import { FormSchema } from "@repo/schema/authSchema";
+import { FormSchema } from "@repo/schema/txnSchema";
 import {
   Select,
   SelectContent,
@@ -20,26 +20,27 @@ import { Button } from "@repo/ui/components/ui/button";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@repo/ui/components/ui/input-otp";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@repo/ui/components/ui/form";
 
-import { createOnRampTxnAction } from "@/actions/transaction/transfer/onRampTransaction";
+import { createOnRampTxnAction } from "@/actions/transaction/wallet/onRampTransaction";
 import { useCurrentUser } from "@/hooks/UseCurrentUser";
 import { SUPPORTED_BANKS } from "@/utils/constant";
 import FormError from "@/components/common/FormError";
 import DialogWrapper from "@/components/common/DialogWrapper";
-import DepositWithdrawCard from "@/components/common/DepositWithdrawWrapper";
+import PaymentWrapper from "@/components/transaction/PaymentWrapper";
 import { SchemaTypes } from "@repo/db/client";
-import { useBalanceState } from "@repo/store/balance";
+import { useSetBalance } from "@repo/store/balance";
+import { useSetTrigger } from "@repo/store/trigger";
 import { toast } from "sonner";
-import { useTheme } from "next-themes";
 
-function DepositCard({ type }: { type: "deposit" | "withdraw" }) {
+function WalletTransferCard({ type }: { type: "deposit" | "withdraw" }) {
   const [isPending, startTransition] = useTransition();
   const [provider, setProvider] = useState<SchemaTypes.Bank>("HDFC");
   const [amount, setAmount] = useState<number | "">("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [_, setBalance] = useBalanceState();
 
+  const setBalance = useSetBalance();
+  const trigger = useSetTrigger();
   const user = useCurrentUser();
 
   // updating the redirectUrl and provider based on bank
@@ -47,6 +48,7 @@ function DepositCard({ type }: { type: "deposit" | "withdraw" }) {
     const selectedBank = SUPPORTED_BANKS.find((x) => x.name === value);
     setProvider(selectedBank?.name as SchemaTypes.Bank);
   }
+
   function handleSubmit() {
     if (amount && provider) {
       setIsDialogOpen(true);
@@ -76,6 +78,7 @@ function DepositCard({ type }: { type: "deposit" | "withdraw" }) {
 
           if (data.success) {
             setAmount("");
+            trigger(new Date().getTime());
             setBalance(data.res);
             setIsDialogOpen(false);
             toast.success("Transaction Success!");
@@ -99,7 +102,7 @@ function DepositCard({ type }: { type: "deposit" | "withdraw" }) {
   });
 
   return (
-    <DepositWithdrawCard title={type === "deposit" ? "Deposit Money" : "Withdraw Money"}>
+    <PaymentWrapper title={type === "deposit" ? "Deposit Money" : "Withdraw Money"}>
       <div className="space-y-2">
         <Label htmlFor="amount">Amount</Label>
         <Input
@@ -174,8 +177,8 @@ function DepositCard({ type }: { type: "deposit" | "withdraw" }) {
           </form>
         </Form>
       </DialogWrapper>
-    </DepositWithdrawCard>
+    </PaymentWrapper>
   );
 }
 
-export default DepositCard;
+export default WalletTransferCard;

@@ -2,7 +2,7 @@ import React from "react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
 
-function DepositWithdrawCard({ title, children }: { title: string; children: React.ReactNode }) {
+function PaymentWrapper({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <Card className="w-full ">
       <CardHeader>
@@ -13,4 +13,4 @@ function DepositWithdrawCard({ title, children }: { title: string; children: Rea
   );
 }
 
-export default DepositWithdrawCard;
+export default PaymentWrapper;

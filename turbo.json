@@ -1,7 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
-  "globalEnv": ["DATABASE_URL", "NODE_ENV", "REDIS_URL"],
+  "globalEnv": ["DATABASE_URL", "NODE_ENV", "REDIS_URL", "WEBHOOK_SECRET", "WEBHOOK_URL"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],

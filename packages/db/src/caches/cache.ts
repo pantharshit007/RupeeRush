@@ -1,4 +1,4 @@
-import { CacheProps } from "./cacheType";
+import { CACHE_TYPES, CacheProps } from "./cacheType";
 import { InMemoryCache } from "./in-memory-cache";
 import { RedisCache } from "./redis-cache";
 
@@ -43,3 +43,4 @@ class Cache implements CacheProps {
 }
 
 export const cache = Cache.getInstance();
+export const cacheType = CACHE_TYPES;
