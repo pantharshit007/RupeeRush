@@ -1,9 +1,10 @@
 // "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
+import AnimatedSpinner from "@repo/ui/components/custom/AnimatedSpinner";
 
 interface BalanceType {
-  walletBalance: number;
-  bankBalance: number;
+  walletBalance: number | null;
+  bankBalance: number | null;
 }
 
 function BalanceCard({ walletBalance, bankBalance }: BalanceType) {
@@ -12,20 +13,25 @@ function BalanceCard({ walletBalance, bankBalance }: BalanceType) {
       <CardHeader>
         <CardTitle className="text-azureBlue-400 font-semibold">Balance</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-2">
-        <div className="flex justify-between">
-          <span>Wallet balance</span>
-          <span className="text-emerald-500 font-medium">{walletBalance / 100} INR</span>
-        </div>
-        <div className="flex justify-between">
-          <span>Bank Balance</span>
-          <span className="text-azureBlue-400 font-medium">{bankBalance / 100} INR</span>
-        </div>
-        <div className="flex justify-between font-semibold">
-          <span>Total Balance</span>
-          <span>{(bankBalance + walletBalance) / 100} INR</span>
-        </div>
-      </CardContent>
+
+      {walletBalance === null || bankBalance === null ? (
+        <AnimatedSpinner size={52} className="center mb-6" />
+      ) : (
+        <CardContent className="space-y-2">
+          <div className="flex justify-between">
+            <span>Wallet balance</span>
+            <span className="text-emerald-500 font-medium">{walletBalance / 100} INR</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Bank Balance</span>
+            <span className="text-azureBlue-400 font-medium">{bankBalance / 100} INR</span>
+          </div>
+          <div className="flex justify-between font-semibold">
+            <span>Total Balance</span>
+            <span>{(bankBalance + walletBalance) / 100} INR</span>
+          </div>
+        </CardContent>
+      )}
     </Card>
   );
 }

@@ -108,4 +108,8 @@ body,
     @apply truncate text-xs max-w-[180px] font-mono p-1 bg-slate-100 dark:bg-gray-900 rounded-md;
   }
 
+  .center {
+    @apply grid place-items-center w-full ;
+  }
+
 }

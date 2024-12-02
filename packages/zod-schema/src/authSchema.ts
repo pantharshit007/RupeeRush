@@ -57,7 +57,3 @@ export const SettingsSchema = z
     },
     { message: "New Password is required", path: ["newPassword"] }
   );
-
-export const FormSchema = z.object({
-  pin: z.string().min(6, { message: "Your PIN should be 6 digits." }),
-});

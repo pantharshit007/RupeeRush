@@ -2,7 +2,7 @@
 
 import { compare } from "bcryptjs";
 import db, { SchemaTypes } from "@repo/db/client";
-import { cache } from "@repo/db/cache";
+import { cache, cacheType } from "@repo/db/cache";
 import { auth } from "@/lib/auth";
 
 /**
@@ -20,7 +20,7 @@ export const getOnRampTxnAction = async (userId: string) => {
       throw new Error("Forbidden!");
     }
 
-    const txnValue = await cache.get("onRampTransaction", [userId]);
+    const txnValue = await cache.get(cacheType.ON_RAMP_TRANSACTION, [userId]);
     if (txnValue) {
       return txnValue;
     }
@@ -31,15 +31,16 @@ export const getOnRampTxnAction = async (userId: string) => {
       take: 3,
     });
 
-    await cache.set("onRampTransaction", [userId], transactions);
-
-    return transactions.map((txn: any) => ({
+    const txn = transactions.map((txn: any) => ({
       startTime: txn.startTime,
       amount: txn.amount,
       status: txn.status,
       type: txn.type,
       provider: txn.provider,
     }));
+
+    await cache.set(cacheType.ON_RAMP_TRANSACTION, [userId], txn);
+    return txn;
   } catch (err: any) {
     console.error("> Error while fetching Transaction:", err.message);
     return [];
@@ -155,8 +156,10 @@ export const createOnRampTxnAction = async ({
         take: 3,
       });
 
-      await cache.evict("onRampTransaction", [userId]);
-      await cache.set("onRampTransaction", [userId], transactions);
+      await cache.evict(cacheType.ON_RAMP_TRANSACTION, [userId]);
+      await cache.set(cacheType.ON_RAMP_TRANSACTION, [userId], transactions);
+      await cache.evict(cacheType.WALLET_BALANCE, [userId]);
+      await cache.evict(cacheType.BANK_BALANCE, [userId]);
 
       return { wallet: wallet.balance, bankAccount: bankAccount.balance };
     });

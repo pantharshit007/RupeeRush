@@ -42,6 +42,8 @@ model User {
   sentBankTransfers     B2bTransaction[]   @relation("SenderBankRelation")
   receivedBankTransfers B2bTransaction[]   @relation("ReceiverBankRelation")
 
+  @@index([phoneNumber])
+  @@index([upiId])
 }
 
 model Account {
@@ -219,7 +221,6 @@ enum TransactionStatus {
 
 enum WebhookStatus {
   PENDING
-  SENT
   FAILED
   COMPLETED
 }

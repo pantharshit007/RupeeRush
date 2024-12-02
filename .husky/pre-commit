@@ -58,7 +58,7 @@ if [ -n "$STAGED_SOURCE_FILES" ]; then
     echo "$STAGED_SOURCE_FILES"
     printf "${WARNING} You can change build checks to :web or :hook ${RESET}\n"
     printf "${NOTIFY}Running build checks...${RESET}\n"
-    npm run build:hook
+    npm run build:web
     BUILD_EXIT_CODE=$?
     
     if [ $BUILD_EXIT_CODE -ne 0 ]; then
