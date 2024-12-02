@@ -37,7 +37,8 @@ export const callWebhook = async (webhookPayload: any): Promise<WebhookResponse>
 
       const signature = generateSignature(payload, process.env.WEBHOOK_SECRET!);
 
-      const response = await axios.post(WEBHOOK_URL, payload, {
+      const endPoint = `${WEBHOOK_URL}/api/v1/p2pWebhook`;
+      const response = await axios.post(endPoint, payload, {
         headers: {
           "Content-Type": "application/json",
           "X-Timestamp": timestamp,
