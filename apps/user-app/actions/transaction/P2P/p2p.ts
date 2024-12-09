@@ -80,7 +80,7 @@ export const createP2PTxnAction = async ({ ...props }: CreateP2PTxnProps) => {
     });
 
     // Calling webhook API
-    await processTransactionWebhook(result.transactionId, result.payload, userId, amount);
+    await processTransactionWebhook(result.transactionId, result.payload);
 
     await cache.set(cacheType.WALLET_BALANCE, [userId], result.balance - amount);
     return {

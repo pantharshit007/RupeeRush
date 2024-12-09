@@ -14,7 +14,6 @@ import { onBoardingSchema } from "@repo/schema/txnSchema";
 
 import CardWrapper from "@/components/common/CardWrapper";
 import FormError from "@/components/common/FormError";
-import { useCurrentUser } from "@/hooks/UseCurrentUser";
 import { CreditCard, onBoardingAction } from "@/actions/onBoarding";
 import { useSession } from "next-auth/react";
 import LoadingState from "../common/LoadingState";
