@@ -10,7 +10,7 @@ export const publicRoutes = [
 
 /**
  * An array of routes that are used for authentication
- * These routes will redirect logged in users to /settings
+ * These routes will redirect logged in users to /account/profile
  * @type {string[]}
  */
 export const authRoutes = [
@@ -39,3 +39,9 @@ export const DEFAULT_LOGIN_REDIRECT = "/account/profile";
  * @type {string}
  */
 export const DEFAULT_REDIRECT = "/auth/login";
+
+/**
+ * redirect to create Bank Account Page
+ * @type {string}
+ */
+export const CREATE_BANK_ACCOUNT = "/bank/onboarding";
