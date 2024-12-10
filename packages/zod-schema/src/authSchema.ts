@@ -37,7 +37,7 @@ export const SettingsSchema = z
     email: z.string().email().optional(),
     phoneNumber: z
       .string()
-      .min(6, { message: "Minimum 10 characters" })
+      .min(10, { message: "Minimum 10 characters" })
       .max(12, { message: "Maximum 12 characters" })
       .optional(),
     oldPassword: z.optional(z.string().min(6, { message: "Minimum length is 6 characters" })),

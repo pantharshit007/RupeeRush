@@ -208,12 +208,7 @@ export const prepareWebhookPayload = async ({
   return { ...payload };
 };
 
-export const processTransactionWebhook = async (
-  transactionId: string,
-  webhookPayload: any,
-  userId: string,
-  amount: number
-) => {
+export const processTransactionWebhook = async (transactionId: string, webhookPayload: any) => {
   try {
     const response: WebhookResponse = await callWebhook(webhookPayload);
 

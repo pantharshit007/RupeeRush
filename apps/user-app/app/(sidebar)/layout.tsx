@@ -1,10 +1,19 @@
+import { redirect } from "next/navigation";
 import CollapsableMobile from "@/components/CollapsableMobile";
 import NavBar from "@/components/NavBar";
 import ThemeBackground from "@/components/common/ThemeBackground";
 import AppSidebar from "@/components/AppSidebar";
 import { SidebarInset, SidebarProvider } from "@repo/ui/components/ui/sidebar";
+import { serverUser } from "@/utils/currentUser";
+import { CREATE_BANK_ACCOUNT } from "@/utils/apiRoute";
 
 async function SideBarLayout({ children }: { children: React.ReactNode }) {
+  const user = await serverUser();
+
+  if (!user?.phoneNumber) {
+    redirect(CREATE_BANK_ACCOUNT);
+  }
+
   return (
     <div className="w-full h-screen flex flex-col mx-auto ">
       <NavBar />
@@ -12,9 +21,9 @@ async function SideBarLayout({ children }: { children: React.ReactNode }) {
         <SidebarProvider>
           <AppSidebar />
           <SidebarInset>
-            <div className="flex-1 h-full flex-col">
+            <div className="flex-1 h-full overflow-y-hidden flex-col">
               <CollapsableMobile />
-              <main className=" w-full max-lg:max-w-[1200px] max-w-maxContent ">{children}</main>
+              <main className=" w-full max-lg:max-w-[1200px]  ">{children}</main>
             </div>
           </SidebarInset>
         </SidebarProvider>

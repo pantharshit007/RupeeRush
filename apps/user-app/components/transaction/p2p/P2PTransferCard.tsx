@@ -132,8 +132,9 @@ function P2PTransferCard({ type }: { type: "phone" | "upi" }) {
                     placeholder={`Enter ${type === "phone" ? "phone number" : "UPI ID"}`}
                     type={type === "phone" ? "tel" : "text"}
                     autoComplete={type === "phone" ? "tel" : "off"}
-                    minLength={type === "phone" ? 10 : undefined}
-                    maxLength={type === "phone" ? 12 : undefined}
+                    maxLength={type === "phone" ? 10 : undefined}
+                    min={1000000000}
+                    max={9999999999}
                   />
                 </FormControl>
                 <FormMessage />

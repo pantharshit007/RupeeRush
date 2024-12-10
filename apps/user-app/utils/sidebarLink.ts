@@ -30,4 +30,10 @@ export const profileNavItems = [
     href: "/account/settings",
     allowedUserRoles: ["USER"] as SchemaTypes.UserRole[],
   },
+  {
+    title: "Security",
+    icon: Shield,
+    href: "/account/security",
+    allowedUserRoles: ["USER"] as SchemaTypes.UserRole[],
+  },
 ];
