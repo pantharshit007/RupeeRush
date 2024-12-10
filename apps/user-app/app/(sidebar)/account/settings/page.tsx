@@ -7,7 +7,7 @@ import SettingsForm from "@/components/settings/SettingsForm";
 function page() {
   return (
     <Suspense fallback={<LoadingState />}>
-      <SettingsForm />
+      <SettingsForm className=" h-[100dvh] flex flex-col justify-center items-center -mt-6" />
     </Suspense>
   );
 }

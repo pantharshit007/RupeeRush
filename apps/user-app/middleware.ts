@@ -2,9 +2,11 @@ import NextAuth from "next-auth";
 import { NextMiddleware, NextResponse } from "next/server";
 
 import authConfig from "@/auth.config";
+import { auth as authSession } from "@/lib/auth";
 import {
   apiAuthPrefix,
   authRoutes,
+  CREATE_BANK_ACCOUNT,
   DEFAULT_LOGIN_REDIRECT,
   DEFAULT_REDIRECT,
   publicRoutes,
@@ -13,13 +15,15 @@ import {
 // Do give a read (as i haven't & that cause me too much pain): https://authjs.dev/guides/edge-compatibility
 const { auth } = NextAuth(authConfig);
 
-export default auth((req) => {
+export default auth(async (req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
+  const session = await authSession();
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+  const isAccountHolder = session?.user?.phoneNumber;
 
   console.log("--------------------------------------------------");
   console.log("> route: " + req.nextUrl.pathname);
@@ -34,7 +38,11 @@ export default auth((req) => {
   // Auth routes - redirect to /profile if logged in
   if (isAuthRoute) {
     if (isLoggedIn) {
-      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+      if (!isAccountHolder) {
+        return Response.redirect(new URL(CREATE_BANK_ACCOUNT, nextUrl));
+      } else {
+        return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+      }
     }
     return NextResponse.next();
   }

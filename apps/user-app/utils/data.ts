@@ -47,3 +47,20 @@ export function formatDate(timestamp: Date | string) {
 
   return formattedDate;
 }
+
+/**
+ * Function to generate Bank account number
+ * @param length
+ * @returns Account number
+ */
+export function generateSecureAccountNumber(length = 12) {
+  const array = new Uint8Array(length);
+  crypto.getRandomValues(array);
+
+  let accountNumber = "";
+  array.forEach((num) => {
+    accountNumber += num % 10; // 0-9 only
+  });
+
+  return accountNumber;
+}

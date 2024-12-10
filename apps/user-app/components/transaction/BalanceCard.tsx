@@ -1,6 +1,7 @@
 // "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
 import AnimatedSpinner from "@repo/ui/components/custom/AnimatedSpinner";
+import BalanceSkeleton from "@/components/common/BalanceSkeleton";
 
 interface BalanceType {
   walletBalance: number | null;
@@ -15,7 +16,7 @@ function BalanceCard({ walletBalance, bankBalance }: BalanceType) {
       </CardHeader>
 
       {walletBalance === null || bankBalance === null ? (
-        <AnimatedSpinner size={52} className="center mb-6" />
+        <BalanceSkeleton />
       ) : (
         <CardContent className="space-y-2">
           <div className="flex justify-between">

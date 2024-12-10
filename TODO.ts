@@ -27,6 +27,7 @@
 //! TODO: check if the JWT time is working on the session 3hr in auth.js
 // TODO: add a transactions refresh button
 // TODO: send user email in case of p2p / b2b transactions failure and b2b transactions success
+// TODO: instead of SUCCESS/FAILURE/PENDING use icons tick, cross, hourglass with respective colors
 
 //! NEXT: BE
 // TODO: fix locked amount not updating or something...

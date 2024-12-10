@@ -136,11 +136,13 @@ model BankAccount {
   accountNumber   String    @unique
   balance         Int       
   
-  // Optional debit card details
-  cardNumber      String?   @unique
-  cardExpiryMonth Int?
-  cardExpiryYear  Int?
-  cardPinHash     String?  
+  // card details 
+  cardType        String
+  cardHolder      String
+  cardNumber      String   @unique
+  cardExpiry      String  
+  cardCvv         String
+  cardPinHash     String  
   
   user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   

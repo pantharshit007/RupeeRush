@@ -61,7 +61,7 @@ const authOptions: NextAuthConfig = {
           token.role = existingUser.role || user.role;
           token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled || user.isTwoFactorEnabled;
           token.isOAuth = !!profile;
-          token.phoneNumber = existingUser.phoneNumber || user.phoneNumber;
+          token.phoneNumber = existingUser?.phoneNumber || user?.phoneNumber;
           token.lastUpdate = Date.now();
         }
       }
