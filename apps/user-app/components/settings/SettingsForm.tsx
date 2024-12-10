@@ -90,7 +90,7 @@ function SettingsForm({ className }: { className?: string }) {
 
   return (
     <div className={cn(className)}>
-      <Card className="w-[600px] max-md:w-[400px] max-sm:w-[375px] shadow-sm mx-auto overflow-auto">
+      <Card className="w-[600px] max-md:w-[400px] max-sm:w-[375px] shadow-sm mx-auto">
         <CardHeader>
           <p className="flex w-full justify-center items-center text-2xl font-semibold gap-x-2">
             <BsPersonFillGear size="27" className="text-blue-500" /> Settings
