@@ -9,7 +9,9 @@ interface BalanceCardProps {
 
 export const BalanceCard = ({ title, amount, currency = "USD", trend }: BalanceCardProps) => {
   const formattedAmount =
-    amount !== undefined ? amount.toLocaleString("en-US", { style: "currency", currency }) : "N/A";
+    amount !== undefined
+      ? (amount / 100).toLocaleString("en-IN", { style: "currency", currency: "INR" })
+      : "N/A";
 
   return (
     <Card className="animate-fade-in">

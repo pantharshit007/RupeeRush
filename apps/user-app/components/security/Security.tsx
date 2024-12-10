@@ -12,7 +12,8 @@ import { QuickActions } from "@/components/common/QuickActions";
 import { useCurrentUser } from "@/hooks/UseCurrentUser";
 import { getBalanceAction } from "@/actions/transaction/wallet/balance";
 import { getCreditCardAction } from "@/actions/getCreditCard";
-import AnimatedSpinner from "@repo/ui/components/custom/AnimatedSpinner";
+import BalanceSecuritySkeleton from "@/components/security/BalanceSkeleton";
+import CreditCardSkeleton from "@/components/security/CCSkeleton";
 
 function Security() {
   const [cardDetails, setCardDetails] = useState<CreditCardProps | null>(null);
@@ -53,12 +54,12 @@ function Security() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-8">
             {/* Left Column - Balances */}
             <div className="space-y-6 order-2 lg:order-1">
-              {balance.bankBalance === null || balance.walletBalance === null ? (
-                <AnimatedSpinner size={52} className="center mb-6" />
+              {!balance.bankBalance && !balance.walletBalance ? (
+                <BalanceSecuritySkeleton />
               ) : (
                 <>
-                  <BalanceCard title="Wallet Balance" amount={12567.89} trend={2.5} />
-                  <BalanceCard title="Bank Balance" amount={45678.12} trend={-0.8} />
+                  <BalanceCard title="Wallet Balance" amount={balance.walletBalance!} trend={2.5} />
+                  <BalanceCard title="Bank Balance" amount={balance.bankBalance!} trend={-0.8} />
                 </>
               )}
 
@@ -68,8 +69,8 @@ function Security() {
 
             {/* Right Column - Credit Card */}
             <div className="flex flex-col items-center justify-center order-1 lg:order-2">
-              {cardDetails === null ? (
-                <AnimatedSpinner size={52} className="center mb-6" />
+              {!cardDetails ? (
+                <CreditCardSkeleton />
               ) : (
                 <CreditCard
                   cardNumber={cardDetails.cardNumber}

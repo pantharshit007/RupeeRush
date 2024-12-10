@@ -16,7 +16,7 @@ import CardWrapper from "@/components/common/CardWrapper";
 import FormError from "@/components/common/FormError";
 import { CreditCard, onBoardingAction } from "@/actions/onBoarding";
 import { useSession } from "next-auth/react";
-import LoadingState from "../common/LoadingState";
+import LoadingState from "@/components/common/LoadingState";
 
 export default function OnboardingPage() {
   const router = useRouter();

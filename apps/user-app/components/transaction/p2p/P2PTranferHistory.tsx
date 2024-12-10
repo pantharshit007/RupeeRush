@@ -1,7 +1,7 @@
 import React from "react";
 import { SchemaTypes } from "@repo/db/client";
 import Status from "@repo/ui/components/custom/Status";
-import TransactionHistory from "../TxnHistoryCard";
+import TransactionHistory from "@/components/transaction/TxnHistoryCard";
 import { cn } from "@repo/ui/lib/utils";
 import { formatDate } from "@/utils/data";
 

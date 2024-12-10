@@ -21,7 +21,7 @@ async function SideBarLayout({ children }: { children: React.ReactNode }) {
         <SidebarProvider>
           <AppSidebar />
           <SidebarInset>
-            <div className="flex-1 h-full flex-col">
+            <div className="flex-1 h-full overflow-y-hidden flex-col">
               <CollapsableMobile />
               <main className=" w-full max-lg:max-w-[1200px]  ">{children}</main>
             </div>

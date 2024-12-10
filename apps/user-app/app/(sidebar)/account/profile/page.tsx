@@ -14,6 +14,7 @@ async function ProfilePage() {
       user={user}
       label="Profile"
       logo={<IoPerson className="text-blue-500" size={"27"} />}
+      className="w-full h-[100dvh] flex flex-col justify-center items-center -mt-6"
     />
   );
 }

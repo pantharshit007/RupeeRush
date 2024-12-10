@@ -25,7 +25,7 @@ async function main() {
       walletPin: await bcrypt.hash("123456", 10),
       walletBalance: {
         create: {
-          balance: 2000_00,
+          balance: 500_00,
           locked: 50_00,
         },
       },
@@ -34,7 +34,7 @@ async function main() {
           phoneNumber: "1111111111",
           bankName: Bank.HDFC,
           accountNumber: "1234567890",
-          balance: 10_000_00,
+          balance: 2_000_00,
           cardType: "American Express",
           cardHolder: "Alice",
           cardNumber: "4111111111111111",
@@ -72,7 +72,7 @@ async function main() {
       walletPin: await bcrypt.hash("654321", 10),
       walletBalance: {
         create: {
-          balance: 5000_00,
+          balance: 500_00,
           locked: 1000,
         },
       },
@@ -81,7 +81,7 @@ async function main() {
           phoneNumber: "2222222222",
           bankName: Bank.AXIS,
           accountNumber: "0987654321",
-          balance: 10_000_00,
+          balance: 2_000_00,
           cardType: "American Express",
           cardHolder: "Bob",
           cardNumber: "5555555555554444",
