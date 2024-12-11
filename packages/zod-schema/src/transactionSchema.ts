@@ -14,3 +14,8 @@ export const onBoardingSchema = z.object({
   pin: z.string().min(6, { message: "Your PIN should be 6 digits." }),
   confirmPin: z.string().min(6, { message: "Minimum 6 characters" }),
 });
+
+export const B2BFormSchema = z.object({
+  receiverAccountNumber: z.string().min(1, { message: "Receiver account number is required" }),
+  amount: z.number().min(1, { message: "Amount must be greater than 0" }),
+});

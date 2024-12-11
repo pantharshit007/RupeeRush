@@ -27,7 +27,7 @@ export const CreditCard = ({ cardNumber, cardHolder, cardExpiry, cardCvv }: Cred
   return (
     <div className="space-y-6">
       <div
-        className="relative w-96 max-md:w-76 max-sm:w-[21rem] max-w-full h-56 cursor-pointer perspective-1000"
+        className="relative w-96 max-md:w-76 max-sm:w-[25rem] max-w-full h-56 cursor-pointer perspective-1000"
         onClick={() => setIsFlipped(!isFlipped)}
       >
         <div
