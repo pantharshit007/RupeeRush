@@ -27,7 +27,7 @@ export const CreditCard = ({ cardNumber, cardHolder, cardExpiry, cardCvv }: Cred
   return (
     <div className="space-y-6">
       <div
-        className="relative w-96 max-md:w-76 max-sm:w-[25rem] max-w-full h-56 cursor-pointer perspective-1000"
+        className="relative w-96 max-md:w-[25rem] max-sm:w-[23rem] max-w-full h-56 cursor-pointer perspective-1000"
         onClick={() => setIsFlipped(!isFlipped)}
       >
         <div
@@ -69,7 +69,7 @@ export const CreditCard = ({ cardNumber, cardHolder, cardExpiry, cardCvv }: Cred
           </div>
 
           {/* Back of card */}
-          <div className="absolute w-full h-full backface-hidden rotate-y-180">
+          <div className="absolute w-full h-full backface-hidden rotate-y-180 -mt-3">
             <div className="w-full h-full rounded-xl bg-gradient-to-br from-azureBlue-400 to-azureBlue-500 text-white shadow-lg">
               <div className="w-full rounded-t-xl h-12 bg-gray-800 mt-4"></div>
               <div className="px-6 mt-8">

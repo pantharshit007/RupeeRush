@@ -1,25 +1,47 @@
 import axios from "axios";
 import crypto from "crypto";
-import { WebhookResponse } from "@repo/schema/types";
+import {
+  B2BWebhookPayload,
+  B2BWebhookResponse,
+  IdepotencyCache,
+  P2PWebhookPayload,
+  P2PWebhookResponse,
+} from "@repo/schema/types";
+import { cache, cacheType } from "@repo/db/cache";
+import { generateSignature } from "@repo/common/generateSignature";
 
 import { RETRY_CONFIG, WEBHOOK_TIMEOUT } from "@/utils/constant";
 import { isErrorRetryable, WebhookError } from "@/utils/error";
 
 const WEBHOOK_URL = process.env.WEBHOOK_URL;
 
-// Generate HMAC signature for webhook payload
-const generateSignature = (payload: any, secretKey: string): string => {
-  return crypto.createHmac("sha256", secretKey).update(JSON.stringify(payload)).digest("hex");
+interface KeyProps {
+  senderInfo: string;
+  recipientInfo: string;
+  amount: number;
+}
+
+// Generate Idempotency Key
+const generateIdempotencyKey = ({ senderInfo, recipientInfo, amount }: KeyProps): string => {
+  const keyComponents = [senderInfo, recipientInfo, amount?.toString()].join("|");
+
+  return crypto.createHash("sha256").update(keyComponents).digest("hex");
 };
 
 /**
  * Call webhook API with advanced retry and idempotency mechanisms
  * @param webhookPayload Payload to send
- * @returns WebhookResponse
+ * @returns P2PWebhookResponse
  */
-export const callWebhook = async (webhookPayload: any): Promise<WebhookResponse> => {
-  // Generate a unique idempotency key for this request
-  const idempotencyKey = crypto.randomUUID();
+export const callP2PWebhook = async (
+  webhookPayload: P2PWebhookPayload
+): Promise<P2PWebhookResponse> => {
+  // Generate a unique idempotency key
+  const idempotencyKey = generateIdempotencyKey({
+    senderInfo: webhookPayload.body.senderIdentifier,
+    recipientInfo: webhookPayload.body.receiverIdentifier,
+    amount: webhookPayload.body.amount,
+  });
 
   for (let attempt = 1; attempt <= RETRY_CONFIG.maxRetries; attempt++) {
     try {
@@ -29,7 +51,7 @@ export const callWebhook = async (webhookPayload: any): Promise<WebhookResponse>
 
       const timestamp = Date.now().toString();
 
-      const payload = {
+      const payload: P2PWebhookPayload = {
         ...webhookPayload,
         timestamp,
         idempotencyKey,
@@ -89,4 +111,72 @@ export const callWebhook = async (webhookPayload: any): Promise<WebhookResponse>
 
   // Fallback: (though should never reach here due to the loop)
   return { success: false, message: "Webhook failed" };
+};
+
+/**
+ * Calls the webhook for a B2B transaction
+ * @param webhookPayload Payload to send
+ * @returns B2BWebhookResponse
+ */
+export const callB2BWebhook = async (
+  webhookPayload: B2BWebhookPayload
+): Promise<B2BWebhookResponse> => {
+  // Generate unique idempotency key
+  const idempotencyKey = generateIdempotencyKey({
+    senderInfo: webhookPayload.body.senderIdentifier!,
+    recipientInfo: webhookPayload.body.receiverIdentifier!,
+    amount: webhookPayload.body.amount,
+  });
+
+  // Check if the key exists in the cache
+  const isKeyExists: IdepotencyCache = await cache.get(cacheType.B2B_TRANSACTION, [idempotencyKey]);
+  if (isKeyExists && isKeyExists.status === "PROCESSED") {
+    return { success: true, message: "Transaction already processed", externalLink: null };
+  }
+
+  const idempotencyCache: IdepotencyCache = {
+    lastUpdated: new Date().toISOString(),
+    processedAt: null,
+    status: "PENDING",
+  };
+
+  await cache.set(cacheType.B2B_TRANSACTION, [idempotencyKey], idempotencyCache, 600); // 10 minutes
+
+  try {
+    if (!WEBHOOK_URL) {
+      throw new Error("Webhook URL not configured");
+    }
+
+    const timestamp = Date.now().toString();
+
+    const payload: B2BWebhookPayload = {
+      ...webhookPayload,
+      timestamp,
+      idempotencyKey,
+    };
+
+    const signature = generateSignature(payload, process.env.WEBHOOK_SECRET!);
+
+    const endPoint = `${WEBHOOK_URL}/api/v1/b2bWebhook`;
+    const headers = {
+      "Content-Type": "application/json",
+      "X-Timestamp": timestamp,
+      "X-Signature": signature,
+      "X-Idempotency-Key": idempotencyKey,
+    };
+
+    const response = await axios.post(endPoint, payload, {
+      headers,
+      timeout: WEBHOOK_TIMEOUT,
+    });
+
+    if (response.status === 200 && response.data.success) {
+      return response.data;
+    }
+
+    throw new Error(`Webhook failed: ${response.data.message}`);
+  } catch (err: any) {
+    console.error("> Error while calling B2B webhook:", err);
+    return { success: false, message: err.message || "Something went wrong", externalLink: null };
+  }
 };

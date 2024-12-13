@@ -10,7 +10,7 @@ import {
   processTransactionWebhook,
   validateReceiver,
   verifyWalletPin,
-} from "@/lib/transaction";
+} from "@/lib/p2pTransaction";
 
 interface CreateP2PTxnProps {
   receiverIdentifier: string;

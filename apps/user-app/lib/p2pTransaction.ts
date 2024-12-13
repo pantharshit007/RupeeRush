@@ -2,10 +2,11 @@ import { compare } from "bcryptjs";
 
 import db, { SchemaTypes } from "@repo/db/client";
 import { cache, cacheType } from "@repo/db/cache";
+import { P2PWebhookPayload, P2PWebhookResponse } from "@repo/schema/types";
 
-import { encryptData } from "@/utils/data";
+import { encryptData } from "@repo/common/encryption";
 import { WALLET_LOCK_DURATION, WALLET_PIN_ATTEMPTS_LIMIT } from "@/utils/constant";
-import { callWebhook } from "@/lib/api";
+import { callP2PWebhook } from "@/lib/api";
 
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET ?? "superSecret";
 
@@ -48,11 +49,6 @@ interface webhookPayloadProps {
     ipAddress?: string;
     userAgent?: string;
   };
-}
-
-interface WebhookResponse {
-  success: boolean;
-  message: string;
 }
 
 export const validateReceiver = async ({
@@ -208,9 +204,12 @@ export const prepareWebhookPayload = async ({
   return { ...payload };
 };
 
-export const processTransactionWebhook = async (transactionId: string, webhookPayload: any) => {
+export const processTransactionWebhook = async (
+  transactionId: string,
+  webhookPayload: P2PWebhookPayload
+) => {
   try {
-    const response: WebhookResponse = await callWebhook(webhookPayload);
+    const response: P2PWebhookResponse = await callP2PWebhook(webhookPayload);
 
     if (response && !response.success) {
       throw new Error(response.message);
@@ -233,7 +232,7 @@ export const processTransactionWebhook = async (transactionId: string, webhookPa
       console.error(`> Error processing webhook: ${error.message}`);
     }
 
-    // Rollback transaction
+    // Rollback transaction: Failure
     await db.p2pTransaction.update({
       where: { id: transactionId },
       data: { status: "FAILURE", webhookStatus: "FAILED" },

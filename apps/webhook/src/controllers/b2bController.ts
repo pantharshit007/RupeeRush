@@ -1,11 +1,11 @@
 import "dotenv/config";
+import { Response, Request } from "express";
 
-import { P2PWebhookPayload, P2PWebhookResponse } from "@repo/schema/types";
-import { checkIdempotency, validateSignature } from "../lib/validation";
-import { processP2PTransaction } from "../lib/processTxn";
+import { B2BWebhookPayload, B2BWebhookResponse } from "@repo/schema/types";
 import { WEBHOOK_TIMEOUT } from "../utils/constant";
+import { validateSignature } from "../lib/validation";
 
-async function p2pController(req: any, res: any): Promise<P2PWebhookResponse> {
+async function b2bController(req: Request, res: Response): Promise<Response<B2BWebhookResponse>> {
   const controller = new AbortController();
   const { signal } = controller;
 
@@ -21,11 +21,12 @@ async function p2pController(req: any, res: any): Promise<P2PWebhookResponse> {
     if (!req.body) {
       return res.status(401).json({
         success: false,
-        message: "No request body found",
-      });
+        // message: "No request body found",
+        externalLink: null,
+      } as B2BWebhookResponse);
     }
 
-    const body: P2PWebhookPayload = req.body;
+    const body: B2BWebhookPayload = req.body;
     const idempotencyKey = req.headers["x-idempotency-key"];
 
     const response = validateSignature(body, req);
@@ -33,31 +34,12 @@ async function p2pController(req: any, res: any): Promise<P2PWebhookResponse> {
       return res.status(401).json(response);
     }
 
-    const { isProcessed, existingResult } = await checkIdempotency(idempotencyKey);
-    if (isProcessed) {
-      return res.status(200).json({
-        success: true,
-        message: "Transaction already processed",
-        ...existingResult,
-      });
-    }
-
-    // process transaction
-    const transactionResult: any = await Promise.race([
-      processP2PTransaction(req.body, idempotencyKey, signal),
-      timeoutPromise,
-    ]);
-
-    if (!transactionResult.success) {
-      return res.status(transactionResult.code).json({
-        success: false,
-        message: transactionResult.message,
-      });
-    }
-
+    if (timeoutId) clearTimeout(timeoutId);
+    // Test response
     return res.status(200).json({
       success: true,
       message: "Transaction Processed",
+      externalLink: "https://www.google.com",
     });
   } catch (err: any) {
     if (timeoutId) clearTimeout(timeoutId);
@@ -67,14 +49,16 @@ async function p2pController(req: any, res: any): Promise<P2PWebhookResponse> {
       return res.status(408).json({
         success: false,
         message: "Request timed out",
+        externalLink: null,
       });
     }
 
     return res.status(411).json({
       success: false,
       message: err.message || "Internal Server Error",
+      externalLink: null,
     });
   }
 }
 
-export { p2pController };
+export { b2bController };

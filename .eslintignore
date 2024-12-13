@@ -7,3 +7,4 @@ build
 email.*
 packages/db/**/*
 packages/store/**/*
+packages/common/**/*

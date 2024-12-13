@@ -17,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "@repo/db": "*",
+    "@repo/common": "*",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "esbuild": "^0.24.0",

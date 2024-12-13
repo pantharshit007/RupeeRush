@@ -28,6 +28,7 @@
 // TODO: add a transactions refresh button
 // TODO: send user email in case of p2p / b2b transactions failure and b2b transactions success
 // TODO: instead of SUCCESS/FAILURE/PENDING use icons tick, cross, hourglass with respective colors
+//! TODO: recent transactions are not visible in mobile view in wallet,p2p,b2b need fix
 
 //! NEXT: BE
 // TODO: fix locked amount not updating or something...

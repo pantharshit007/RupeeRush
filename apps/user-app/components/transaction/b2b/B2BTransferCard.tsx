@@ -12,7 +12,6 @@ import { Input } from "@repo/ui/components/ui/input";
 import { Button } from "@repo/ui/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@repo/ui/components/ui/form";
 import { useSetB2BTxn } from "@repo/store/b2bTransaction";
-import { useSetBalance } from "@repo/store/balance";
 import { useSetTrigger } from "@repo/store/trigger";
 
 import { useCurrentUser } from "@/hooks/UseCurrentUser";
@@ -27,7 +26,6 @@ function B2BTransferCard() {
   const [loading, setLoading] = useState<boolean>(false);
 
   const user = useCurrentUser();
-  const setBalance = useSetBalance();
   const setB2bTxnUpdated = useSetB2BTxn();
   const trigger = useSetTrigger();
 
@@ -45,35 +43,28 @@ function B2BTransferCard() {
     startTransition(async () => {
       try {
         if (user?.id) {
-          const { userAgent, userIp } = await getUserAgentAndIP();
-          toast.success("Transaction Success!");
-          window.open("https://stackoverflow.com", "target", "height=600px,width=900px");
+          const data = await createB2BTxnAction({
+            receiverAccountNumber: values.receiverAccountNumber,
+            amount: values.amount * 100,
+            senderId: user.id,
+          });
 
-          //   const data = await createB2BTxnAction({
-          //     receiverAccountNumber: values.receiverAccountNumber,
-          //     amount: values.amount * 100,
-          //     userId: user.id,
-          //     userAgent,
-          //     ipAddress: userIp,
-          //   });
+          if (data.error) {
+            setB2bTxnUpdated({ timestamp: Date.now() });
+            setError(data.error);
+            toast.error(data.error);
+            return;
+          }
 
-          //   if (data.error) {
-          //     setB2bTxnUpdated({ timestamp: Date.now() });
-          //     setError(data.error);
-          //     toast.error(data.error);
-          //     return;
-          //   }
+          if (data.success) {
+            trigger(new Date().getTime());
+            toast.success("Transaction Success!");
 
-          //   if (data.success) {
-          //     trigger(new Date().getTime());
-          //     setBalance((prevState) => ({ ...prevState, walletBalance: data?.res?.balance }));
-          //     toast.success("Transaction Success!");
-
-          //     // Open external link in a new window
-          //     if (data.externalLink) {
-          //       window.open(data.externalLink, "_blank", "noopener,noreferrer");
-          //     }
-          //   }
+            // Open external link in a new window
+            if (data.externalLink) {
+              window.open(data.externalLink, "target", "height=600px,width=900px");
+            }
+          }
         }
       } catch (err: any) {
         setError(err.message);
