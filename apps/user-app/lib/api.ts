@@ -43,6 +43,14 @@ export const callP2PWebhook = async (
     amount: webhookPayload.body.amount,
   });
 
+  const idempotencyCache: IdepotencyCache = {
+    lastUpdated: new Date().toISOString(),
+    processedAt: null,
+    status: "PENDING",
+  };
+
+  await cache.set(cacheType.P2P_TRANSACTION, [idempotencyKey], idempotencyCache, 1200); // 20 minutes
+
   for (let attempt = 1; attempt <= RETRY_CONFIG.maxRetries; attempt++) {
     try {
       if (!WEBHOOK_URL) {

@@ -2,7 +2,7 @@ import "dotenv/config";
 
 import { P2PWebhookPayload, P2PWebhookResponse } from "@repo/schema/types";
 import { checkIdempotency, validateSignature } from "../lib/validation";
-import { processP2PTransaction } from "../lib/processTxn";
+import { processP2PTransaction } from "../lib/processP2PTxn";
 import { WEBHOOK_TIMEOUT } from "../utils/constant";
 
 async function p2pController(req: any, res: any): Promise<P2PWebhookResponse> {

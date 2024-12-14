@@ -48,3 +48,8 @@ export interface IdepotencyCache {
   processedAt: string | null;
   status: "PENDING" | "PROCESSED" | "FAILED";
 }
+
+export interface BankPayload {
+  body: B2BWebhookPayload;
+  nonce: string;
+}

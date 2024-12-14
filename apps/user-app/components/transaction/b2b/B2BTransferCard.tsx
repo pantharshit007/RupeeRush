@@ -76,16 +76,6 @@ function B2BTransferCard() {
     });
   }
 
-  // fetch user's userAgent and ipAddress
-  async function getUserAgentAndIP() {
-    const userAgent = navigator.userAgent;
-
-    const response = await fetch("https://api.ipify.org/");
-    const userIp = await response.text();
-
-    return { userAgent, userIp };
-  }
-
   return (
     <PaymentWrapper title="Send Money to Business">
       <Form {...form}>

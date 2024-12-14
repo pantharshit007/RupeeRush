@@ -1,14 +1,11 @@
-import { cache, cacheType } from "@repo/db/cache";
-import crypto from "crypto";
 import "dotenv/config";
 import { Request } from "express";
 
-const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+import { generateSignature } from "@repo/common/generateSignature";
+import { cache, cacheType } from "@repo/db/cache";
+import { IdepotencyCache } from "@repo/schema/types";
 
-// Generate HMAC signature for webhook payload
-const generateSignature = (payload: any, secretKey: string): string => {
-  return crypto.createHmac("sha256", secretKey).update(JSON.stringify(payload)).digest("hex");
-};
+const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
 export const validateSignature = (body: any, req: Request) => {
   try {
@@ -43,13 +40,10 @@ export const checkIdempotency = async (
   existingResult?: any;
 }> => {
   try {
-    const idempotencyRecord = await cache.get(cacheType.IDEMPOTENCY_KEY, [key]);
+    const idempotencyRecord: IdepotencyCache = await cache.get(cacheType.P2P_TRANSACTION, [key]);
 
-    if (idempotencyRecord) {
-      return {
-        isProcessed: true,
-        existingResult: idempotencyRecord,
-      };
+    if (idempotencyRecord && idempotencyRecord.status === "PROCESSED") {
+      return { isProcessed: true, existingResult: idempotencyRecord };
     }
 
     return { isProcessed: false };

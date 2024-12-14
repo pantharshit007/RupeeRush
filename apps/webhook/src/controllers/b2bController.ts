@@ -4,6 +4,7 @@ import { Response, Request } from "express";
 import { B2BWebhookPayload, B2BWebhookResponse } from "@repo/schema/types";
 import { WEBHOOK_TIMEOUT } from "../utils/constant";
 import { validateSignature } from "../lib/validation";
+import { processB2BTransaction } from "../lib/processB2BTxn";
 
 async function b2bController(req: Request, res: Response): Promise<Response<B2BWebhookResponse>> {
   const controller = new AbortController();
@@ -27,19 +28,30 @@ async function b2bController(req: Request, res: Response): Promise<Response<B2BW
     }
 
     const body: B2BWebhookPayload = req.body;
-    const idempotencyKey = req.headers["x-idempotency-key"];
+    const idempotencyKey: any = req.headers["x-idempotency-key"];
 
     const response = validateSignature(body, req);
     if (!response.success) {
       return res.status(401).json(response);
     }
 
-    if (timeoutId) clearTimeout(timeoutId);
+    const bankApiResponse = await Promise.race([
+      processB2BTransaction(body, idempotencyKey, signal),
+      timeoutPromise,
+    ]);
+
+    if (!bankApiResponse.success) {
+      return res.status(bankApiResponse.code).json({
+        success: false,
+        message: bankApiResponse.message,
+      });
+    }
+
     // Test response
     return res.status(200).json({
       success: true,
-      message: "Transaction Processed",
-      externalLink: "https://www.google.com",
+      message: "Bank Response",
+      externalLink: bankApiResponse.externalLink,
     });
   } catch (err: any) {
     if (timeoutId) clearTimeout(timeoutId);

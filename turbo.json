@@ -15,6 +15,7 @@
     },
     "webhook#build": {
       "dependsOn": ["^build"],
+      "env": ["WEBHOOK_*", "BANK_API_URL"],
       "outputs": ["dist/**"]
     },
     "lint": {

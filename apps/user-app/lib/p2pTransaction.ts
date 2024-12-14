@@ -5,7 +5,7 @@ import { cache, cacheType } from "@repo/db/cache";
 import { P2PWebhookPayload, P2PWebhookResponse } from "@repo/schema/types";
 
 import { encryptData } from "@repo/common/encryption";
-import { WALLET_LOCK_DURATION, WALLET_PIN_ATTEMPTS_LIMIT } from "@/utils/constant";
+import { ACCOUNT_LOCK_DURATION, WALLET_PIN_ATTEMPTS_LIMIT } from "@/utils/constant";
 import { callP2PWebhook } from "@/lib/api";
 
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET ?? "superSecret";
@@ -102,7 +102,7 @@ export const verifyWalletPin = async (pin: string, userId: string) => {
       const updates: any = { walletPinAttempts: attempts };
 
       if (attempts >= WALLET_PIN_ATTEMPTS_LIMIT) {
-        updates.walletLockUntil = new Date(Date.now() + WALLET_LOCK_DURATION);
+        updates.walletLockUntil = new Date(Date.now() + ACCOUNT_LOCK_DURATION);
         updates.walletPinAttempts = 0;
       }
 

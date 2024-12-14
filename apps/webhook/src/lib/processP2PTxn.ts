@@ -1,6 +1,6 @@
-import { P2PWebhookPayload } from "@repo/schema/types";
+import db, { SchemaTypes } from "@repo/db/client";
+import { IdepotencyCache, P2PWebhookPayload } from "@repo/schema/types";
 import { decryptData } from "@repo/common/decryption";
-import db from "@repo/db/client";
 import { cache, cacheType } from "@repo/db/cache";
 import { CustomError } from "../utils/error";
 
@@ -37,9 +37,10 @@ export const processP2PTransaction = async (
       checkAbortSignal();
 
       // Lock the sender row for update to prevent parallel transactions
-      const senderBalance: { [key: string]: any } =
-        await txn.$queryRaw`SELECT * FROM "walletBalance" WHERE "userId" = ${decryptedData.senderId} FOR UPDATE`;
+      const senderBalance: SchemaTypes.WalletBalance[] =
+        await txn.$queryRaw`SELECT * FROM "WalletBalance" WHERE "userId" = ${decryptedData.senderId} FOR UPDATE`;
 
+      // @ts-expect-error
       if (!senderBalance || senderBalance[0].balance < amount) {
         throw new CustomError("Insufficient balance", 422);
       }
@@ -95,7 +96,12 @@ export const processP2PTransaction = async (
 
     checkAbortSignal();
 
-    const cacheData = { ...result, processedAt: new Date().toISOString() };
+    const cacheData: IdepotencyCache = {
+      ...result,
+      processedAt: new Date().toISOString(),
+      lastUpdated: new Date().toISOString(),
+      status: "PROCESSED",
+    };
     await cache.set(cacheType.IDEMPOTENCY_KEY, [idempotencyKey], cacheData, 1200); // cache for 20 minutes
     await cache.evict(cacheType.WALLET_BALANCE, [decryptedData.senderId]);
     await cache.evict(cacheType.WALLET_BALANCE, [decryptedData.receiverId]);
