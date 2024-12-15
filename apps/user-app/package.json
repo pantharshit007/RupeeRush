@@ -19,6 +19,7 @@
     "@repo/ui": "*",
     "@repo/common": "*",
     "@vercel/analytics": "^1.4.0",
+    "@auth/prisma-adapter": "^2.7.0",
     "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
     "next": "^14.2.13",

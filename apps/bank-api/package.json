@@ -1,0 +1,21 @@
+{
+  "name": "bank-api",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --minify"
+  },
+  "dependencies": {
+    "@repo/db": "*",
+    "@repo/common": "*",
+    "@hono/node-server": "^1.13.7",
+    "@neondatabase/serverless": "^0.9.5",
+    "@prisma/adapter-neon": "^5.22.0",
+    "hono": "^4.6.14",
+    "zod": "^3.23.8"  
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241112.0",
+    "@types/node": "^22.10.2",
+    "wrangler": "^3.88.0"
+  }
+}

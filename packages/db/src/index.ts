@@ -1,6 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import * as SchemaTypes from "@prisma/client";
-import { PrismaAdapter } from "@auth/prisma-adapter";
 
 const prismaClientSingleton = () => {
   return new PrismaClient();
@@ -27,5 +25,5 @@ if (process.env.NODE_ENV !== "production") {
   globalThis.prismaGlobal = db;
 }
 
-export { db as default, PrismaAdapter };
-export type { SchemaTypes };
+export default db;
+export type * as SchemaTypes from "@prisma/client";

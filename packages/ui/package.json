@@ -10,7 +10,8 @@
     "check": "npm run lint && npm run type-check"
   },
   "peerDependencies": {
-    "react": "^18.2.0"
+    "react": "^18.3.1",
+    "react-dom": "18.3.1"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

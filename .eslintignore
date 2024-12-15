@@ -8,3 +8,4 @@ email.*
 packages/db/**/*
 packages/store/**/*
 packages/common/**/*
+apps/bank-api/**/*

@@ -5,6 +5,7 @@
     "build": "turbo build",
     "build:web": "turbo build --filter=user-app...",
     "build:hook": "turbo build --filter=webhook...",
+    "build:api": "turbo build --filter=bank-api...",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "lint:fix": "turbo lint:fix",
@@ -12,13 +13,13 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "dev:web": "turbo dev --filter=user-app...",
     "dev:hook": "turbo dev --filter=webhook...",
+    "dev:api": "turbo dev --filter=bank-api...",
     "db:prisma": "cd packages/db && prisma generate && cd ../..",
     "db:generate": "cd packages/db && npm run db:generate && cd ../..",
     "db:push": "cd packages/db && npm run db:push && npm run db:seed && cd ../..",
     "studio": "cd packages/db && prisma studio && cd ../..",
     "db:docker": "docker run -e POSTGRES_PASSWORD=mysecretpassword -d -p 3333:5432 postgres",
     "prepare": "husky || true",
-    "postinstall": "cd packages/db && prisma generate",
     "copy:prisma": "cp node_modules/.prisma/client/libquery_engine-debian-openssl-3.0.x.so.node node_modules/@prisma/client/"
   },
   "devDependencies": {

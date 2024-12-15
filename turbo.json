@@ -18,6 +18,11 @@
       "env": ["WEBHOOK_*", "BANK_API_URL"],
       "outputs": ["dist/**"]
     },
+    "bank-api#build": {
+      "dependsOn": ["^build"],
+      "env": ["BANK_API_URL"],
+      "outputs": ["dist/**"]
+    },
     "lint": {
       "dependsOn": ["^lint"]
     },
