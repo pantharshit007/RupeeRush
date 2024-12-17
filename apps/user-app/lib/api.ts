@@ -33,6 +33,7 @@ const generateIdempotencyKey = ({ senderInfo, recipientInfo, amount }: KeyProps)
  * @param webhookPayload Payload to send
  * @returns P2PWebhookResponse
  */
+
 export const callP2PWebhook = async (
   webhookPayload: P2PWebhookPayload
 ): Promise<P2PWebhookResponse> => {
@@ -49,7 +50,7 @@ export const callP2PWebhook = async (
     status: "PENDING",
   };
 
-  await cache.set(cacheType.P2P_TRANSACTION, [idempotencyKey], idempotencyCache, 1200); // 20 minutes
+  await cache.set(cacheType.IDEMPOTENCY_KEY, [idempotencyKey], idempotencyCache, 1200); // 20 minutes
 
   for (let attempt = 1; attempt <= RETRY_CONFIG.maxRetries; attempt++) {
     try {
@@ -90,7 +91,7 @@ export const callP2PWebhook = async (
       const isRetryable = isErrorRetryable(error);
 
       // If it's the last attempt or not retryable, return failure
-      if (attempt === RETRY_CONFIG.maxRetries || !isRetryable) {
+      if (attempt > RETRY_CONFIG.maxRetries || !isRetryable) {
         console.error(
           `> Webhook call failed after ${attempt} attempts:`,
           error.response.data.message
@@ -126,6 +127,7 @@ export const callP2PWebhook = async (
  * @param webhookPayload Payload to send
  * @returns B2BWebhookResponse
  */
+
 export const callB2BWebhook = async (
   webhookPayload: B2BWebhookPayload
 ): Promise<B2BWebhookResponse> => {
@@ -137,7 +139,7 @@ export const callB2BWebhook = async (
   });
 
   // Check if the key exists in the cache
-  const isKeyExists: IdepotencyCache = await cache.get(cacheType.B2B_TRANSACTION, [idempotencyKey]);
+  const isKeyExists: IdepotencyCache = await cache.get(cacheType.IDEMPOTENCY_KEY, [idempotencyKey]);
   if (isKeyExists && isKeyExists.status === "PROCESSED") {
     return { success: true, message: "Transaction already processed", externalLink: null };
   }
@@ -148,7 +150,7 @@ export const callB2BWebhook = async (
     status: "PENDING",
   };
 
-  await cache.set(cacheType.B2B_TRANSACTION, [idempotencyKey], idempotencyCache, 600); // 10 minutes
+  await cache.set(cacheType.IDEMPOTENCY_KEY, [idempotencyKey], idempotencyCache, 600); // 10 minutes
 
   try {
     if (!WEBHOOK_URL) {

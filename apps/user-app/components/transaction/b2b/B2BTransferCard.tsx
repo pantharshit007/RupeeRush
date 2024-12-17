@@ -43,6 +43,12 @@ function B2BTransferCard() {
     startTransition(async () => {
       try {
         if (user?.id) {
+          // Preemptively open the window (popup blocker workaround)
+          let popupWindow: Window | null = null;
+
+          const preemptiveLink = "about:blank"; // Temporary blank page
+          popupWindow = window.open(preemptiveLink, "target", "height=600px,width=900px");
+
           const data = await createB2BTxnAction({
             receiverAccountNumber: values.receiverAccountNumber,
             amount: values.amount * 100,
@@ -53,6 +59,11 @@ function B2BTransferCard() {
             setB2bTxnUpdated({ timestamp: Date.now() });
             setError(data.error);
             toast.error(data.error);
+
+            // Close the popup if an error occurs
+            if (popupWindow) {
+              popupWindow.close();
+            }
             return;
           }
 
@@ -60,8 +71,12 @@ function B2BTransferCard() {
             trigger(new Date().getTime());
             toast.success("Transaction Success!");
 
-            // Open external link in a new window
-            if (data.externalLink) {
+            if (data.externalLink && popupWindow) {
+              // Redirect the preemptive popup to the external link
+              popupWindow.location.href = data.externalLink;
+            } else if (data.externalLink) {
+              // Fallback if popup failed
+              window.alert(data.externalLink);
               window.open(data.externalLink, "target", "height=600px,width=900px");
             }
           }
@@ -77,7 +92,7 @@ function B2BTransferCard() {
   }
 
   return (
-    <PaymentWrapper title="Send Money to Business">
+    <PaymentWrapper title="Send Money to Business" className="h-fit">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField

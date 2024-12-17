@@ -1,6 +1,4 @@
-import { PrismaNeon } from "@prisma/adapter-neon";
-import { Pool } from "@neondatabase/serverless";
-import { PrismaClient } from "@repo/db/honoClient";
+import { PrismaClient, PrismaNeon, Pool } from "@repo/db/honoClient";
 
 import type { Env } from "../api-env";
 const pool = (env: Env) => new Pool({ connectionString: env.DATABASE_URL });

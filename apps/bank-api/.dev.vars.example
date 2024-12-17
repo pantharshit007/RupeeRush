@@ -1,9 +1,15 @@
 # ----------------------------------------------------------------------------- 
-# Databse [No Docker connection]
+# Databse
 # ----------------------------------------------------------------------------- 
 DATABASE_URL="postgresql://postgres:mysecretpassword@localhost:3333/postgres" 
+DATABASE_URL_UNPOOLED="postgresql://postgres:mysecretpassword@localhost:3333/postgres"
 
 # ----------------------------------------------------------------------------- 
 # Webhook
 # ----------------------------------------------------------------------------- 
 WEBHOOK_BANK_SECRET=<YOUR_WEBHOOK_BANK_SECRET>
+
+#------------------------------------------------------------------------------
+# Environment
+#------------------------------------------------------------------------------
+ENVIRONMENT="development"

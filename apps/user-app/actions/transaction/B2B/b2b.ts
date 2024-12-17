@@ -77,10 +77,7 @@ export const createB2BTxnAction = async ({ ...props }: CreateB2BTxnActionProps) 
   } catch (err: any) {
     console.error("> Error while creating B2B transaction:", err);
     return { error: err.message };
-
-    // disconnect from db
   } finally {
     await cache.evict(cacheType.B2B_TRANSACTION, [senderId]);
-    await db.$disconnect();
   }
 };

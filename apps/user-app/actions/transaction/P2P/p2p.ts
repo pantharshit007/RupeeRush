@@ -92,11 +92,8 @@ export const createP2PTxnAction = async ({ ...props }: CreateP2PTxnProps) => {
   } catch (err: any) {
     console.error("> Error while creating P2P transaction:", err);
     return { error: err.message };
-
-    // disconnect from db
   } finally {
     // evicting cache
     await cache.evict(cacheType.P2P_TRANSACTION, [userId]);
-    await db.$disconnect();
   }
 };

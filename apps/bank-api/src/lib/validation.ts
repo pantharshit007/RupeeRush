@@ -1,21 +1,17 @@
-import "dotenv/config";
-import { Request } from "express";
-
 import { generateSignature } from "@repo/common/generateSignature";
 import { cache, cacheType } from "@repo/db/cache";
 import { IdepotencyCache } from "@repo/schema/types";
+import { Context } from "hono";
 
-const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
-
-export const validateSignature = (body: any, req: Request) => {
+export const validateSignature = (body: any, incomingSignature: string, c: Context) => {
   try {
+    const WEBHOOK_SECRET = c.env.WEBHOOK_SECRET;
     if (!WEBHOOK_SECRET) {
       console.log("> Webhook secret not configured");
       return { success: false, message: "Webhook secret not configured" };
     }
 
-    const incomingSignature: string = req.headers["x-signature"] as string;
-    const signature = generateSignature(req.body, WEBHOOK_SECRET);
+    const signature = generateSignature(body, WEBHOOK_SECRET);
 
     if (incomingSignature !== signature) {
       return { success: false, message: "Invalid Signature" };

@@ -1,5 +1,6 @@
 import axios from "axios";
 import crypto from "crypto";
+import "dotenv/config";
 
 import { B2BWebhookPayload, BankPayload } from "@repo/schema/types";
 import { generateSignature } from "@repo/common/generateSignature";
@@ -52,7 +53,7 @@ export const processB2BTransaction = async (
 
         const nonce = generateNonce();
         const timestamp = Date.now().toString();
-        const payload: BankPayload = { body, nonce };
+        const payload: BankPayload = { payload: body, nonce };
 
         const signature = generateSignature(payload, process.env.WEBHOOK_BANK_SECRET!);
 
@@ -78,11 +79,13 @@ export const processB2BTransaction = async (
 
         throw new Error(`Webhook failed: ${response.data.message}`);
       } catch (error: any) {
+        console.error("> Error during webhook call attempt", attempt, ":", error);
+
         // Determine if the error is retryable
         const isRetryable = isErrorRetryable(error);
 
         // If it's the last attempt or not retryable, return failure
-        if (attempt === RETRY_STRATEGIES.length || !isRetryable) {
+        if (attempt > RETRY_STRATEGIES.length || !isRetryable) {
           console.error(
             `> Webhook call failed after ${attempt} attempts:`,
             error.response.data.message
@@ -96,9 +99,9 @@ export const processB2BTransaction = async (
 
         // Calculate exponential backoff
         const strategy = RETRY_STRATEGIES[attempt - 1] as any;
-        const backoffMs = Math.random() * strategy.jitter;
+        const backoffMs = strategy.delay + Math.random() * strategy.jitter;
 
-        console.log("> Waiting for", backoffMs, "ms before retrying");
+        console.log("> Waiting for", backoffMs / 1000, "seconds");
         await new Promise((resolve) => setTimeout(resolve, backoffMs));
       }
     }
