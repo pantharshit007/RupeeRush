@@ -30,7 +30,7 @@ export const getCreditCardAction = async (userId: string): Promise<CreditCardPro
     });
 
     // updatin cache
-    await cache.set(cacheType.CREDIT_CARD, [userId], creditCards);
+    await cache.set(cacheType.CREDIT_CARD, [userId], creditCards!);
     return creditCards;
   } catch (err: any) {
     console.error("Error fetching credit card details:", err);

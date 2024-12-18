@@ -1,36 +1,38 @@
-import Redis from "ioredis";
+import { Redis } from "@upstash/redis";
 import { CacheProps } from "./cacheType";
 
 export class RedisCache implements CacheProps {
   private client: Redis;
   private static instance: RedisCache;
 
-  private constructor(redisUrl: string) {
-    this.client = new Redis(redisUrl);
+  private constructor(url: string, token: string) {
+    this.client = new Redis({
+      url: url,
+      token: token,
+    });
   }
 
-  static getInstance(redisUrl: string): RedisCache {
+  static getInstance(url: string, token: string): RedisCache {
     if (!this.instance) {
-      this.instance = new RedisCache(redisUrl);
+      this.instance = new RedisCache(url, token);
     }
     return this.instance;
   }
 
   async set(type: string, args: string[], value: any, expirySeconds: number): Promise<void> {
     const key = this.generateKey(type, args);
-
-    if (expirySeconds) {
-      await this.client.set(key, JSON.stringify(value), "EX", expirySeconds);
-    } else {
-      await this.client.set(key, JSON.stringify(value)); // though it will never work: already assigned 1800 seconds
-    }
-    return Promise.resolve();
+    await this.client.set(key, JSON.stringify(value), { ex: expirySeconds });
   }
 
   async get(type: string, args: string[]): Promise<any> {
     const key = this.generateKey(type, args);
     const value = await this.client.get(key);
-    return value ? JSON.parse(value) : null;
+
+    try {
+      return value ? JSON.parse(value as string) : null;
+    } catch (e) {
+      return value;
+    }
   }
 
   async evict(type: string, args: any[]): Promise<any> {

@@ -10,6 +10,12 @@ DATABASE_URL_UNPOOLED="postgresql://postgres:mysecretpassword@localhost:3333/pos
 WEBHOOK_BANK_SECRET=<YOUR_WEBHOOK_BANK_SECRET>
 
 #------------------------------------------------------------------------------
+# Redis
+#------------------------------------------------------------------------------
+UPSTASH_REDIS_REST_URL=<Redis URL>
+UPSTASH_REDIS_REST_TOKEN=<Redis Token>
+
+#------------------------------------------------------------------------------
 # Environment
 #------------------------------------------------------------------------------
 ENVIRONMENT="development"

@@ -50,6 +50,14 @@ export interface IdepotencyCache {
 }
 
 export interface BankPayload {
-  body: B2BWebhookPayload;
+  payload: B2BWebhookPayload;
   nonce: string;
+}
+
+export interface cachedWalletBalance {
+  balance: number;
+}
+
+export interface cachedBankBalance {
+  balance: number;
 }
