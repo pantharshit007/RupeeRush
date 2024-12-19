@@ -10,6 +10,7 @@ import { RETRY_STRATEGIES, WEBHOOK_TIMEOUT } from "../utils/constant";
 import { checkIdempotency } from "./validation";
 
 const BANK_API = process.env.BANK_API_URL;
+const WEBHOOK_BANK_SECRET = process.env.WEBHOOK_BANK_SECRET;
 
 /**
  * Generate a cryptographically secure nonce
@@ -36,6 +37,10 @@ export const processB2BTransaction = async (
       }
     };
 
+    if (!WEBHOOK_BANK_SECRET) {
+      throw new Error("Bank Webhook secret not configured");
+    }
+
     // Webhook re-try logic
     for (let attempt = 1; attempt <= RETRY_STRATEGIES.length; attempt++) {
       try {
@@ -47,7 +52,7 @@ export const processB2BTransaction = async (
             success: true,
             code: 409,
             message: "Transaction already processed",
-            externalLink: null,
+            paymentToken: null,
           };
         }
 
@@ -55,7 +60,7 @@ export const processB2BTransaction = async (
         const timestamp = Date.now().toString();
         const payload: BankPayload = { payload: body, nonce };
 
-        const signature = generateSignature(payload, process.env.WEBHOOK_BANK_SECRET!);
+        const signature = generateSignature(payload, WEBHOOK_BANK_SECRET);
 
         checkAbortSignal();
 
@@ -79,7 +84,7 @@ export const processB2BTransaction = async (
 
         throw new Error(`Webhook failed: ${response.data.message}`);
       } catch (error: any) {
-        console.error("> Error during webhook call attempt", attempt, ":", error);
+        console.error("> Error during webhook call attempt", attempt, ":", error.message);
 
         // Determine if the error is retryable
         const isRetryable = isErrorRetryable(error);
@@ -110,7 +115,7 @@ export const processB2BTransaction = async (
     if (err instanceof CustomError) {
       return { success: false, code: err.statusCode, message: err.message };
     } else {
-      return { success: false, code: 500, message: err.message };
+      return { success: false, code: err.statusCode || 500, message: err.message };
     }
   }
 };

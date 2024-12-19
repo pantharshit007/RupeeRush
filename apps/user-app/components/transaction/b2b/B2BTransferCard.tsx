@@ -20,6 +20,8 @@ import FormError from "@/components/common/FormError";
 import PaymentWrapper from "@/components/transaction/PaymentWrapper";
 import { createB2BTxnAction } from "@/actions/transaction/B2B/b2b";
 
+const PAGE = process.env.NEXT_PUBLIC_BANK_PAGE_URL;
+
 function B2BTransferCard() {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string>("");
@@ -71,13 +73,13 @@ function B2BTransferCard() {
             trigger(new Date().getTime());
             toast.success("Transaction Success!");
 
-            if (data.externalLink && popupWindow) {
+            if (data.paymentToken && popupWindow) {
               // Redirect the preemptive popup to the external link
-              popupWindow.location.href = data.externalLink;
-            } else if (data.externalLink) {
+              popupWindow.location.href = `${PAGE}${data.paymentToken}`;
+            } else if (data.paymentToken) {
               // Fallback if popup failed
-              window.alert(data.externalLink);
-              window.open(data.externalLink, "target", "height=600px,width=900px");
+              window.alert(`${PAGE}${data.paymentToken}`);
+              window.open(`${PAGE}${data.paymentToken}`, "target", "height=600px,width=900px");
             }
           }
         }

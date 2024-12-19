@@ -22,8 +22,8 @@ async function b2bController(req: Request, res: Response): Promise<Response<B2BW
     if (!req.body) {
       return res.status(401).json({
         success: false,
-        // message: "No request body found",
-        externalLink: null,
+        message: "No request body found",
+        paymentToken: null,
       } as B2BWebhookResponse);
     }
 
@@ -44,14 +44,14 @@ async function b2bController(req: Request, res: Response): Promise<Response<B2BW
       return res.status(bankApiResponse.code).json({
         success: false,
         message: bankApiResponse.message,
+        paymentToken: null,
       });
     }
 
-    // Test response
     return res.status(200).json({
       success: true,
       message: "Bank Response",
-      externalLink: bankApiResponse.externalLink,
+      paymentToken: bankApiResponse.paymentToken,
     });
   } catch (err: any) {
     if (timeoutId) clearTimeout(timeoutId);
@@ -61,14 +61,14 @@ async function b2bController(req: Request, res: Response): Promise<Response<B2BW
       return res.status(408).json({
         success: false,
         message: "Request timed out",
-        externalLink: null,
+        paymentToken: null,
       });
     }
 
     return res.status(411).json({
       success: false,
       message: err.message || "Internal Server Error",
-      externalLink: null,
+      paymentToken: null,
     });
   }
 }

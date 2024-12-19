@@ -72,10 +72,10 @@ export const createB2BTxnAction = async ({ ...props }: CreateB2BTxnActionProps) 
 
     return {
       success: true,
-      externalLink: response.externalLink,
+      paymentToken: response.paymentToken,
     };
   } catch (err: any) {
-    console.error("> Error while creating B2B transaction:", err);
+    console.error("> Error while creating B2B transaction:", err.message);
     return { error: err.message };
   } finally {
     await cache.evict(cacheType.B2B_TRANSACTION, [senderId]);

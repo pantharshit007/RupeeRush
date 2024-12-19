@@ -14,6 +14,7 @@ import { RETRY_CONFIG, WEBHOOK_TIMEOUT } from "@/utils/constant";
 import { isErrorRetryable, WebhookError } from "@/utils/error";
 
 const WEBHOOK_URL = process.env.WEBHOOK_URL;
+const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
 interface KeyProps {
   senderInfo: string;
@@ -141,7 +142,7 @@ export const callB2BWebhook = async (
   // Check if the key exists in the cache
   const isKeyExists: IdepotencyCache = await cache.get(cacheType.IDEMPOTENCY_KEY, [idempotencyKey]);
   if (isKeyExists && isKeyExists.status === "PROCESSED") {
-    return { success: true, message: "Transaction already processed", externalLink: null };
+    return { success: true, message: "Transaction already processed", paymentToken: null };
   }
 
   const idempotencyCache: IdepotencyCache = {
@@ -153,8 +154,8 @@ export const callB2BWebhook = async (
   await cache.set(cacheType.IDEMPOTENCY_KEY, [idempotencyKey], idempotencyCache, 600); // 10 minutes
 
   try {
-    if (!WEBHOOK_URL) {
-      throw new Error("Webhook URL not configured");
+    if (!WEBHOOK_URL || !WEBHOOK_SECRET) {
+      throw new Error("Webhook URL/SECRET not configured");
     }
 
     const timestamp = Date.now().toString();
@@ -165,7 +166,7 @@ export const callB2BWebhook = async (
       idempotencyKey,
     };
 
-    const signature = generateSignature(payload, process.env.WEBHOOK_SECRET!);
+    const signature = generateSignature(payload, WEBHOOK_SECRET);
 
     const endPoint = `${WEBHOOK_URL}/api/v1/b2bWebhook`;
     const headers = {
@@ -186,7 +187,11 @@ export const callB2BWebhook = async (
 
     throw new Error(`Webhook failed: ${response.data.message}`);
   } catch (err: any) {
-    console.error("> Error while calling B2B webhook:", err);
-    return { success: false, message: err.message || "Something went wrong", externalLink: null };
+    console.error("> Error while calling B2B webhook:", err.response.data.message || err.message);
+    return {
+      success: false,
+      message: err.response.data.message || err.message || "Something went wrong",
+      paymentToken: null,
+    };
   }
 };
