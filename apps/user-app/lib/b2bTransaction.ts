@@ -4,7 +4,7 @@ import { encryptData } from "@repo/common/encryption";
 import { callB2BWebhook } from "@/lib/api";
 import { B2BWebhookPayload } from "@repo/schema/types";
 
-const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET ?? "superSecret";
+const WEBHOOK_BANK_SECRET = process.env.WEBHOOK_BANK_SECRET ?? "superSecret";
 
 interface transaction {
   txn: Omit<
@@ -90,9 +90,13 @@ export const prepareWebhookPayload = async ({
   transaction,
   props,
   receiverId,
-}: WebhookPayloadProps) => {
+}: WebhookPayloadProps): Promise<B2BWebhookPayload> => {
+  const dataToBeEncrypted = await encryptData(
+    { senderId: props.senderId, receiverId, txnId: transaction.id },
+    WEBHOOK_BANK_SECRET
+  );
   const payload = {
-    encryptData: encryptData({ senderId: props.senderId, receiverId }, WEBHOOK_SECRET),
+    encryptData: dataToBeEncrypted,
     body: {
       webhookId: transaction.webhookId,
       senderIdentifier: transaction.senderAccountNumber,

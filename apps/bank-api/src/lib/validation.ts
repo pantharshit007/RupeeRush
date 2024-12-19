@@ -1,11 +1,13 @@
 import { generateSignature } from "@repo/common/generateSignature";
-import { cache, cacheType } from "@repo/db/cache";
-import { IdepotencyCache } from "@repo/schema/types";
+import { cacheType, honoCache } from "@repo/db/cache";
+import { BankPayload, IdepotencyCache } from "@repo/schema/types";
 import { Context } from "hono";
+import { Env } from "../api-env";
 
-export const validateSignature = (body: any, incomingSignature: string, c: Context) => {
+export const validateSignature = (body: BankPayload, incomingSignature: string, c: Context) => {
+  const env: Env = c.env;
   try {
-    const WEBHOOK_SECRET = c.env.WEBHOOK_SECRET;
+    const WEBHOOK_SECRET = env.WEBHOOK_BANK_SECRET;
     if (!WEBHOOK_SECRET) {
       console.log("> Webhook secret not configured");
       return { success: false, message: "Webhook secret not configured" };
@@ -27,15 +29,19 @@ export const validateSignature = (body: any, incomingSignature: string, c: Conte
 /**
  * Check if txn related to this idempotency key is already processed or not
  * @param key
+ * @param c `Context` object
  * @returns boolean
  */
 export const checkIdempotency = async (
-  key: string
+  key: string,
+  c: Context
 ): Promise<{
   isProcessed: boolean;
   existingResult?: any;
 }> => {
+  const env: Env = c.env;
   try {
+    const cache = honoCache.getInstance(env.UPSTASH_REDIS_REST_URL, env.UPSTASH_REDIS_REST_TOKEN);
     const idempotencyRecord: IdepotencyCache = await cache.get(cacheType.IDEMPOTENCY_KEY, [key]);
 
     if (idempotencyRecord && idempotencyRecord.status === "PROCESSED") {

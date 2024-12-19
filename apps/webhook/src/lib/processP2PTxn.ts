@@ -1,16 +1,10 @@
 import db, { SchemaTypes } from "@repo/db/client";
-import { IdepotencyCache, P2PWebhookPayload } from "@repo/schema/types";
+import { DataArgs, IdepotencyCache, P2PWebhookPayload } from "@repo/schema/types";
 import { decryptData } from "@repo/common/decryption";
 import { cache, cacheType } from "@repo/db/cache";
 import { CustomError } from "../utils/error";
 
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET ?? "superSecret";
-
-interface DecryptedData {
-  pin: string;
-  senderId: string;
-  receiverId: string;
-}
 
 export const processP2PTransaction = async (
   body: P2PWebhookPayload,
@@ -31,7 +25,7 @@ export const processP2PTransaction = async (
       }
     };
 
-    const decryptedData: DecryptedData = decryptData(encryptData, WEBHOOK_SECRET);
+    const decryptedData: DataArgs = await decryptData(encryptData, WEBHOOK_SECRET);
 
     const result = await db.$transaction(async (txn) => {
       checkAbortSignal();

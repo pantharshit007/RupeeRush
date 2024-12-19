@@ -2,7 +2,7 @@ import { compare } from "bcryptjs";
 
 import db, { SchemaTypes } from "@repo/db/client";
 import { cache, cacheType } from "@repo/db/cache";
-import { P2PWebhookPayload, P2PWebhookResponse } from "@repo/schema/types";
+import { cachedWalletBalance, P2PWebhookPayload, P2PWebhookResponse } from "@repo/schema/types";
 
 import { encryptData } from "@repo/common/encryption";
 import { ACCOUNT_LOCK_DURATION, WALLET_PIN_ATTEMPTS_LIMIT } from "@/utils/constant";
@@ -132,9 +132,9 @@ export const verifyWalletPin = async (pin: string, userId: string) => {
 
 export const checkWalletBalance = async (userId: string) => {
   try {
-    const value = await cache.get(cacheType.WALLET_BALANCE, [userId]);
-    if (value) {
-      return { success: true, balance: value };
+    const value = (await cache.get(cacheType.WALLET_BALANCE, [userId])) as cachedWalletBalance;
+    if (value && value.balance) {
+      return { success: true, balance: value.balance };
     }
 
     const wallet = await db.walletBalance.findUnique({
@@ -143,11 +143,11 @@ export const checkWalletBalance = async (userId: string) => {
         balance: true,
       },
     });
-    if (!wallet) {
+    if (!wallet || !wallet.balance) {
       return { success: false, message: "Wallet not found" };
     }
 
-    await cache.set(cacheType.WALLET_BALANCE, [userId], wallet.balance);
+    await cache.set(cacheType.WALLET_BALANCE, [userId], { balance: wallet.balance });
 
     return { success: true, balance: wallet.balance };
   } catch (err: any) {
@@ -182,16 +182,18 @@ export const prepareWebhookPayload = async ({
   transaction,
   props,
   receiverId,
-}: webhookPayloadProps) => {
+}: webhookPayloadProps): Promise<P2PWebhookPayload> => {
+  // TODO: why are we sending pin here? since we are already validating before no need here.
+  const dataToBeEncrypted = await encryptData(
+    {
+      pin: props.pin,
+      senderId: props.userId,
+      receiverId,
+    },
+    WEBHOOK_SECRET
+  );
   const payload = {
-    encryptData: encryptData(
-      {
-        pin: props.pin,
-        senderId: props.userId,
-        receiverId,
-      },
-      WEBHOOK_SECRET
-    ),
+    encryptData: dataToBeEncrypted,
     body: {
       webhookId: transaction.webhookId,
       transferMethod: props.transferMethod,

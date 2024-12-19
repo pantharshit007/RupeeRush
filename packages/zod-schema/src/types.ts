@@ -1,12 +1,12 @@
 export interface P2PWebhookPayload {
-  encryptData: EncryptData;
+  encryptData: EncryptedData;
   body: Body;
   timestamp?: string;
   idempotencyKey?: string;
 }
 
 export interface B2BWebhookPayload {
-  encryptData: EncryptData;
+  encryptData: EncryptedData;
   body: B2BWebhookBody;
   timestamp?: string;
   idempotencyKey?: string;
@@ -19,7 +19,7 @@ interface Body {
   receiverIdentifier: string;
   amount: number;
 }
-interface EncryptData {
+interface EncryptedData {
   iv: string;
   data: string;
   authTag: string;
@@ -40,7 +40,7 @@ export interface P2PWebhookResponse {
 export interface B2BWebhookResponse {
   success: boolean;
   message: string;
-  externalLink: string | null;
+  paymentToken: string | null;
 }
 
 export interface IdepotencyCache {
@@ -60,4 +60,11 @@ export interface cachedWalletBalance {
 
 export interface cachedBankBalance {
   balance: number;
+}
+
+export interface DataArgs {
+  senderId: string;
+  receiverId: string;
+  txnId?: string;
+  pin?: string;
 }
