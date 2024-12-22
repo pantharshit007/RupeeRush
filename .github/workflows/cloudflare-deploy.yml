@@ -19,4 +19,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}  # Set environment based on branch
+          # environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }} 
