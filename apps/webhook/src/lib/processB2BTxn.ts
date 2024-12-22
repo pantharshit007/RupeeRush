@@ -46,7 +46,15 @@ export const processB2BTransaction = async (
       try {
         checkAbortSignal();
 
-        const { isProcessed } = await checkIdempotency(idempotencyKey);
+        const { isProcessed, isAvailable } = await checkIdempotency(idempotencyKey);
+        if (!isAvailable) {
+          return {
+            success: false,
+            code: 409,
+            message: "Idempotency key not available",
+          };
+        }
+
         if (isProcessed) {
           return {
             success: true,

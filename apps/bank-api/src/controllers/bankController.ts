@@ -15,7 +15,11 @@ async function bankController(c: Context): Promise<Response> {
     }
 
     // check idempotency key
-    const { isProcessed, existingResult } = await checkIdempotency(idempotencyKey, c);
+    const { isProcessed, isAvailable, existingResult } = await checkIdempotency(idempotencyKey, c);
+    if (!isAvailable) {
+      return c.json(response(false, "Idempotency key not available", existingResult), 409);
+    }
+
     if (isProcessed) {
       return c.json(response(false, "Idempotency key already processed", existingResult), 409);
     }
@@ -33,7 +37,13 @@ async function bankController(c: Context): Promise<Response> {
     }
 
     // return response
-    return c.json(response(true, "Transaction Registered", result.paymentToken));
+    return c.json(
+      response(
+        true,
+        "Transaction Registered: complete the payment on the bank site.",
+        result.paymentToken
+      )
+    );
   } catch (error) {
     console.error("> Error while processing Bank API:", error);
     return c.json(response(false, "Internal Server Error"), 500);

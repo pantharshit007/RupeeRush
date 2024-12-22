@@ -38,7 +38,7 @@ async function main() {
           cardType: "American Express",
           cardHolder: "Alice",
           cardNumber: "4111111111111111",
-          cardExpiry: "12/2026",
+          cardExpiry: "12/26",
           cardCvv: "123",
           cardPinHash: await bcrypt.hash("123456", 10),
         },
@@ -85,7 +85,7 @@ async function main() {
           cardType: "American Express",
           cardHolder: "Bob",
           cardNumber: "5555555555554444",
-          cardExpiry: "12/2026",
+          cardExpiry: "12/26",
           cardCvv: "123",
           cardPinHash: await bcrypt.hash("654321", 10),
         },
@@ -105,17 +105,17 @@ async function main() {
     },
   });
 
-  const merchant = await prisma.merchant.upsert({
-    where: { email: "merchant@example.com" },
-    update: {},
-    create: {
-      email: "merchant@example.com",
-      name: "Jethalal",
-      auth_type: AuthType.google,
-    },
-  });
+  // const merchant = await prisma.merchant.upsert({
+  //   where: { email: "merchant@example.com" },
+  //   update: {},
+  //   create: {
+  //     email: "merchant@example.com",
+  //     name: "Jethalal",
+  //     auth_type: AuthType.google,
+  //   },
+  // });
 
-  console.log({ user1, user2, merchant });
+  console.log({ user1, user2 });
 }
 
 main()

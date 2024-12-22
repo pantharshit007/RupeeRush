@@ -1,1 +1,1 @@
-export const MAX_NONCE_AGE = 300; // 5 minutes
+export const MAX_NONCE_AGE = 600; // 10 minutes

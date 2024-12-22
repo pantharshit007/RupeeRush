@@ -1,11 +1,12 @@
 import { Context } from "hono";
 
-import { B2BWebhookResponse, BankPayload, DataArgs } from "@repo/schema/types";
+import { B2BWebhookResponse, BankPayload, DataArgs, NonceArgs } from "@repo/schema/types";
 import { decryptData } from "@repo/common/decryption";
 
 import { prisma } from "./db";
 import { Env } from "../api-env";
 import { MAX_NONCE_AGE } from "../utils/constant";
+import { cacheType, honoCache } from "@repo/db/cache";
 
 /**
  * Processes the bank transaction and send the external link to the user
@@ -20,12 +21,14 @@ export const processTransaction = async (
 ): Promise<B2BWebhookResponse> => {
   const webhookAttempt = c.req.header("x-webhook-attempt");
   const timestamp = c.req.header("x-timestamp");
+  const idempotencyKey = c.req.header("x-idempotency-key");
 
   const { payload, nonce } = body;
   const { encryptData, body: b2bBody } = payload;
   const { amount, webhookId } = b2bBody;
   const env: Env = c.env;
   const db = prisma(env);
+  const cache = honoCache.getInstance(env.UPSTASH_REDIS_REST_URL, env.UPSTASH_REDIS_REST_TOKEN);
 
   // Check if the nonce is expired
   const currentTime = Date.now();
@@ -34,8 +37,26 @@ export const processTransaction = async (
   }
 
   try {
+    // Check for reused nonce
+    const existingNounce = await cache.get(cacheType.NONCE, [nonce]);
+    if (existingNounce) {
+      return {
+        success: false,
+        message: "Replay attack detected: Nonce already used",
+        paymentToken: null,
+      };
+    }
+
     // decrypt data
     const decryptedData: DataArgs = await decryptData(encryptData, env.WEBHOOK_BANK_SECRET);
+
+    // Cache the nonce
+    const nounceCache: NonceArgs = {
+      nonce: nonce,
+      txnId: decryptedData.txnId!,
+      IdepotencyKey: idempotencyKey!,
+    };
+    await cache.set(cacheType.NONCE, [nonce], nounceCache, MAX_NONCE_AGE * 1000);
 
     // fetch transaction data
     const transaction = await db.b2bTransaction.findUnique({
@@ -93,8 +114,8 @@ export const processTransaction = async (
     });
 
     // external link: txn id + nounce id
-    // ex: https://api.rupeerush.com/bank/HDFC/txnId?=1234567890&nonce=1234567890
-    const paymentToken = `/bank/${transaction.senderBankName}/txnId?=${transaction.id}&nonce=${nonce}`;
+    // ex: https://bank.rupeerush.com/bank/HDFC?txnId=1234567890&nonce=1234567890
+    const paymentToken = `/bank/${transaction.senderBankName}?txnId=${transaction.id}&nonce=${nonce}`;
 
     return { success: true, message: "Transaction processed", paymentToken };
   } catch (err: any) {

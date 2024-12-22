@@ -68,3 +68,21 @@ export interface DataArgs {
   txnId?: string;
   pin?: string;
 }
+
+export interface NonceArgs {
+  nonce: string;
+  txnId: string;
+  IdepotencyKey: string;
+}
+
+export interface PaymentPayload {
+  cardNumber: string;
+  expiry: string;
+  cvv: string;
+  cardholderName: string;
+  country: string;
+  pin: string;
+  saveInfo: boolean;
+  txnId: string;
+  nonce: string;
+}

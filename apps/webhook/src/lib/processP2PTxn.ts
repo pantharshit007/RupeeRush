@@ -34,7 +34,7 @@ export const processP2PTransaction = async (
       const senderBalance: SchemaTypes.WalletBalance[] =
         await txn.$queryRaw`SELECT * FROM "WalletBalance" WHERE "userId" = ${decryptedData.senderId} FOR UPDATE`;
 
-      // @ts-expect-error
+      // @ts-expect-error: Object is possibly 'undefined'.
       if (!senderBalance || senderBalance[0].balance < amount) {
         throw new CustomError("Insufficient balance", 422);
       }

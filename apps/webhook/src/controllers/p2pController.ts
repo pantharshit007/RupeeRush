@@ -33,7 +33,15 @@ async function p2pController(req: any, res: any): Promise<P2PWebhookResponse> {
       return res.status(401).json(response);
     }
 
-    const { isProcessed, existingResult } = await checkIdempotency(idempotencyKey);
+    const { isProcessed, isAvailable, existingResult } = await checkIdempotency(idempotencyKey);
+    if (!isAvailable) {
+      return res.status(409).json({
+        success: false,
+        message: "Idempotency key not available",
+        ...existingResult,
+      });
+    }
+
     if (isProcessed) {
       return res.status(200).json({
         success: true,

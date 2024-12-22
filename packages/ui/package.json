@@ -49,7 +49,7 @@
     "typescript": "^5.3.3"
   },
   "exports": {
-    "./globals.css": "./src/globals.css",
+    "./globals.css": "./src/styles/globals.css",
     "./postcss.config": "./postcss.config.mjs",
     "./tailwind.config": "./tailwind.config.ts",
     "./components/*": "./src/components/*.tsx",

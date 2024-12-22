@@ -37,6 +37,7 @@ export const checkIdempotency = async (
   c: Context
 ): Promise<{
   isProcessed: boolean;
+  isAvailable: boolean;
   existingResult?: any;
 }> => {
   const env: Env = c.env;
@@ -44,13 +45,17 @@ export const checkIdempotency = async (
     const cache = honoCache.getInstance(env.UPSTASH_REDIS_REST_URL, env.UPSTASH_REDIS_REST_TOKEN);
     const idempotencyRecord: IdepotencyCache = await cache.get(cacheType.IDEMPOTENCY_KEY, [key]);
 
-    if (idempotencyRecord && idempotencyRecord.status === "PROCESSED") {
-      return { isProcessed: true, existingResult: idempotencyRecord };
+    if (!idempotencyRecord) {
+      return { isAvailable: false, isProcessed: false };
     }
 
-    return { isProcessed: false };
+    if (idempotencyRecord.status === "PROCESSED") {
+      return { isProcessed: true, isAvailable: true, existingResult: idempotencyRecord };
+    }
+
+    return { isProcessed: false, isAvailable: true };
   } catch (err: any) {
     console.error("> Error while checking idempotency key:", err.message);
-    return { isProcessed: false };
+    return { isProcessed: false, isAvailable: false };
   }
 };
