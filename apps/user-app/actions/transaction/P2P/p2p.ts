@@ -10,7 +10,7 @@ import {
   processTransactionWebhook,
   validateReceiver,
   verifyWalletPin,
-} from "@/lib/transaction";
+} from "@/lib/p2pTransaction";
 
 interface CreateP2PTxnProps {
   receiverIdentifier: string;
@@ -48,7 +48,7 @@ export const createP2PTxnAction = async ({ ...props }: CreateP2PTxnProps) => {
 
       const walletBalance = await checkWalletBalance(userId);
 
-      if (!walletBalance.success) {
+      if (!walletBalance.success || !walletBalance.balance) {
         throw new Error(walletBalance.message);
       }
       if (walletBalance.balance < amount) {
@@ -82,7 +82,7 @@ export const createP2PTxnAction = async ({ ...props }: CreateP2PTxnProps) => {
     // Calling webhook API
     await processTransactionWebhook(result.transactionId, result.payload);
 
-    await cache.set(cacheType.WALLET_BALANCE, [userId], result.balance - amount);
+    await cache.set(cacheType.WALLET_BALANCE, [userId], { balance: result.balance - amount });
     return {
       success: true,
       res: { balance: result.balance - amount, transactionId: result.transactionId },
@@ -92,11 +92,8 @@ export const createP2PTxnAction = async ({ ...props }: CreateP2PTxnProps) => {
   } catch (err: any) {
     console.error("> Error while creating P2P transaction:", err);
     return { error: err.message };
-
-    // disconnect from db
   } finally {
     // evicting cache
     await cache.evict(cacheType.P2P_TRANSACTION, [userId]);
-    await db.$disconnect();
   }
 };

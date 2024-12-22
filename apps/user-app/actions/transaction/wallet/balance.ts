@@ -3,6 +3,7 @@
 import { auth } from "@/lib/auth";
 import { cache, cacheType } from "@repo/db/cache";
 import db from "@repo/db/client";
+import { cachedBankBalance, cachedWalletBalance } from "@repo/schema/types";
 
 interface Balance {
   walletBalance: number;
@@ -20,11 +21,11 @@ export const getBalanceAction = async (userId: string): Promise<Balance> => {
   }
 
   try {
-    const wallet = await cache.get(cacheType.WALLET_BALANCE, [userId]);
-    const bank = await cache.get(cacheType.BANK_BALANCE, [userId]);
+    const wallet = (await cache.get(cacheType.WALLET_BALANCE, [userId])) as cachedWalletBalance;
+    const bank = (await cache.get(cacheType.BANK_BALANCE, [userId])) as cachedBankBalance;
 
     if (wallet && bank) {
-      return { walletBalance: wallet, bankBalance: bank };
+      return { walletBalance: wallet.balance, bankBalance: bank.balance };
     }
 
     // get balance from db
@@ -48,8 +49,8 @@ export const getBalanceAction = async (userId: string): Promise<Balance> => {
       return { walletBalance: 0, bankBalance: 0 };
     }
 
-    await cache.set(cacheType.WALLET_BALANCE, [userId], walletBalance.balance);
-    await cache.set(cacheType.BANK_BALANCE, [userId], bankAccount.balance);
+    await cache.set(cacheType.WALLET_BALANCE, [userId], { balance: walletBalance.balance });
+    await cache.set(cacheType.BANK_BALANCE, [userId], { balance: bankAccount.balance });
 
     const allBalance = {
       walletBalance: walletBalance?.balance ?? 0,

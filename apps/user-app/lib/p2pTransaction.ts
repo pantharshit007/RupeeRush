@@ -2,10 +2,11 @@ import { compare } from "bcryptjs";
 
 import db, { SchemaTypes } from "@repo/db/client";
 import { cache, cacheType } from "@repo/db/cache";
+import { cachedWalletBalance, P2PWebhookPayload, P2PWebhookResponse } from "@repo/schema/types";
 
-import { encryptData } from "@/utils/data";
-import { WALLET_LOCK_DURATION, WALLET_PIN_ATTEMPTS_LIMIT } from "@/utils/constant";
-import { callWebhook } from "@/lib/api";
+import { encryptData } from "@repo/common/encryption";
+import { ACCOUNT_LOCK_DURATION, WALLET_PIN_ATTEMPTS_LIMIT } from "@/utils/constant";
+import { callP2PWebhook } from "@/lib/api";
 
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET ?? "superSecret";
 
@@ -48,11 +49,6 @@ interface webhookPayloadProps {
     ipAddress?: string;
     userAgent?: string;
   };
-}
-
-interface WebhookResponse {
-  success: boolean;
-  message: string;
 }
 
 export const validateReceiver = async ({
@@ -106,7 +102,7 @@ export const verifyWalletPin = async (pin: string, userId: string) => {
       const updates: any = { walletPinAttempts: attempts };
 
       if (attempts >= WALLET_PIN_ATTEMPTS_LIMIT) {
-        updates.walletLockUntil = new Date(Date.now() + WALLET_LOCK_DURATION);
+        updates.walletLockUntil = new Date(Date.now() + ACCOUNT_LOCK_DURATION);
         updates.walletPinAttempts = 0;
       }
 
@@ -136,9 +132,9 @@ export const verifyWalletPin = async (pin: string, userId: string) => {
 
 export const checkWalletBalance = async (userId: string) => {
   try {
-    const value = await cache.get(cacheType.WALLET_BALANCE, [userId]);
-    if (value) {
-      return { success: true, balance: value };
+    const value = (await cache.get(cacheType.WALLET_BALANCE, [userId])) as cachedWalletBalance;
+    if (value && value.balance) {
+      return { success: true, balance: value.balance };
     }
 
     const wallet = await db.walletBalance.findUnique({
@@ -147,11 +143,11 @@ export const checkWalletBalance = async (userId: string) => {
         balance: true,
       },
     });
-    if (!wallet) {
+    if (!wallet || !wallet.balance) {
       return { success: false, message: "Wallet not found" };
     }
 
-    await cache.set(cacheType.WALLET_BALANCE, [userId], wallet.balance);
+    await cache.set(cacheType.WALLET_BALANCE, [userId], { balance: wallet.balance });
 
     return { success: true, balance: wallet.balance };
   } catch (err: any) {
@@ -186,16 +182,18 @@ export const prepareWebhookPayload = async ({
   transaction,
   props,
   receiverId,
-}: webhookPayloadProps) => {
+}: webhookPayloadProps): Promise<P2PWebhookPayload> => {
+  // TODO: why are we sending pin here? since we are already validating before no need here.
+  const dataToBeEncrypted = await encryptData(
+    {
+      pin: props.pin,
+      senderId: props.userId,
+      receiverId,
+    },
+    WEBHOOK_SECRET
+  );
   const payload = {
-    encryptData: encryptData(
-      {
-        pin: props.pin,
-        senderId: props.userId,
-        receiverId,
-      },
-      WEBHOOK_SECRET
-    ),
+    encryptData: dataToBeEncrypted,
     body: {
       webhookId: transaction.webhookId,
       transferMethod: props.transferMethod,
@@ -208,9 +206,12 @@ export const prepareWebhookPayload = async ({
   return { ...payload };
 };
 
-export const processTransactionWebhook = async (transactionId: string, webhookPayload: any) => {
+export const processTransactionWebhook = async (
+  transactionId: string,
+  webhookPayload: P2PWebhookPayload
+) => {
   try {
-    const response: WebhookResponse = await callWebhook(webhookPayload);
+    const response: P2PWebhookResponse = await callP2PWebhook(webhookPayload);
 
     if (response && !response.success) {
       throw new Error(response.message);
@@ -233,7 +234,7 @@ export const processTransactionWebhook = async (transactionId: string, webhookPa
       console.error(`> Error processing webhook: ${error.message}`);
     }
 
-    // Rollback transaction
+    // Rollback transaction: Failure
     await db.p2pTransaction.update({
       where: { id: transactionId },
       data: { status: "FAILURE", webhookStatus: "FAILED" },

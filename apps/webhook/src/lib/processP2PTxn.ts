@@ -1,16 +1,10 @@
-import { P2PWebhookPayload } from "@repo/schema/types";
-import { decryptData } from "./decryption";
-import db from "@repo/db/client";
+import db, { SchemaTypes } from "@repo/db/client";
+import { DataArgs, IdepotencyCache, P2PWebhookPayload } from "@repo/schema/types";
+import { decryptData } from "@repo/common/decryption";
 import { cache, cacheType } from "@repo/db/cache";
 import { CustomError } from "../utils/error";
 
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET ?? "superSecret";
-
-interface DecryptedData {
-  pin: string;
-  senderId: string;
-  receiverId: string;
-}
 
 export const processP2PTransaction = async (
   body: P2PWebhookPayload,
@@ -31,45 +25,39 @@ export const processP2PTransaction = async (
       }
     };
 
-    const decryptedData: DecryptedData = decryptData(encryptData, WEBHOOK_SECRET);
-
-    // Check if sender has enough balance: just in case another transaction is processed during last check
-    checkAbortSignal();
-    let walletBalance = await cache.get(cacheType.WALLET_BALANCE, [decryptedData.senderId]);
-    if (!walletBalance) {
-      checkAbortSignal();
-      const balance = await db.walletBalance.findUnique({
-        where: { userId: decryptedData.senderId },
-        select: { balance: true },
-      });
-
-      await cache.set(cacheType.WALLET_BALANCE, [decryptedData.senderId], balance?.balance);
-      walletBalance = balance?.balance;
-    }
-
-    checkAbortSignal();
-    if (walletBalance < amount) {
-      return { success: false, code: 422, message: "Insufficient balance" };
-    }
+    const decryptedData: DataArgs = await decryptData(encryptData, WEBHOOK_SECRET);
 
     const result = await db.$transaction(async (txn) => {
       checkAbortSignal();
 
-      // deduct amount from sender
+      // Lock the sender row for update to prevent parallel transactions
+      const senderBalance: SchemaTypes.WalletBalance[] =
+        await txn.$queryRaw`SELECT * FROM "WalletBalance" WHERE "userId" = ${decryptedData.senderId} FOR UPDATE`;
+
+      // @ts-expect-error: Object is possibly 'undefined'.
+      if (!senderBalance || senderBalance[0].balance < amount) {
+        throw new CustomError("Insufficient balance", 422);
+      }
+
+      checkAbortSignal();
+
+      // Deduct amount from sender
       await txn.walletBalance.update({
         where: { userId: decryptedData.senderId },
         data: { balance: { decrement: amount } },
       });
 
       checkAbortSignal();
-      // credit amount to receiver
+
+      // Credit amount to receiver
       await txn.walletBalance.update({
         where: { userId: decryptedData.receiverId },
         data: { balance: { increment: amount } },
       });
 
       checkAbortSignal();
-      // update transaction
+
+      // Update transaction
       const isProcessed = await txn.p2pTransaction.findUnique({
         where: { webhookId: webhookId },
         select: { webhookStatus: true, status: true },
@@ -96,13 +84,18 @@ export const processP2PTransaction = async (
           lastWebhookAttempt: new Date(),
         },
       });
-      checkAbortSignal();
 
       return { ...txnData };
     });
 
     checkAbortSignal();
-    const cacheData = { ...result, processedAt: new Date().toISOString() };
+
+    const cacheData: IdepotencyCache = {
+      ...result,
+      processedAt: new Date().toISOString(),
+      lastUpdated: new Date().toISOString(),
+      status: "PROCESSED",
+    };
     await cache.set(cacheType.IDEMPOTENCY_KEY, [idempotencyKey], cacheData, 1200); // cache for 20 minutes
     await cache.evict(cacheType.WALLET_BALANCE, [decryptedData.senderId]);
     await cache.evict(cacheType.WALLET_BALANCE, [decryptedData.receiverId]);
