@@ -5,9 +5,14 @@ import React from "react";
 import { serverUser } from "@/utils/currentUser";
 import UserInfo from "@/components/common/UserInfo";
 import { IoPerson } from "react-icons/io5";
+import { redirect } from "next/navigation";
+import { CREATE_BANK_ACCOUNT } from "@/utils/apiRoute";
 
 async function ProfilePage() {
   const user = await serverUser();
+  if (!user?.phoneNumber) {
+    redirect(CREATE_BANK_ACCOUNT);
+  }
 
   return (
     <UserInfo

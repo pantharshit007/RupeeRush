@@ -8,6 +8,29 @@
 
 - Frontend & Backend : NextJS
 - Webhook : NodeJS & Express
-- Bank BE : NodeJS & Express OR Cloudflare Workers
-- Bank FE : Astro/Vite OR Clouflare Pages
+- Bank BE : Cloudflare Workers
+- Bank FE : Vite
 - Database : Postgres
+
+**Folder Structure**
+
+```
+RupeeRush
+    ├── apps
+    │   └── user-app (Nextjs)
+    |   ├── webhook  (Node/Express)
+    |   └── bank-api (Hono worker)
+    |   └── bank-page (Vite)
+    ├── .lintstagedrc.js
+    ├── .eslintignore
+    ├── package.json
+    ├── packages
+    │   ├── eslint-config
+    │   ├── typescript-config
+    │   ├── zod-schema
+    │   ├── store
+    │   ├── ui
+    │   └── db (prisma)
+    ├── turbo.json
+    └── README.md
+```

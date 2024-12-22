@@ -20,3 +20,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           # environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }} 
+          working-directory: apps/bank-api
