@@ -71,7 +71,7 @@ function B2BTransferCard() {
 
           if (data.success) {
             trigger(new Date().getTime());
-            toast.success("Transaction Success!");
+            toast.success("Transaction Registered! Pay on Bank Site");
 
             if (data.paymentToken && popupWindow) {
               // Redirect the preemptive popup to the external link

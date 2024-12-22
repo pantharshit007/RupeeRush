@@ -22,6 +22,11 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
+    "bank-page#build": {
+      "dependsOn": ["^build"],
+      "env": ["BANK_API_URL"],
+      "outputs": ["dist/**"]
+    },
     "lint": {
       "dependsOn": ["^lint"]
     },
