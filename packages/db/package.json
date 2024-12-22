@@ -11,8 +11,7 @@
     "db:push": "npx prisma db push",
     "db:seed": "npx prisma db seed",
     "db:reset": "npx prisma migrate reset --force && npx prisma db push",
-    "studio": "npx prisma studio",
-    "postinstall": "prisma generate"
+    "studio": "npx prisma studio"
   },
   "keywords": [],
   "author": "",
