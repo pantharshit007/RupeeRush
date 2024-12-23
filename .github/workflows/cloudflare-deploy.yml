@@ -3,7 +3,7 @@ name: CF Deploy Worker
 on:
   push:
     branches:
-      - main
+      # - main
       - test/deploy
 
 jobs:
@@ -12,8 +12,34 @@ jobs:
     timeout-minutes: 60
 
     steps:
+      # Step 1: Checkout the code
       - uses: actions/checkout@v4
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
       
+      # Step 3: Install dependencies
+      - name: Install Dependencies
+        run: npm install
+        working-directory: apps/bank-api
+        env:
+          USE_ADAPTER: true
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL_UNPOOLED: ${{ secrets.DATABASE_URL_UNPOOLED }}
+
+      # Step 4: Generate Prisma Client (if needed)
+      - name: Generate Prisma Client
+        run: npm run db:adapter
+        working-directory: packages/db
+        env:
+          USE_ADAPTER: true
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL_UNPOOLED: ${{ secrets.DATABASE_URL_UNPOOLED }}
+
+      # Step 5: Build the worker
       - name: Build & Deploy Worker
         uses: cloudflare/wrangler-action@v3
         with:
@@ -21,3 +47,12 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           # environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }} 
           working-directory: apps/bank-api
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL_UNPOOLED: ${{ secrets.DATABASE_URL_UNPOOLED }}
+          UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+          WEBHOOK_BANK_SECRET: ${{ secrets.WEBHOOK_BANK_SECRET }}
+          ENVIRONMENT: "production"
+          USE_ADAPTER: true
+

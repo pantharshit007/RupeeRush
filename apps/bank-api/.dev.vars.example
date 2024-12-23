@@ -19,3 +19,8 @@ UPSTASH_REDIS_REST_TOKEN=<Redis Token>
 # Environment
 #------------------------------------------------------------------------------
 ENVIRONMENT="development"
+
+# ----------------------------------------------------------------------------- 
+# USE_ADAPTER: a flag to enable/disable the prisma adapter for neon
+# -----------------------------------------------------------------------------
+USE_ADAPTER=true

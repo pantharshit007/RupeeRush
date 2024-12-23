@@ -1,7 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
-  "globalEnv": ["DATABASE_URL", "NODE_ENV", "WEBHOOK_*", "UPSTASH_REDIS_REST_*"],
+  "globalEnv": ["DATABASE_URL", "NODE_ENV", "WEBHOOK_*", "UPSTASH_REDIS_REST_*", "USE_ADAPTER"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
