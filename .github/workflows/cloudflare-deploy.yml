@@ -24,7 +24,7 @@ jobs:
       # Step 3: Install dependencies
       - name: Install Dependencies
         run: npm install
-        workingDirectory: apps/bank-api
+        working-directory: apps/bank-api
         env:
           USE_ADAPTER: true
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -33,7 +33,7 @@ jobs:
       # Step 4: Generate Prisma Client (if needed)
       - name: Generate Prisma Client
         run: npm run db:adapter
-        workingDirectory: packages/db
+        working-directory: packages/db
         env:
           USE_ADAPTER: true
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -46,7 +46,8 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           # environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }} 
-          working-directory: apps/bank-api
+          workingDirectory: "apps/bank-api"
+          command: deploy src/index.ts
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           DATABASE_URL_UNPOOLED: ${{ secrets.DATABASE_URL_UNPOOLED }}
