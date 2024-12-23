@@ -2,14 +2,16 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { Pool } from "@neondatabase/serverless";
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-const adapter = new PrismaNeon(pool);
+const useAdapter = process.env.USE_ADAPTER === "true";
 
 const prismaClientSingleton = () => {
-  return new PrismaClient({
-    adapter: adapter,
+  if (useAdapter) {
+    const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+    const adapter = new PrismaNeon(pool);
+    return new PrismaClient({ adapter });
     // log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
-  });
+  }
+  return new PrismaClient();
 };
 
 type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>;
