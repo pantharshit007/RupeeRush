@@ -8,7 +8,7 @@ const prismaClientSingleton = () => {
   if (useAdapter) {
     const pool = new Pool({ connectionString: process.env.DATABASE_URL });
     const adapter = new PrismaNeon(pool);
-    return new PrismaClient({ adapter });
+    return new PrismaClient({ adapter:adapter});
     // log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
   }
   return new PrismaClient();
