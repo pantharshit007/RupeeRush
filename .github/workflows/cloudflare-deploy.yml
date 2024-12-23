@@ -24,7 +24,7 @@ jobs:
       # Step 3: Install dependencies
       - name: Install Dependencies
         run: npm install
-        working-directory: apps/bank-api
+        workingDirectory: apps/bank-api
         env:
           USE_ADAPTER: true
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -33,7 +33,7 @@ jobs:
       # Step 4: Generate Prisma Client (if needed)
       - name: Generate Prisma Client
         run: npm run db:adapter
-        working-directory: packages/db
+        workingDirectory: packages/db
         env:
           USE_ADAPTER: true
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
