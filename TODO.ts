@@ -65,6 +65,7 @@
 //? TODO: add a ignore step in send email where it will return if email: ___, ____ similar in setting disable settings
 // TODO: add tests for the app
 //? TODO: add a option to optionally fail the p2p adn b2b payments
+//! TODO: Retrying 1/3... user-app:build: request to https://fonts.gstatic.com/s/poppins/v22/pxiByp8kv8JHgFVrLEj6Z1xlFd2JQEk.woff2 failed,
 
 //? NOTE:
 // when adding image from an outside src u need to set them up in next.config.*: https://youtu.be/w2h54xz6Ndw?t=2328

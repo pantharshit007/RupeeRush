@@ -1,7 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
-  "globalEnv": ["DATABASE_URL", "NODE_ENV", "WEBHOOK_*", "UPSTASH_REDIS_REST_*"],
+  "globalEnv": ["DATABASE_URL", "NODE_ENV", "WEBHOOK_*", "UPSTASH_REDIS_REST_*", "USE_ADAPTER"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
@@ -10,7 +10,7 @@
     },
     "user-app#build": {
       "dependsOn": ["^build"],
-      "env": ["AUTH_*", "RESEND_API_KEY", "NEXT_PUBLIC_BANK_PAGE_URL"],
+      "env": ["AUTH_*", "RESEND_API_KEY", "NEXT_PUBLIC_BANK_PAGE_URL", "CACHE_TTL"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "webhook#build": {

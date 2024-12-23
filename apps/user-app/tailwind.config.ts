@@ -40,6 +40,10 @@ const webConfig = {
           "700": "#0038B7", // Night azure
         },
       },
+      fontFamily: {
+        sans: ["var(--font-geist-sans)"],
+        mono: ["var(--font-geist-mono)"],
+      },
     },
   },
 } satisfies Config;
