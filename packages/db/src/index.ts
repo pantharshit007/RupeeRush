@@ -1,10 +1,12 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client/edge";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { Pool } from "@neondatabase/serverless";
+import { withAccelerate } from "@prisma/extension-accelerate";
 
 const prismaClientSingleton = () => {
   const useAdapter = process.env.USE_ADAPTER === "true";
 
+  /*
   if (useAdapter) {
     const pool = new Pool({ connectionString: process.env.DATABASE_URL });
     const adapter = new PrismaNeon(pool);
@@ -12,6 +14,12 @@ const prismaClientSingleton = () => {
     // log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
   }
   return new PrismaClient();
+  */
+
+  return new PrismaClient({
+    log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
+    errorFormat: "pretty",
+  }).$extends(withAccelerate()) as unknown as PrismaClient;
 };
 
 type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>;

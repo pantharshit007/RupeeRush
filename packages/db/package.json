@@ -12,6 +12,7 @@
     "db:seed": "npx prisma db seed",
     "db:reset": "npx prisma migrate reset --force && npx prisma db push",
     "db:adapter": "tsx prisma/uptSchema.ts && npx prisma generate",
+    "db:no-engine": "npx prisma generate --no-engine",
     "studio": "npx prisma studio"
   },
   "keywords": [],
@@ -21,6 +22,7 @@
     "@neondatabase/serverless": "^0.9.5",
     "@prisma/adapter-neon": "^5.22.0",
     "@prisma/client": "^5.22.0",
+    "@prisma/extension-accelerate": "^1.2.1",
     "@upstash/redis": "^1.34.3",
     "bcryptjs": "^2.4.3"
   },

@@ -22,8 +22,10 @@
     "studio": "cd packages/db && prisma studio && cd ../..",
     "db:docker": "docker run -e POSTGRES_PASSWORD=mysecretpassword -d -p 3333:5432 postgres",
     "prepare": "husky || true",
+    "clean": "rm -rf node_modules",
+    "superclean": "npm cache clean --force && rm -rf node_modules package-lock.json",
     "copy:prisma": "cp node_modules/.prisma/client/libquery_engine-debian-openssl-3.0.x.so.node node_modules/@prisma/client/",
-    "postinstall": "cd packages/db && npm run db:adapter && cd ../.."
+    "postinstall": "cd packages/db && prisma generate"
   },
   "devDependencies": {
     "husky": "^9.1.6",

@@ -10,6 +10,9 @@ const nextConfig = {
             },
         ],
     },
+    env: {
+        DATABASE_URL: process.env.DATABASE_URL,
+    }
     // experimental: {
     //     turbo: {
     //         resolveAlias: {

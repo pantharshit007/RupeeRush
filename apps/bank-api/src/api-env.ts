@@ -3,6 +3,7 @@ import { z } from "zod";
 
 export const zEnv = z.object({
   DATABASE_URL: z.string(),
+  DATABASE_URL_UNPOOLED: z.string(),
   WEBHOOK_BANK_SECRET: z.string(),
   ENVIRONMENT: z.enum(["development", "production"]).default("development"),
   UPSTASH_REDIS_REST_URL: z.string().optional(),
