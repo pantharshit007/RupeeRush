@@ -1,11 +1,11 @@
 import "dotenv/config";
 
-import { P2PWebhookPayload, WebhookResponse } from "@repo/schema/types";
+import { P2PWebhookPayload, P2PWebhookResponse } from "@repo/schema/types";
 import { checkIdempotency, validateSignature } from "../lib/validation";
-import { processP2PTransaction } from "../lib/processTxn";
+import { processP2PTransaction } from "../lib/processP2PTxn";
 import { WEBHOOK_TIMEOUT } from "../utils/constant";
 
-async function p2pController(req: any, res: any): Promise<WebhookResponse> {
+async function p2pController(req: any, res: any): Promise<P2PWebhookResponse> {
   const controller = new AbortController();
   const { signal } = controller;
 
@@ -33,7 +33,15 @@ async function p2pController(req: any, res: any): Promise<WebhookResponse> {
       return res.status(401).json(response);
     }
 
-    const { isProcessed, existingResult } = await checkIdempotency(idempotencyKey);
+    const { isProcessed, isAvailable, existingResult } = await checkIdempotency(idempotencyKey);
+    if (!isAvailable) {
+      return res.status(409).json({
+        success: false,
+        message: "Idempotency key not available",
+        ...existingResult,
+      });
+    }
+
     if (isProcessed) {
       return res.status(200).json({
         success: true,

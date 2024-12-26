@@ -1,10 +1,19 @@
 import React from "react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
+import { cn } from "@repo/ui/lib/utils";
 
-function PaymentWrapper({ title, children }: { title: string; children: React.ReactNode }) {
+function PaymentWrapper({
+  title,
+  className,
+  children,
+}: {
+  title: string;
+  className?: string;
+  children: React.ReactNode;
+}) {
   return (
-    <Card className="w-full ">
+    <Card className={cn("w-full", className)}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>

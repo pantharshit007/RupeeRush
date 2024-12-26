@@ -15,6 +15,7 @@
   "exports": {
     "./balance": "./src/hooks/useBalanceHook.ts",
     "./p2pTransaction": "./src/hooks/useP2PTxnHook.ts",
+    "./b2bTransaction": "./src/hooks/useB2BTxnHook.ts",
     "./walletTransaction": "./src/hooks/useWalletHook.ts",
     "./trigger": "./src/hooks/useTriggerHook.ts",
     "./store": "./src/index.ts"

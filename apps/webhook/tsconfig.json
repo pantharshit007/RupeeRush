@@ -7,7 +7,8 @@
     "target": "ES2020",
     "lib": ["ES2020"],
     "esModuleInterop": true, // Added to enable ES Module interop
-    "sourceMap": true
+    "sourceMap": true,
+    "strict": true
   },
   "ts-node": {
     "esm": true

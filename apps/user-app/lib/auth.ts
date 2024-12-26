@@ -1,4 +1,5 @@
-import db, { PrismaAdapter } from "@repo/db/client";
+import db from "@repo/db/client";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth, { NextAuthConfig, NextAuthResult } from "next-auth";
 import type { Adapter } from "next-auth/adapters";
 import type { Session } from "next-auth";

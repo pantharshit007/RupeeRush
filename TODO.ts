@@ -28,6 +28,8 @@
 // TODO: add a transactions refresh button
 // TODO: send user email in case of p2p / b2b transactions failure and b2b transactions success
 // TODO: instead of SUCCESS/FAILURE/PENDING use icons tick, cross, hourglass with respective colors
+//! TODO: recent transactions are not visible in mobile view in wallet,p2p,b2b need fix
+// TODO: add a hard refresh button in transactions pages to refresh cache.
 
 //! NEXT: BE
 // TODO: fix locked amount not updating or something...
@@ -39,6 +41,7 @@
 // TODO: update the current webhookAttempts before reseting into the p2pTransaction in `action/transaction/p2p/p2p.ts`
 // TODO: find a way to update webhookAttempts in the db for p2p/b2b transactions
 // TODO: since now i am using trigger atom to update the balance atom use and make it a single state
+//!TODO: immediately add a indicator light on the navbar to indicate if webhhook is operational.
 
 //! DB:
 // TODO: updated user id to Int -> String, check for possible errors
@@ -47,7 +50,7 @@
 
 //! WEBHOOK: BE
 // TODO: hdfcwebhook update condition for `Failure`
-/* 
+/*
     TODO:Build a compensation workflow:
     * Record a FAILED or PENDING_REVERT status for the transaction.
     * Set up a periodic process to reconcile pending transactions and attempt reverts.
@@ -63,6 +66,7 @@
 //? TODO: add a ignore step in send email where it will return if email: ___, ____ similar in setting disable settings
 // TODO: add tests for the app
 //? TODO: add a option to optionally fail the p2p adn b2b payments
+//! TODO: Retrying 1/3... user-app:build: request to https://fonts.gstatic.com/s/poppins/v22/pxiByp8kv8JHgFVrLEj6Z1xlFd2JQEk.woff2 failed,
 
 //? NOTE:
 // when adding image from an outside src u need to set them up in next.config.*: https://youtu.be/w2h54xz6Ndw?t=2328

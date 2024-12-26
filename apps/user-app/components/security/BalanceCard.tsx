@@ -3,11 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui
 interface BalanceCardProps {
   title: string;
   amount: number;
-  currency?: string;
   trend?: number;
 }
 
-export const BalanceCard = ({ title, amount, currency = "USD", trend }: BalanceCardProps) => {
+export const BalanceCard = ({ title, amount, trend }: BalanceCardProps) => {
   const formattedAmount =
     amount !== undefined
       ? (amount / 100).toLocaleString("en-IN", { style: "currency", currency: "INR" })

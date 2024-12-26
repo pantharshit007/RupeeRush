@@ -1,0 +1,38 @@
+name = "bank-api"
+main = "src/index.ts"
+compatibility_date = "2024-12-05"
+
+compatibility_flags = [ "nodejs_compat_v2" ]
+
+#[vars]
+# DATABASE_URL = "$DATABASE_URL"
+# DATABASE_URL_UNPOOLED = "$DATABASE_URL_UNPOOLED"
+# UPSTASH_REDIS_REST_URL = "$UPSTASH_REDIS_REST_URL"
+# UPSTASH_REDIS_REST_TOKEN = "$UPSTASH_REDIS_REST_TOKEN"
+# WEBHOOK_BANK_SECRET = "$WEBHOOK_BANK_SECRET"
+# ENVIRONMENT = "$ENVIRONMENT"
+# USE_ADAPTER = "$USE_ADAPTER"
+
+
+[dev]
+port = 5000
+
+# [[kv_namespaces]]
+# binding = "MY_KV_NAMESPACE"
+# id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+# [[r2_buckets]]
+# binding = "MY_BUCKET"
+# bucket_name = "my-bucket"
+
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "my-database"
+# database_id = ""
+
+# [ai]
+# binding = "AI"
+
+[observability]
+enabled = true
+head_sampling_rate = 1

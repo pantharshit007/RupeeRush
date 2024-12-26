@@ -11,20 +11,23 @@
     "db:push": "npx prisma db push",
     "db:seed": "npx prisma db seed",
     "db:reset": "npx prisma migrate reset --force && npx prisma db push",
+    "db:adapter": "tsx prisma/uptSchema.ts && npx prisma generate",
     "studio": "npx prisma studio"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@auth/prisma-adapter": "^2.7.0",
-    "@prisma/client": "^5.20.0",
-    "bcryptjs": "^2.4.3",
-    "ioredis": "^5.4.1"
+    "@neondatabase/serverless": "^0.9.5",
+    "@prisma/adapter-neon": "^5.22.0",
+    "@prisma/client": "^5.22.0",
+    "@upstash/redis": "^1.34.3",
+    "bcryptjs": "^2.4.3"
   },
   "exports": {
     "./client": "./src/index.ts",
-    "./cache": "./src/caches/cache.ts"
+    "./cache": "./src/caches/cache.ts",
+    "./honoClient": "./src/honoClient.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

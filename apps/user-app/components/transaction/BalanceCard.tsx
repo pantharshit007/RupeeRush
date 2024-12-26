@@ -1,6 +1,5 @@
 // "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
-import AnimatedSpinner from "@repo/ui/components/custom/AnimatedSpinner";
 import BalanceSkeleton from "@/components/common/BalanceSkeleton";
 
 interface BalanceType {
