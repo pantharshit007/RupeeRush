@@ -58,11 +58,15 @@ export const processTransaction = async (
     };
     await cache.set(cacheType.NONCE, [nonce], nounceCache, MAX_NONCE_AGE * 1000);
 
+    if (!decryptedData.txnId) {
+      return { success: false, message: "Transaction ID not found", paymentToken: null };
+    }
+
     // fetch transaction data
     const transaction = await db.b2bTransaction.findUnique({
       where: {
         id: decryptedData.txnId,
-        webhookId: webhookId!,
+        //webhookId: webhookId!
       },
       select: {
         id: true,

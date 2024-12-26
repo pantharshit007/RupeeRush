@@ -44,9 +44,9 @@ async function bankController(c: Context): Promise<Response> {
         result.paymentToken
       )
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error("> Error while processing Bank API:", error);
-    return c.json(response(false, "Internal Server Error"), 500);
+    return c.json(response(false, error.message || "Internal Server Error"), 500);
   }
 }
 export { bankController };

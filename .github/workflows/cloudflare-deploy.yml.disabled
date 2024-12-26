@@ -3,8 +3,8 @@ name: CF Deploy Worker
 on:
   push:
     branches:
-      # - main
-      # - test/deploy
+      - main
+      - test/deploy
 
 jobs:
   deploy:
@@ -48,14 +48,14 @@ jobs:
           # environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }} 
           workingDirectory: "apps/bank-api"
           command: deploy src/index.ts
-          secrets: |
-            DATABASE_URL=${{ secrets.DATABASE_URL }}
-            DATABASE_URL_UNPOOLED=${{ secrets.DATABASE_URL_UNPOOLED }}
-            UPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }}
-            UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
-            WEBHOOK_BANK_SECRET=${{ secrets.WEBHOOK_BANK_SECRET }}
-            ENVIRONMENT=${{ secrets.ENVIRONMENT }}
-            USE_ADAPTER=${{ secrets.USE_ADAPTER}}
+          # secrets: |
+          #   DATABASE_URL=${{ secrets.DATABASE_URL }}
+          #   DATABASE_URL_UNPOOLED=${{ secrets.DATABASE_URL_UNPOOLED }}
+          #   UPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }}
+          #   UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+          #   WEBHOOK_BANK_SECRET=${{ secrets.WEBHOOK_BANK_SECRET }}
+          #   ENVIRONMENT=${{ secrets.ENVIRONMENT }}
+          #   USE_ADAPTER=${{ secrets.USE_ADAPTER}}
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           DATABASE_URL_UNPOOLED: ${{ secrets.DATABASE_URL_UNPOOLED }}

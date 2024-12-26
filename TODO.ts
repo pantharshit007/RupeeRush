@@ -41,6 +41,7 @@
 // TODO: update the current webhookAttempts before reseting into the p2pTransaction in `action/transaction/p2p/p2p.ts`
 // TODO: find a way to update webhookAttempts in the db for p2p/b2b transactions
 // TODO: since now i am using trigger atom to update the balance atom use and make it a single state
+//!TODO: immediately add a indicator light on the navbar to indicate if webhhook is operational.
 
 //! DB:
 // TODO: updated user id to Int -> String, check for possible errors
@@ -49,7 +50,7 @@
 
 //! WEBHOOK: BE
 // TODO: hdfcwebhook update condition for `Failure`
-/* 
+/*
     TODO:Build a compensation workflow:
     * Record a FAILED or PENDING_REVERT status for the transaction.
     * Set up a periodic process to reconcile pending transactions and attempt reverts.
