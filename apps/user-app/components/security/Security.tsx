@@ -53,7 +53,7 @@ function Security() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-8">
             {/* Left Column - Balances */}
-            <div className="space-y-6 order-2 lg:order-1">
+            <div className="space-y-6 order-2 lg:order-1 max-md:mb-4">
               {!balance.bankBalance && !balance.walletBalance ? (
                 <BalanceSecuritySkeleton />
               ) : (

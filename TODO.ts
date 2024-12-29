@@ -28,7 +28,7 @@
 // TODO: add a transactions refresh button
 // TODO: send user email in case of p2p / b2b transactions failure and b2b transactions success
 // TODO: instead of SUCCESS/FAILURE/PENDING use icons tick, cross, hourglass with respective colors
-//! TODO: recent transactions are not visible in mobile view in wallet,p2p,b2b need fix
+////.! TODO: recent transactions are not visible in mobile view in wallet,p2p,b2b need fix
 // TODO: add a hard refresh button in transactions pages to refresh cache.
 
 //! NEXT: BE
@@ -41,7 +41,8 @@
 // TODO: update the current webhookAttempts before reseting into the p2pTransaction in `action/transaction/p2p/p2p.ts`
 // TODO: find a way to update webhookAttempts in the db for p2p/b2b transactions
 // TODO: since now i am using trigger atom to update the balance atom use and make it a single state
-//!TODO: immediately add a indicator light on the navbar to indicate if webhhook is operational.
+//! TODO: immediately add a indicator light on the navbar to indicate if webhhook is operational.
+// TODO: update the interfaces used in transactionTable and its action from `schema/types` use prisma exported if possible.
 
 //! DB:
 // TODO: updated user id to Int -> String, check for possible errors
@@ -57,6 +58,8 @@
 */
 
 //! BANK: FE
+// TODO: add a loading state to the bank-page first page like a brand logo with a loading around it.
+// TODO: downgrader the eslint version to 8 for lint-staged in husky
 
 //! BANK: BE
 

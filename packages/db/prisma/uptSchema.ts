@@ -11,7 +11,10 @@ const useAdapter = process.env.USE_ADAPTER === "true";
 
 // Remove the previewFeatures flag from the schema
 if (!useAdapter) {
-  schema = schema.replace(/\s*previewFeatures = \["driverAdapters"\]/, "");
+  schema = schema.replace(
+    /(\s*previewFeatures = \["driverAdapters"\])/,
+    '\n// previewFeatures = ["driverAdapters"]'
+  );
   fs.writeFileSync(schemaPath, schema, "utf8");
 
   console.log("> Updated schema.prisma: removed driverAdapters feature");

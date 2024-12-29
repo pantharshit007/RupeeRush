@@ -1,15 +1,29 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaNeon } from "@prisma/adapter-neon";
-import { Pool } from "@neondatabase/serverless";
+import { neon, neonConfig, Pool } from "@neondatabase/serverless";
 
 const prismaClientSingleton = () => {
   const useAdapter = process.env.USE_ADAPTER === "true";
 
+  // conditionsally run the prisma adapter
   if (useAdapter) {
+    neonConfig.poolQueryViaFetch = true;
     const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+
+    pool
+      .connect()
+      .then(() => {
+        console.log("Successfully connected to pool");
+      })
+      .catch((err) => {
+        console.error("Pool connection test failed:", err);
+      });
+
     const adapter = new PrismaNeon(pool);
-    return new PrismaClient({ adapter } as never);
-    // log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
+    return new PrismaClient({
+      adapter,
+      log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
+    } as never);
   }
   return new PrismaClient();
 };
@@ -37,3 +51,4 @@ if (process.env.NODE_ENV !== "production") {
 
 export default db;
 export type * as SchemaTypes from "@prisma/client";
+export { Prisma } from "@prisma/client";

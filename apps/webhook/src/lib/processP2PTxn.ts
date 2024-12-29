@@ -99,6 +99,8 @@ export const processP2PTransaction = async (
     await cache.set(cacheType.IDEMPOTENCY_KEY, [idempotencyKey], cacheData, 1200); // cache for 20 minutes
     await cache.evict(cacheType.WALLET_BALANCE, [decryptedData.senderId]);
     await cache.evict(cacheType.WALLET_BALANCE, [decryptedData.receiverId]);
+    await cache.evict(cacheType.TRANSACTION_PAGE, [decryptedData.senderId, "page", "1"]); // clearing cache for transaction page
+    await cache.evict(cacheType.TRANSACTION_PAGE, [decryptedData.receiverId, "page", "1"]); // clearing cache for transaction page
 
     return { success: true, message: "Transaction processed" };
   } catch (err: any) {

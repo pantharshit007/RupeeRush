@@ -8,12 +8,7 @@ export default function ThemeBackground({ children }: { children: React.ReactNod
   const { theme } = useTheme();
 
   return (
-    <div
-      className={cn(
-        "flex h-[calc(100vh-3.5rem)] w-full",
-        theme === "light" ? "bg-[#f7f7fa]" : "bg-gray-900"
-      )}
-    >
+    <div className={cn("flex w-full", theme === "light" ? "bg-[#f7f7fa]" : "bg-gray-900")}>
       {children}
     </div>
   );
@@ -22,7 +17,7 @@ export default function ThemeBackground({ children }: { children: React.ReactNod
 // theme component for navbar: using dark mode from tailwind
 export function ThemeBackgroundNavbar({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex justify-center items-center border-b border-slate-300 dark:border-slate-700 px-4 h-[3.5rem] bg-[#f7f7fa] dark:bg-gray-900">
+    <div className="flex justify-center items-center border-b border-slate-300 dark:border-slate-700 px-4 py-3 h-[3.5rem] bg-[#f7f7fa] dark:bg-gray-900">
       {children}
     </div>
   );

@@ -43,7 +43,7 @@ printf "${INFO}🔍 Running pre-commit checks...${RESET}\n"
 
 # Run lint-staged for formatting and linting staged files
 printf "${NOTIFY}Running lint checks...${RESET}\n"
-npx lint-staged
+# npx lint-staged   # disabling because of mis-match eslint version 8-9 will revert back to 8.
 LINT_EXIT_CODE=$?
 
 if [ $LINT_EXIT_CODE -ne 0 ]; then
