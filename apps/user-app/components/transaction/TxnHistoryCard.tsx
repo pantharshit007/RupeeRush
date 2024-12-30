@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui
 
 function TransactionHistory({ children }: { children: React.ReactNode }) {
   return (
-    <Card>
+    <Card className="max-md:mb-3 shadow-azureBlue-400">
       <CardHeader>
         <CardTitle className="text-azureBlue-400 font-semibold">Recent Transactions</CardTitle>
       </CardHeader>

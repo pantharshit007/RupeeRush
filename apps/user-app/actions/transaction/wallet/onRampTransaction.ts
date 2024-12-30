@@ -160,6 +160,7 @@ export const createOnRampTxnAction = async ({
       await cache.set(cacheType.ON_RAMP_TRANSACTION, [userId], transactions);
       await cache.evict(cacheType.WALLET_BALANCE, [userId]);
       await cache.evict(cacheType.BANK_BALANCE, [userId]);
+      await cache.evict(cacheType.TRANSACTION_PAGE, [userId, "page", "1"]); // clearing cache for transaction page
 
       return { wallet: wallet.balance, bankAccount: bankAccount.balance };
     });

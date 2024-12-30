@@ -12,14 +12,15 @@
     "check": "npm run lint && npm run type-check"
   },
   "dependencies": {
+    "@auth/prisma-adapter": "^2.7.0",
     "@hookform/resolvers": "^3.9.0",
+    "@next/eslint-plugin-next": "^14.2.6",
+    "@repo/common": "*",
     "@repo/db": "*",
     "@repo/schema": "*",
     "@repo/store": "*",
     "@repo/ui": "*",
-    "@repo/common": "*",
     "@vercel/analytics": "^1.4.0",
-    "@auth/prisma-adapter": "^2.7.0",
     "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
     "next": "^14.2.13",

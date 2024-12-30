@@ -44,7 +44,7 @@ function WalletForm() {
     <div className="">
       <Title title={"Wallet Transfer"} />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 max-md:mb-4">
         <Tabs defaultValue="deposit" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger

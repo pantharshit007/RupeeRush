@@ -1,7 +1,7 @@
 import crypto from "crypto";
 
 // Custom date formatting function
-export function formatDate(timestamp: Date | string) {
+export function formatDate(timestamp: Date | string, dateOnly: boolean = false) {
   const date = new Date(timestamp);
   const months = [
     "Jan",
@@ -22,6 +22,11 @@ export function formatDate(timestamp: Date | string) {
   const year = date.getFullYear();
   const hours = date.getHours();
   const minutes = date.getMinutes();
+
+  // Format as "Dec 1, 2024"
+  if (dateOnly) {
+    return `${month} ${day}, ${year}`;
+  }
 
   // Format as "Dec 1, 2024, 10:30 AM"
   const formattedDate = `${month} ${day}, ${year}, ${hours}:${minutes < 10 ? "0" + minutes : minutes}`;

@@ -56,7 +56,7 @@ export const processTransaction = async (
       txnId: decryptedData.txnId!,
       IdepotencyKey: idempotencyKey!,
     };
-    await cache.set(cacheType.NONCE, [nonce], nounceCache, MAX_NONCE_AGE * 1000);
+    await cache.set(cacheType.NONCE, [nonce], nounceCache, MAX_NONCE_AGE);
 
     if (!decryptedData.txnId) {
       return { success: false, message: "Transaction ID not found", paymentToken: null };

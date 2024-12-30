@@ -43,7 +43,7 @@ function P2PForm() {
     <div>
       <Title title={"Peer to Peer"} />
 
-      <div className=" mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className=" mt-8 grid grid-cols-1 md:grid-cols-2 max-md:mb-4 gap-4">
         {/* Left Side */}
         <Tabs defaultValue="phone" className="w-full">
           <TabsList className="grid w-full grid-cols-2">

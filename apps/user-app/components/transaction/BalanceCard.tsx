@@ -9,7 +9,7 @@ interface BalanceType {
 
 function BalanceCard({ walletBalance, bankBalance }: BalanceType) {
   return (
-    <Card>
+    <Card className="shadow-azureBlue-400">
       <CardHeader>
         <CardTitle className="text-azureBlue-400 font-semibold">Balance</CardTitle>
       </CardHeader>

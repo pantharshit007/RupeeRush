@@ -1,8 +1,10 @@
 import express from "express";
 import cors from "cors";
+import "dotenv/config";
 
 import { router } from "./route.js";
-import { cache } from "@repo/db/cache";
+
+const FRONTEND_URL = process.env.FE_URL;
 
 const app = express();
 app.use(
@@ -13,7 +15,13 @@ app.use(
     },
   })
 );
-app.use(cors());
+app.use(
+  cors({
+    origin: FRONTEND_URL,
+    credentials: true,
+  })
+);
+
 app.use("/api/v1", router);
 
 app.get("/", (req, res: any) => {
@@ -26,12 +34,6 @@ app.get("/ping", (req, res: any) => {
   return res.json({
     msg: "pong",
   });
-});
-
-app.get("/test", async (req, res: any) => {
-  await cache.set("check", ["test-args"], { demo: "demo", time: new Date() });
-  const val = await cache.get("test", ["test-args"]);
-  return res.json({ message: "test", val });
 });
 
 app.listen(4000, () => {
