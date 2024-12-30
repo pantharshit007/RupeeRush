@@ -42,6 +42,7 @@
 // TODO: since now i am using trigger atom to update the balance atom use and make it a single state
 //! TODO: immediately add a indicator light on the navbar to indicate if webhhook is operational.
 // TODO: update the interfaces used in transactionTable and its action from `schema/types` use prisma exported if possible.
+//! TODO: add delete user functionality [important]
 
 //! DB:
 ///// TODO: updated user id to Int -> String, check for possible errors
