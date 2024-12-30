@@ -4,6 +4,7 @@ import { Button } from "@repo/ui/components/ui/button";
 import UserDropdown from "@/components/common/UserDropdown";
 import ThemeModal from "@/components/ThemeModal";
 import { ThemeBackgroundNavbar } from "@/components/common/ThemeBackground";
+import StatusIndicator from "@/components/common/StatusIndicator";
 
 async function NavBar() {
   // Get session data server-side
@@ -15,7 +16,9 @@ async function NavBar() {
         <div className="text-2xl flex flex-col justify-center text-azureBlue-500 font-bold italic">
           RupeeRush
         </div>
-        <div className="flex gap-x-2 justify-center">
+        <div className="flex gap-x-4 justify-center items-center">
+          <StatusIndicator />
+
           <ThemeModal />
           {!session?.user ? (
             // SignIn/Login

@@ -32,7 +32,7 @@ export const createP2PTxnAction = async ({ ...props }: CreateP2PTxnProps) => {
   }
 
   try {
-    const result = await db.$transaction(async (txn) => {
+    const result = await db.$transaction(async (txn: any) => {
       const receiver = await validateReceiver({ txn, receiverIdentifier, transferMethod });
       if (!receiver.success) {
         throw new Error(receiver.message);
@@ -95,5 +95,6 @@ export const createP2PTxnAction = async ({ ...props }: CreateP2PTxnProps) => {
   } finally {
     // evicting cache
     await cache.evict(cacheType.P2P_TRANSACTION, [userId]);
+    await cache.evict(cacheType.TRANSACTION_PAGE, [userId, "page", "1"]); // clearing cache for transaction page
   }
 };

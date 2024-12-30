@@ -86,3 +86,33 @@ export interface PaymentPayload {
   txnId: string;
   nonce: string;
 }
+
+export enum TransactionStatus {
+  SUCCESS = "SUCCESS",
+  FAILURE = "FAILURE",
+  PROCESSING = "PROCESSING",
+}
+
+export enum TransferMethod {
+  UPI = "UPI",
+  PHONE = "PHONE",
+  BANK_TRANSFER = "Bank Transfer",
+}
+
+export enum TransactionType {
+  DEPOSIT = "DEPOSIT",
+  WITHDRAW = "WITHDRAW",
+  TRANSFER = "TRANSFER",
+  RECEIVE = "RECEIVE",
+}
+
+export interface Transaction {
+  id: string;
+  date: Date;
+  amount: number;
+  type: TransactionType;
+  status: TransactionStatus;
+  recipientOrSender: string | null;
+  transferMethod?: TransferMethod | null;
+  details: any;
+}

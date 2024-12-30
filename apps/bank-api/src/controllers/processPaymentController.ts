@@ -133,6 +133,8 @@ async function processPaymentController(c: Context) {
     await cache.evict(cacheType.BANK_BALANCE, [transactionInfo.receiverUserId]);
     await cache.evict(cacheType.B2B_TRANSACTION, [transactionInfo.senderUserId]);
     await cache.evict(cacheType.B2B_TRANSACTION, [transactionInfo.receiverUserId]);
+    await cache.evict(cacheType.TRANSACTION_PAGE, [transactionInfo.senderUserId, "page", "1"]); // clearing cache for transaction page
+    await cache.evict(cacheType.TRANSACTION_PAGE, [transactionInfo.receiverUserId, "page", "1"]); // clearing cache for transaction page
 
     // return success : bank FE and user FE
     return c.json({

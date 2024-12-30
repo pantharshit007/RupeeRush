@@ -39,7 +39,7 @@ function B2BForm() {
     <div>
       <Title title={"Business to Business"} />
 
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 max-md:mb-4 gap-4">
         {/* Left Side */}
         <B2BTransferCard />
 
