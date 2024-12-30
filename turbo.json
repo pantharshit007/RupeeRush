@@ -10,12 +10,12 @@
     },
     "user-app#build": {
       "dependsOn": ["^build"],
-      "env": ["AUTH_*", "RESEND_API_KEY", "NEXT_PUBLIC_BANK_PAGE_URL", "CACHE_TTL"],
+      "env": ["AUTH_*", "RESEND_API_KEY", "NEXT_PUBLIC_*", "CACHE_TTL"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "webhook#build": {
       "dependsOn": ["^build"],
-      "env": ["BANK_API_URL"],
+      "env": ["BANK_API_URL", "FE_URL"],
       "outputs": ["dist/**"]
     },
     "bank-api#build": {

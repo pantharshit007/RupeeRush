@@ -1,7 +1,10 @@
 import express from "express";
 import cors from "cors";
+import "dotenv/config";
 
 import { router } from "./route.js";
+
+const FRONTEND_URL = process.env.FE_URL;
 
 const app = express();
 app.use(
@@ -12,7 +15,13 @@ app.use(
     },
   })
 );
-app.use(cors());
+app.use(
+  cors({
+    origin: FRONTEND_URL,
+    credentials: true,
+  })
+);
+
 app.use("/api/v1", router);
 
 app.get("/", (req, res: any) => {
