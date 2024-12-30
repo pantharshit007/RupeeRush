@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avat
 import { useCurrentUser } from "@/hooks/UseCurrentUser";
 import { cn } from "@repo/ui/lib/utils";
 
-function UserAvatar({ className, customName }: { className?: string; customName: string | null }) {
+function UserAvatar({ className, customName }: { className?: string; customName?: string | null }) {
   const [img, setImg] = useState<string>(
     "https://api.dicebear.com/8.x/notionists/svg?seed=jethiya&flip=false"
   );
