@@ -7,7 +7,7 @@ import LoginForm from "./LoginForm";
 
 interface LoginButtonProp {
   children: React.ReactNode;
-  mode?: "redirect" | "modal";
+  mode?: "redirect" | "modal" | "signup";
   asChild: boolean;
 }
 
@@ -18,10 +18,13 @@ function LoginButton({ children, mode = "redirect", asChild }: LoginButtonProp) 
     if (mode === "redirect") {
       router.push("/auth/login");
     }
+
+    if (mode === "signup") {
+      router.push("/auth/signup");
+    }
     return;
   }
 
-  // TODO: fix the bug where modal appears and then we are redirected to `/auth/login`
   if (mode === "modal") {
     return (
       <Dialog>

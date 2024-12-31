@@ -17,14 +17,25 @@ async function NavBar() {
           RupeeRush
         </div>
         <div className="flex gap-x-4 justify-center items-center">
-          <StatusIndicator />
+          {/* <StatusIndicator /> */}
 
           <ThemeModal />
           {!session?.user ? (
-            // SignIn/Login
-            <LoginButton asChild>
-              <Button size="sm">Sign In</Button>
-            </LoginButton>
+            <>
+              {/* Login */}
+              <LoginButton asChild mode="modal">
+                <Button size="sm" variant={"ghost"} className="border-[1px]">
+                  Login
+                </Button>
+              </LoginButton>
+
+              {/* Signup */}
+              <LoginButton asChild mode="signup">
+                <Button size="sm" variant={"marketing"}>
+                  Get started
+                </Button>
+              </LoginButton>
+            </>
           ) : (
             // User Profile
             <UserDropdown />

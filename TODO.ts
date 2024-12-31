@@ -29,6 +29,7 @@
 ////.! TODO: recent transactions are not visible in mobile view in wallet,p2p,b2b need fix
 // TODO: add a hard refresh button in transactions pages to refresh cache.
 // TODO: think of what to do in /dashboard/home
+// TODO: update the website url to relative from env in email template
 
 //! NEXT: BE
 ///// TODO: fix locked amount not updating or something...
@@ -75,3 +76,4 @@
 
 //? NOTE:
 // when adding image from an outside src u need to set them up in next.config.*: https://youtu.be/w2h54xz6Ndw?t=2328
+// UPDATE the meta tags over <head> for emebedding in the social sites like reddit or twitter check this: https://github.com/code100x/cms/blob/main/src/config/site-config.ts#L13

@@ -44,6 +44,10 @@ const webConfig = {
         // sans: ["var(--font-geist-sans)"],
         // mono: ["var(--font-geist-mono)"],
       },
+      screens: {
+        mid: "1350px",
+        midx: "1400px",
+      },
     },
   },
 } satisfies Config;
