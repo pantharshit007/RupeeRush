@@ -12,10 +12,11 @@ import FloatingCard from "@/components/landing/FloatingCard";
 import Features from "@/components/landing/Features";
 import HowItWorks from "@/components/landing/HowItWorks";
 import Footer from "@/components/landing/Footer";
+import BackToTop from "@/components/landing/BackToTop";
 
 function LandingPage() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="relative flex flex-col min-h-screen">
       <main className="flex h-full flex-col items-center justify-center gap-4">
         {/* Hero */}
         <motion.div
@@ -91,6 +92,8 @@ function LandingPage() {
         {/* Footer */}
         <Footer />
       </main>
+
+      <BackToTop />
     </div>
   );
 }
