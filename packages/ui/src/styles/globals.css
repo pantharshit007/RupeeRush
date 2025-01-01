@@ -6,6 +6,12 @@ html,
 body,
 :root {
   height: 100%;
+  /* Improve text rendering */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  scroll-behavior: smooth;
 }
 
 @layer base {
@@ -43,6 +49,9 @@ body,
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --landing-primary: 220.9 39.3% 11%;
+    --landing-primary-foreground: 210 20% 98%;
   }
 
   .dark {
@@ -82,6 +91,9 @@ body,
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --landing-primary: 210 20% 98%;
+    --landing-primary-foreground: 220.9 39.3% 11%;
   }
 }
 
@@ -99,6 +111,32 @@ body,
   background: radial-gradient(ellipse at top, #38bdf8, #1e3a8a);
 }
 
+.cc-shadow {
+  -webkit-box-shadow: 6px -5px 14px -7px rgba(56, 149, 255, 1);
+  -moz-box-shadow: 6px -5px 14px -7px rgba(56, 149, 255, 1);
+  box-shadow: 6px -5px 14px -7px rgba(56, 149, 255, 1);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3894FF;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsla(212, 100%, 59%, 0.868);
+}
+
 @layer utilities {
   .flex-row-between {
     @apply flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm;
@@ -110,6 +148,10 @@ body,
 
   .center {
     @apply grid place-items-center w-full;
+  }
+
+  .wrapper {
+    @apply h-full w-full max-w-7xl px-4 py-4 md:px-12 lg:px-20 lg:mx-auto xl:max-w-[90rem];
   }
 
   .perspective-1000 {
@@ -126,5 +168,9 @@ body,
 
   .rotate-y-180 {
     transform: rotateY(180deg);
+  }
+
+  .bg-white {
+    background-color: hsl(221 39% 11%);
   }
 }
