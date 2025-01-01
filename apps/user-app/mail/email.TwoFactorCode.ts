@@ -12,7 +12,7 @@ export const emailTwoFACodeTemplate = (code: string) => {
             <div style="margin: 50px; width: 80%; padding: 20px 0">
                 <div style="border-bottom: 1px solid #eee">
                     <a href="https://rupeerush.vercel.app" style="color: #00466a; text-decoration: none; font-weight: 600">
-                        <img style="max-width: 200px;" src="https://i.ibb.co/G5cKnxf/logo.png" alt="RupeeRush Logo"/>
+                        <img style="max-width: 200px; border-radius: 9999px;" src="https://i.ibb.co/p1JNcng/rupeerush-logo.jpg" alt="RupeeRush Logo"/>
                     </a>
                 </div>
                 <p style="font-size: 1.1em">Hi,</p>

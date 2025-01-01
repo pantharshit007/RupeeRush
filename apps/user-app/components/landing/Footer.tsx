@@ -4,7 +4,7 @@ import { FaFacebook } from "react-icons/fa";
 import { BsLinkedin, BsTwitterX } from "react-icons/bs";
 import { IoShareSocial } from "react-icons/io5";
 
-import Logo from "public/rupeerush_logo.jpg";
+import Logo from "public/logo1.jpg";
 
 export default function Footer() {
   return (
@@ -22,8 +22,8 @@ export default function Footer() {
                 className="rounded-full"
               />
 
-              <span className="bg-gradient-to-b from-azureBlue-400 to-azureBlue-700 bg-clip-text text-3xl font-bold  text-transparent pl-1">
-                RupeeRush
+              <span className="bg-gradient-to-b from-azureBlue-400 to-azureBlue-700 bg-clip-text text-3xl font-bold text-transparent pl-1">
+                Rupee₹ush
               </span>
             </div>
 

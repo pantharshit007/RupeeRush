@@ -1,4 +1,4 @@
-<h1 align="center">RupeeRush</h1>
+<h1 align="center">Rupee₹ush</h1>
 
 ### ER Diagram
 

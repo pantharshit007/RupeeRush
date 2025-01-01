@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { ChevronDown, ChevronUp, Eye, EyeOff } from "lucide-react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+
 import { cn } from "@repo/ui/lib/utils";
 import { Card, CardContent } from "@repo/ui/components/ui/card";
 import { Button } from "@repo/ui/components/ui/button";
-import { CardDataItem } from "./CardData";
-import Image from "next/image";
+import { CardDataItem } from "@/components/security/CardData";
 
 export interface CreditCardProps {
   cardNumber: string;
@@ -24,21 +26,34 @@ export const CreditCard = ({ cardNumber, cardHolder, cardExpiry, cardCvv }: Cred
     return number.replace(/(\d{4})/g, "$1 ").trim();
   };
 
+  const handleFlip = () => {
+    setIsFlipped(!isFlipped);
+  };
+
   return (
     <div className="space-y-6">
-      <div
+      <motion.div
         className="relative w-96 max-md:w-[25rem] max-sm:w-[23rem] max-w-full h-56 cursor-pointer perspective-1000"
-        onClick={() => setIsFlipped(!isFlipped)}
+        onClick={handleFlip}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.5,
+          delay: 0.25,
+          type: "spring",
+          damping: 10,
+          stiffness: 100,
+        }}
       >
-        <div
-          className={cn(
-            "relative w-full h-full transition-all duration-500 preserve-3d ease-linear",
-            isFlipped ? "rotate-y-180" : ""
-          )}
+        <motion.div
+          className="relative w-full h-full"
+          animate={{ rotateY: isFlipped ? 180 : 0 }}
+          transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
+          style={{ transformStyle: "preserve-3d" }}
         >
           {/* Front of card */}
           <div className="absolute w-full h-full backface-hidden">
-            <div className="w-full h-full rounded-xl p-6 bg-gradient-to-br from-azureBlue-400 to-azureBlue-500 text-white shadow-lg">
+            <div className="w-full h-full rounded-2xl p-6 bg-gradient-to-br from-azureBlue-500 via-azureBlue-300 to-azureBlue-700  text-white shadow-xl">
               <div className="flex justify-between items-center">
                 <div className="">
                   <Image
@@ -48,36 +63,37 @@ export const CreditCard = ({ cardNumber, cardHolder, cardExpiry, cardCvv }: Cred
                     height={40}
                   />
                 </div>
-                <div className="h-full">AMERICAN EXPRESS</div>
+                <div className="h-full">RUPEE RUSH</div>
               </div>
+
               <div className="mt-8">
-                <div className="text-2xl max-sm:text-xl tracking-wider">
+                <div className="text-2xl tracking-wider font-mono">
                   {formatCardNumber(cardNumber)}
                 </div>
               </div>
+
               <div className="mt-8 flex justify-between">
                 <div>
                   <div className="text-xs opacity-75">Card Holder</div>
-                  <div className="text-sm font-medium">{cardHolder}</div>
+                  <div className="tracking-wider font-medium">{cardHolder}</div>
                 </div>
                 <div>
                   <div className="text-xs opacity-75">Expires</div>
-                  <div className="text-sm font-medium">{cardExpiry}</div>
+                  <div className="tracking-wider font-medium">{cardExpiry}</div>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Back of card */}
-          <div className="absolute w-full h-full backface-hidden rotate-y-180 -mt-3">
-            <div className="w-full h-full rounded-xl bg-gradient-to-br from-azureBlue-400 to-azureBlue-500 text-white shadow-lg">
-              <div className="w-full rounded-t-xl h-12 bg-gray-800 mt-4"></div>
+          <div className="absolute w-full h-full backface-hidden rotate-y-180 -mt-5">
+            <div className="w-full h-full rounded-2xl bg-gradient-to-br from-azureBlue-500 via-azureBlue-300 to-azureBlue-700 text-white shadow-xl">
+              <div className="w-full h-12 bg-black mt-6 rounded-t-2xl cc-shadow" />
+
               <div className="px-6 mt-8">
                 <div className="flex justify-end items-center relative">
-                  <div className="bg-white h-8 w-3/4 flex items-center justify-end px-4 rounded-sm">
-                    <div className="text-gray-900 font-mono h-fit pt-2">
-                      {showCVV ? cardCvv : "***"}
-                    </div>
+                  <div className="bg-white/30 h-10 w-full rounded flex items-center justify-end px-4 pt-1">
+                    <div className="font-mono text-lg">{showCVV ? cardCvv : "***"}</div>
                   </div>
 
                   {/* CVV Toggle Button*/}
@@ -97,8 +113,8 @@ export const CreditCard = ({ cardNumber, cardHolder, cardExpiry, cardCvv }: Cred
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* CARD DATA */}
       <Card className="w-full max-w-md">

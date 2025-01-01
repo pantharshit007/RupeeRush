@@ -46,11 +46,13 @@ function FloatingPhone() {
           className="absolute flex w-full justify-center z-10 md:top-12"
         >
           <Image
-            src="/iphone_png.png"
+            src="/iphone1.png"
             alt="Iphone image"
             width={300}
             height={300}
-            className="absolute w-[80%] rotate-3 transition-all duration-300 group-hover:-translate-y-4 group-hover:rotate-6   md:w-[30%]"
+            quality={100}
+            style={{ objectFit: "contain" }}
+            className="absolute w-[80%] rotate-3 transition-all duration-300 group-hover:-translate-y-4 group-hover:rotate-6 md:w-[30%]"
           />
         </motion.div>
 
