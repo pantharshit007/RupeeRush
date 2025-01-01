@@ -49,7 +49,7 @@ export default function AppSidebar() {
           </Button>
           {open && (
             <h2 className="text-2xl flex  justify-center text-azureBlue-500 font-bold italic">
-              RupeeRush
+              Rupee₹ush
             </h2>
           )}
         </div>

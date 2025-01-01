@@ -20,7 +20,7 @@
 // TODO: replace this NA in navbar
 // TODO: fix the name of authSchema to Schema.ts in a separate chore commit
 // TODO: add email template to inform user about email change if it is him or other.
-// TODO: why when someone clicks on signin he modal popus up but user is still redirected to `/auth/login` in loginButton.tsx
+///// TODO: why when someone clicks on signin he modal popus up but user is still redirected to `/auth/login` in loginButton.tsx
 // TODO: add appbar state(open/close) to cache but cache since it will affect server side code also, to make state persist.
 //! TODO: check if the JWT time is working on the session 3hr in auth.js
 // TODO: add a transactions refresh button
@@ -29,6 +29,7 @@
 ////.! TODO: recent transactions are not visible in mobile view in wallet,p2p,b2b need fix
 // TODO: add a hard refresh button in transactions pages to refresh cache.
 // TODO: think of what to do in /dashboard/home
+// TODO: update the website url to relative from env in email template
 
 //! NEXT: BE
 ///// TODO: fix locked amount not updating or something...
@@ -40,8 +41,9 @@
 // TODO: update the current webhookAttempts before reseting into the p2pTransaction in `action/transaction/p2p/p2p.ts`
 //? TODO: find a way to update webhookAttempts in the db for p2p/b2b transactions (done for b2b)
 // TODO: since now i am using trigger atom to update the balance atom use and make it a single state
-//! TODO: immediately add a indicator light on the navbar to indicate if webhhook is operational.
+/////! TODO: immediately add a indicator light on the navbar to indicate if webhhook is operational.
 // TODO: update the interfaces used in transactionTable and its action from `schema/types` use prisma exported if possible.
+//! TODO: add delete user functionality [important]
 
 //! DB:
 ///// TODO: updated user id to Int -> String, check for possible errors
@@ -74,3 +76,4 @@
 
 //? NOTE:
 // when adding image from an outside src u need to set them up in next.config.*: https://youtu.be/w2h54xz6Ndw?t=2328
+// UPDATE the meta tags over <head> for emebedding in the social sites like reddit or twitter check this: https://github.com/code100x/cms/blob/main/src/config/site-config.ts#L13

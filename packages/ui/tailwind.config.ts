@@ -66,6 +66,10 @@ const config = {
           ring: "hsl(var(--sidebar-ring))",
           dark: "hsl(var(--sidebar-background-dark))",
         },
+        landing: {
+          DEFAULT: "hsl(var(--landing-primary))",
+          foreground: "hsl(var(--landing-primary-foreground))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

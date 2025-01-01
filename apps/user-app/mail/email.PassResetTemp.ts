@@ -191,7 +191,7 @@ export const emailPasswordResetTemplate = (confirmationLink: string) => {
                                   >
                                     <div style="max-width: 120px">
                                       <a href="https://rupeerush.vercel.app" style="outline: none" tabindex="-1" target="_blank">
-                                        <img alt="company logo" height="auto" src="https://i.ibb.co/hcg8xwx/logo.png" style="display: block; height: auto; border: 0; width: 100%; margin: 30px 0;" title="company logo" width="120"/>
+                                        <img alt="company logo" height="auto" src="https://i.ibb.co/1Gy7x8S/rupeerush-name-logo.png" style="display: block; height: auto; border: 0; width: 100%; margin: 30px 0;" title="company logo" width="120"/>
                                       </a>
                                     </div>
                                   </div>
@@ -518,7 +518,7 @@ export const emailPasswordResetTemplate = (confirmationLink: string) => {
                                         ><img
                                           alt="company logo"
                                           height="auto"
-                                          src="https://i.ibb.co/hcg8xwx/logo.png"
+                                          src="https://i.ibb.co/1Gy7x8S/rupeerush-name-logo.png"
                                           style="
                                             display: block;
                                             height: auto;

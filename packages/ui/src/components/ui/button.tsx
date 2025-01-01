@@ -16,6 +16,8 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         azure: "bg-azureBlue-400 text-primary-foreground hover:bg-azureBlue-500/90",
+        marketing:
+          "bg-gradient-to-b from-blue-400 to-blue-700 text-white font-medium hover:opacity-80 transition-all duration-300",
       },
       size: {
         default: "h-10 px-4 py-2",

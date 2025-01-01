@@ -79,7 +79,7 @@ function StatusIndicator() {
         className={cn("rounded-full w-3 h-3 shadow-md animate-pulse", {
           "bg-green-500 shdaow-green-500/50": status === "active",
           "bg-rose-500 shadow-red-600/50": status === "inactive",
-          "bg-amber-600 shadow-yellow-500/50 ": status === "starting",
+          "bg-yellow-500 shadow-yellow-500/50 ": status === "starting",
         })}
         aria-label={`Backend status: ${status}`}
       />
