@@ -9,6 +9,9 @@ import { Input } from "@repo/ui/components/ui/input";
 
 import FloatingPhone from "@/components/landing/FloatingPhone";
 import FloatingCard from "@/components/landing/FloatingCard";
+import Features from "@/components/landing/Features";
+import HowItWorks from "@/components/landing/HowItWorks";
+import Footer from "@/components/landing/Footer";
 
 function LandingPage() {
   return (
@@ -78,6 +81,15 @@ function LandingPage() {
 
         {/* Floating Card */}
         <FloatingCard />
+
+        {/* Features */}
+        <Features />
+
+        {/* How it Works */}
+        <HowItWorks />
+
+        {/* Footer */}
+        <Footer />
       </main>
     </div>
   );

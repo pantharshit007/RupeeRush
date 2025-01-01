@@ -39,7 +39,7 @@ function FloatingPhone() {
           damping: 10,
           stiffness: 100,
         }}
-        className="relative flex h-[75vh] w-full flex-col overflow-hidden rounded-3xl bg-gradient-to-b from-blue-400 to-blue-700 p-8 md:h-[47vh] md:flex-col"
+        className="relative flex h-[75vh] w-[90%] mx-auto flex-col overflow-hidden rounded-3xl bg-gradient-to-b from-blue-400 to-blue-700 p-8 md:h-[47vh] md:flex-col"
       >
         <motion.div
           animate={floatingAnimation}
@@ -54,6 +54,7 @@ function FloatingPhone() {
           />
         </motion.div>
 
+        {/* Floating Cards */}
         <motion.div className="relative w-full h-full max-h-[300px] z-10" animate={floatingCards}>
           {/* Left floating card */}
           <div className="absolute left-4 top-1/4 md:left-16 lg:left-24 xl:left-32 z-10 max-w-[200px]">
@@ -66,7 +67,7 @@ function FloatingPhone() {
           </div>
 
           {/* Bottom left floating card */}
-          <div className="absolute left-8 max-2xl:bottom-2 max-mid:bottom-3 midx:bottom-4 bottom-[10%] md:left-52 lg:left-60 xl:left-72 midx:left-60 z-10 max-w-[200px]">
+          <div className="absolute left-8 max-2xl:bottom-2 max-mid:bottom-3 midx:bottom-4 bottom-[20%] md:left-52 lg:left-60 xl:left-48 midx:left-60 z-10 max-w-[200px]">
             <HeroCard
               title="Bills Payment"
               subtitle="Due in 2 days"
@@ -77,7 +78,7 @@ function FloatingPhone() {
           </div>
 
           {/* Right floating card */}
-          <div className="absolute right-4 top-1/3 md:right-16 lg:right-24 xl:right-32 z-10 max-w-[200px]">
+          <div className="absolute right-4 top-1/3 md:right-16 lg:right-24 xl:right-24 z-10 max-w-[200px]">
             <HeroCard
               title="Power Pack"
               subtitle="Premium subscription"
