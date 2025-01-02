@@ -11,6 +11,7 @@ export type ExtendedUser = {
   isTwoFactorEnabled: boolean;
   isOAuth: boolean;
   phoneNumber: string | null;
+  upiId: string | null;
   lastUpdate?: number;
 };
 
@@ -28,6 +29,7 @@ declare module "next-auth/jwt" {
     isTwoFactorEnabled: boolean;
     isOAuth: boolean;
     phoneNumber: string | null;
+    upiId: string | null;
     lastUpdate?: number;
   }
 }

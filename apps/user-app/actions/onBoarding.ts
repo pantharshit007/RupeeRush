@@ -51,7 +51,7 @@ export const onBoardingAction = async (
       return { error: "Phone number already exists" };
     }
 
-    await db.$transaction(async (txn) => {
+    const result = await db.$transaction(async (txn) => {
       const bank =
         SUPPORTED_BANKS[Math.floor(Math.random() * SUPPORTED_BANKS.length)]?.name || "AXIS";
       const hashedPin = await hash(values.pin, 10);
@@ -98,9 +98,14 @@ export const onBoardingAction = async (
           cardPinHash: hashedPin,
         },
       });
+
+      return { phoneNumber: values.phoneNumber, upiId };
     });
 
-    return { success: "Onboarding Successful!" };
+    return {
+      success: "Onboarding Successful!",
+      values: { phoneNumber: result.phoneNumber, upiId: result.upiId },
+    };
   } catch (err: any) {
     console.error("Error onboarding user:", err);
     return { error: "Error: " + err.message };

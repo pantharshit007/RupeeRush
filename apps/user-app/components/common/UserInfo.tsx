@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import { cn } from "@repo/ui/lib/utils";
 import { ExtendedUser } from "@/@types/next-auth";
@@ -28,20 +26,32 @@ function UserInfo({ user, label, logo, className }: UserInfoProps) {
           {user?.role === "ADMIN" && (
             <div className="flex-row-between">
               <p className="text-sm font-medium">ID</p>
-              <p className="code-block">{user?.id}</p>
+              <p className="font-mono text-sm px-2 py-1">{user?.id}</p>
             </div>
           )}
           <div className="flex-row-between">
             <p className="text-sm font-medium">Name</p>
-            <p className="code-block">{user?.name}</p>
+            <p className="font-mono text-sm px-2 py-1">{user?.name}</p>
           </div>
           <div className="flex-row-between">
             <p className="text-sm font-medium">Email</p>
-            <p className="code-block">{user?.email}</p>
+            <p className="font-mono text-sm px-2 py-1">{user?.email}</p>
+          </div>
+          <div className="flex-row-between">
+            <p className="text-sm font-medium">Phone Number</p>
+            <p className="font-mono text-sm px-2 py-1">{user?.phoneNumber}</p>
+          </div>
+          <div className="flex-row-between">
+            <p className="text-sm font-medium">UPI ID</p>
+            <p className="font-mono text-sm px-2 py-1">{user?.upiId}</p>
+          </div>
+          <div className="flex-row-between">
+            <p className="text-sm font-medium">BANK</p>
+            <p className="font-mono text-sm px-2 py-1 uppercase">{user?.upiId?.split("@")[1]?.split("bank")[0] || "N/A"}</p>
           </div>
           <div className="flex-row-between">
             <p className="text-sm font-medium">Role</p>
-            <p className="code-block">{user?.role}</p>
+            <p className="font-mono text-sm px-2 py-1">{user?.role}</p>
           </div>
       
           {!user?.isOAuth && (

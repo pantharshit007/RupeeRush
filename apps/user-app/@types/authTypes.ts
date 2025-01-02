@@ -9,6 +9,7 @@ export interface CustomToken {
   isTwoFactorEnabled: boolean;
   isOAuth: boolean;
   phoneNumber: string | null;
+  upiId: string | null;
   lastUpdate?: number;
   iat: number;
   exp: number;
