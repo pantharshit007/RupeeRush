@@ -28,6 +28,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@repo/ui/components/ui/dropdown-menu";
+import Link from "next/link";
 
 export default function AppSidebar() {
   const { open, toggleSidebar, isMobile } = useSidebar();
@@ -48,8 +49,8 @@ export default function AppSidebar() {
             <span className="sr-only">Toggle Sidebar</span>
           </Button>
           {open && (
-            <h2 className="text-2xl flex  justify-center text-azureBlue-500 font-bold italic">
-              Rupee₹ush
+            <h2 className="text-2xl flex  justify-center text-azureBlue-500 font-bold italic cursor-pointer">
+              <Link href="/">Rupee₹ush</Link>
             </h2>
           )}
         </div>

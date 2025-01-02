@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import CollapsableMobile from "@/components/CollapsableMobile";
 import NavBar from "@/components/NavBar";
 import ThemeBackground from "@/components/common/ThemeBackground";
@@ -14,11 +15,14 @@ async function SideBarLayout({ children }: { children: React.ReactNode }) {
     redirect(CREATE_BANK_ACCOUNT);
   }
 
+  const cookieStore = cookies();
+  const defaultOpen = cookieStore.get("sidebar:state")?.value === "true";
+
   return (
     <div className="w-full h-screen flex flex-col mx-auto ">
       <NavBar />
       <ThemeBackground>
-        <SidebarProvider>
+        <SidebarProvider defaultOpen={defaultOpen}>
           <AppSidebar />
           <SidebarInset>
             <div className="flex-1 h-full overflow-y-hidden flex-col">
