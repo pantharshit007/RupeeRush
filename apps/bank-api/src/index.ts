@@ -12,9 +12,11 @@ import { response } from "./lib/response";
 
 const app = new Hono<{ Bindings: Env }>();
 
-app.use("/*", (c, next) => {
+app.use("/api/*", (c, next) => {
   const corsMiddlewareHandler = cors({
-    origin: "*",
+    origin: c.env.ALLOWED_ORIGINS,
+    allowMethods: ["GET", "POST"],
+    credentials: true,
   });
   return corsMiddlewareHandler(c, next);
 });

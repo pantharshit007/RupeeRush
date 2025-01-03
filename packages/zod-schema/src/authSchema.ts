@@ -35,11 +35,6 @@ export const SettingsSchema = z
     name: z.string().optional(),
     isTwoFactorEnabled: z.boolean().optional(),
     email: z.string().email().optional(),
-    phoneNumber: z
-      .string()
-      .min(10, { message: "Minimum 10 characters" })
-      .max(12, { message: "Maximum 12 characters" })
-      .optional(),
     oldPassword: z.optional(z.string().min(6, { message: "Minimum length is 6 characters" })),
     newPassword: z.optional(z.string().min(6, { message: "Minimum length is 6 characters" })),
   })

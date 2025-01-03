@@ -76,13 +76,14 @@ export default function OnboardingPage() {
           await update({
             trigger: "update", // This will cause the jwt callback to fetch fresh data
             user: {
-              phoneNumber: values.phoneNumber,
+              phoneNumber: data.values.phoneNumber,
+              upiId: data.values.upiId,
             },
           });
           setLoading(true);
           toast.success(data.success);
 
-          router.push("/account/security");
+          router.push("/account/profile");
         }
       } catch (err: any) {
         console.error("> Error onboarding user: " + err?.message);

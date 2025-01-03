@@ -25,43 +25,49 @@ export const createB2BTxnAction = async ({ ...props }: CreateB2BTxnActionProps) 
   }
 
   try {
-    const result = await db.$transaction(async (txn) => {
-      const receiverAccount = await validateAccountNumber(receiverAccountNumber);
-      if (!receiverAccount.success) {
-        throw new Error(receiverAccount.message);
+    const result = await db.$transaction(
+      async (txn) => {
+        const receiverAccount = await validateAccountNumber(receiverAccountNumber);
+        if (!receiverAccount.success) {
+          throw new Error(receiverAccount.message);
+        }
+
+        const senderAccount = await txn.bankAccount.findUnique({
+          where: { userId: senderId },
+          select: { accountNumber: true, bankName: true },
+        });
+
+        if (!senderAccount) {
+          throw new Error("Sender account not found");
+        }
+
+        // create transaction
+        const transaction = await createB2BTransaction({
+          txn,
+          ...props,
+          senderAccountNumber: senderAccount.accountNumber,
+          senderBank: senderAccount.bankName,
+          receiverId: receiverAccount.receiver?.userId!,
+          receiverBank: receiverAccount.receiver?.bankName!,
+        });
+
+        // prepare webhook payload
+        const webhookPayload = await prepareWebhookPayload({
+          transaction,
+          props,
+          receiverId: receiverAccount.receiver?.userId!,
+        });
+
+        return {
+          transactionId: transaction.id,
+          payload: webhookPayload,
+        };
+      },
+      {
+        maxWait: 5000, // default: 2000
+        timeout: 10000, // default: 5000
       }
-
-      const senderAccount = await txn.bankAccount.findUnique({
-        where: { userId: senderId },
-        select: { accountNumber: true, bankName: true },
-      });
-
-      if (!senderAccount) {
-        throw new Error("Sender account not found");
-      }
-
-      // create transaction
-      const transaction = await createB2BTransaction({
-        txn,
-        ...props,
-        senderAccountNumber: senderAccount.accountNumber,
-        senderBank: senderAccount.bankName,
-        receiverId: receiverAccount.receiver?.userId!,
-        receiverBank: receiverAccount.receiver?.bankName!,
-      });
-
-      // prepare webhook payload
-      const webhookPayload = await prepareWebhookPayload({
-        transaction,
-        props,
-        receiverId: receiverAccount.receiver?.userId!,
-      });
-
-      return {
-        transactionId: transaction.id,
-        payload: webhookPayload,
-      };
-    });
+    );
 
     // calling webhook API
     const response = await processTransactionWebhook(result.transactionId, result.payload);

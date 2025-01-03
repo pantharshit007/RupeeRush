@@ -27,6 +27,7 @@ import {
 import FormError from "@/components/common/FormError";
 import FormSuccess from "@/components/common/FormSuccess";
 import { InfoTooltipComponent } from "@/components/common/InfoTooltip";
+import DeleteAccount from "@/components/settings/DeleteAccount";
 
 function SettingsForm({ className }: { className?: string }) {
   const [isPending, startTransition] = useTransition();
@@ -41,7 +42,6 @@ function SettingsForm({ className }: { className?: string }) {
     defaultValues: {
       name: session?.user?.name || undefined,
       email: session?.user?.email || undefined,
-      phoneNumber: session?.user?.phoneNumber || undefined,
       oldPassword: undefined,
       newPassword: undefined,
       isTwoFactorEnabled: session?.user?.isTwoFactorEnabled || undefined,
@@ -53,7 +53,14 @@ function SettingsForm({ className }: { className?: string }) {
     setSuccess("");
     setError("");
 
+    const email1 = process.env.DEMO_EMAIL1 || "alice@example.com";
+    const email2 = process.env.DEMO_EMAIL2 || "bob@example.com";
+
     try {
+      if (session?.user?.email === email1 || session?.user?.email === email2) {
+        return setError("Demo accounts cannot be updated!");
+      }
+
       startTransition(async () => {
         const data = await settingsAction(values, session?.user?.id!);
 
@@ -69,7 +76,6 @@ function SettingsForm({ className }: { className?: string }) {
             user: {
               name: values.name,
               email: values.email,
-              phoneNumber: values.phoneNumber,
               isTwoFactorEnabled: values.isTwoFactorEnabled,
             },
           });
@@ -142,29 +148,6 @@ function SettingsForm({ className }: { className?: string }) {
                     )}
                   />
                 )}
-
-                {/* PH. NUMBER */}
-                <FormField
-                  control={form.control}
-                  name="phoneNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Phone Number</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          type="tel"
-                          autoComplete="tel"
-                          min={1000000000}
-                          max={999999999999}
-                          placeholder="xxx-xxx-xxxx"
-                          disabled={isPending}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
 
                 {/* PASSWORD - 2FA */}
                 {!session?.user?.isOAuth && (
@@ -240,7 +223,7 @@ function SettingsForm({ className }: { className?: string }) {
               <div className="flex flex-col gap-y-2">
                 {!loading && <FormError message={error || ""} />}
                 {!loading && <FormSuccess message={success} />}
-                {loading && <BeatLoader color={"#1BA4FF"} />}
+                {(loading || isPending) && <BeatLoader color={"#1BA4FF"} style={{ margin: "auto" }} />}
                 
                 <Button type="submit" disabled={isPending} className="ml-auto text-white">
                   Update Settings
@@ -250,6 +233,14 @@ function SettingsForm({ className }: { className?: string }) {
           </Form>
         </CardContent>
       </Card>
+
+      {/* Delete Account */}
+      <DeleteAccount
+        setLoading={setLoading}
+        loading={loading}
+        setSuccess={setSuccess}
+        setError={setError}
+      />
     </div>
   );
 }

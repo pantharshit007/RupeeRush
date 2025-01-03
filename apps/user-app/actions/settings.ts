@@ -12,6 +12,9 @@ import { unstable_update } from "@/lib/auth";
 import { generateVerificationToken } from "@/lib/generateToken";
 
 export const settingsAction = async (values: z.infer<typeof SettingsSchema>, userId: string) => {
+  const email1 = process.env.DEMO_EMAIL1 || "alice@example.com";
+  const email2 = process.env.DEMO_EMAIL2 || "bob@example.com";
+
   try {
     const validatedValues = SettingsSchema.safeParse(values);
     if (!validatedValues.success) {
@@ -21,6 +24,11 @@ export const settingsAction = async (values: z.infer<typeof SettingsSchema>, use
     const user = await serverUser();
     if (!user) {
       return { error: "Unauthorized!" };
+    }
+
+    // DO NOT ALLOW UPDATE FOR DEMO ACCOUNTS
+    if (user.email === email1 || user.email === email2) {
+      return { error: "Demo accounts cannot be updated!" };
     }
 
     // to check if this is not leftover session (sideffects maybe?)

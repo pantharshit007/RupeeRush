@@ -27,66 +27,72 @@ export const processP2PTransaction = async (
 
     const decryptedData: DataArgs = await decryptData(encryptData, WEBHOOK_SECRET);
 
-    const result = await db.$transaction(async (txn) => {
-      checkAbortSignal();
+    const result = await db.$transaction(
+      async (txn) => {
+        checkAbortSignal();
 
-      // Lock the sender row for update to prevent parallel transactions
-      const senderBalance: SchemaTypes.WalletBalance[] =
-        await txn.$queryRaw`SELECT * FROM "WalletBalance" WHERE "userId" = ${decryptedData.senderId} FOR UPDATE`;
+        // Lock the sender row for update to prevent parallel transactions
+        const senderBalance: SchemaTypes.WalletBalance[] =
+          await txn.$queryRaw`SELECT * FROM "WalletBalance" WHERE "userId" = ${decryptedData.senderId} FOR UPDATE`;
 
-      // @ts-expect-error: Object is possibly 'undefined'.
-      if (!senderBalance || senderBalance[0].balance < amount) {
-        throw new CustomError("Insufficient balance", 422);
+        // @ts-expect-error: Object is possibly 'undefined'.
+        if (!senderBalance || senderBalance[0].balance < amount) {
+          throw new CustomError("Insufficient balance", 422);
+        }
+
+        checkAbortSignal();
+
+        // Deduct amount from sender
+        await txn.walletBalance.update({
+          where: { userId: decryptedData.senderId },
+          data: { balance: { decrement: amount } },
+        });
+
+        checkAbortSignal();
+
+        // Credit amount to receiver
+        await txn.walletBalance.update({
+          where: { userId: decryptedData.receiverId },
+          data: { balance: { increment: amount } },
+        });
+
+        checkAbortSignal();
+
+        // Update transaction
+        const isProcessed = await txn.p2pTransaction.findUnique({
+          where: { webhookId: webhookId },
+          select: { webhookStatus: true, status: true },
+        });
+
+        if (!isProcessed) {
+          throw new CustomError("Transaction not found", 404);
+        }
+
+        if (
+          isProcessed.webhookStatus === "COMPLETED" ||
+          isProcessed.webhookStatus === "FAILED" ||
+          isProcessed.status === "FAILURE" ||
+          isProcessed.status === "SUCCESS"
+        ) {
+          throw new CustomError("Transaction already processed", 409);
+        }
+
+        const txnData = await txn.p2pTransaction.update({
+          where: { webhookId: webhookId },
+          data: {
+            status: "SUCCESS",
+            webhookStatus: "COMPLETED",
+            lastWebhookAttempt: new Date(),
+          },
+        });
+
+        return { ...txnData };
+      },
+      {
+        maxWait: 5000, // default: 2000
+        timeout: 10000, // default: 5000
       }
-
-      checkAbortSignal();
-
-      // Deduct amount from sender
-      await txn.walletBalance.update({
-        where: { userId: decryptedData.senderId },
-        data: { balance: { decrement: amount } },
-      });
-
-      checkAbortSignal();
-
-      // Credit amount to receiver
-      await txn.walletBalance.update({
-        where: { userId: decryptedData.receiverId },
-        data: { balance: { increment: amount } },
-      });
-
-      checkAbortSignal();
-
-      // Update transaction
-      const isProcessed = await txn.p2pTransaction.findUnique({
-        where: { webhookId: webhookId },
-        select: { webhookStatus: true, status: true },
-      });
-
-      if (!isProcessed) {
-        throw new CustomError("Transaction not found", 404);
-      }
-
-      if (
-        isProcessed.webhookStatus === "COMPLETED" ||
-        isProcessed.webhookStatus === "FAILED" ||
-        isProcessed.status === "FAILURE" ||
-        isProcessed.status === "SUCCESS"
-      ) {
-        throw new CustomError("Transaction already processed", 409);
-      }
-
-      const txnData = await txn.p2pTransaction.update({
-        where: { webhookId: webhookId },
-        data: {
-          status: "SUCCESS",
-          webhookStatus: "COMPLETED",
-          lastWebhookAttempt: new Date(),
-        },
-      });
-
-      return { ...txnData };
-    });
+    );
 
     checkAbortSignal();
 

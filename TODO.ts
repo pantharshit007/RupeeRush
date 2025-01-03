@@ -3,11 +3,11 @@
 ///// TODO: update deposit/withdraw
 ///// TODO: update the transaction card to reflect both deduction and credit
 ///// TODO: update transaction/page.tsx with all transactions
-// TODO: update / route
+///// TODO: update / route
 ///// TODO: UPDATE p2p.tsx for showing transaction data such that receiver also is shown
-// TODO: move db calls to lib/actions
+///// TODO: move db calls to lib/actions, unplanned close
 // TODO: update transfer similarly to p2p.tsx : useffect, moving db to actions
-// TODO: fix auth form in login/register in 100%
+///// TODO: fix auth form in login/register in 100%
 // TODO: make sure no one is able to enter -ve amount in input boxes
 // TODO?: look into AppBarClient signout func. (i think its done)
 // TODO: add loading screen in `provider.tsx` suspense boundary
@@ -21,15 +21,17 @@
 // TODO: fix the name of authSchema to Schema.ts in a separate chore commit
 // TODO: add email template to inform user about email change if it is him or other.
 ///// TODO: why when someone clicks on signin he modal popus up but user is still redirected to `/auth/login` in loginButton.tsx
-// TODO: add appbar state(open/close) to cache but cache since it will affect server side code also, to make state persist.
-//! TODO: check if the JWT time is working on the session 3hr in auth.js
+///// TODO: add appbar state(open/close) to cache but cache since it will affect server side code also, to make state persist.
+// TODO: check if the JWT time is working on the session 3hr in auth.js: UPDATE: fixed somehow bu need to do proper work currently its storing cookies with default expiration of 30days, `auth.js` line:112.
 // TODO: add a transactions refresh button
 //? TODO: send user email in case of p2p / b2b transactions failure and b2b transactions success (not sure if I'll do now)
 // TODO: instead of SUCCESS/FAILURE/PENDING use icons tick, cross, hourglass with respective colors
 ////.! TODO: recent transactions are not visible in mobile view in wallet,p2p,b2b need fix
 // TODO: add a hard refresh button in transactions pages to refresh cache.
-// TODO: think of what to do in /dashboard/home
+///// TODO: think of what to do in /dashboard/home
 // TODO: update the website url to relative from env in email template
+// TODO: `b` shortcut for closing opening sidebar is not working.
+// TODO: think about if its a good idea to seperate small functions from `home.tsx`
 
 //! NEXT: BE
 ///// TODO: fix locked amount not updating or something...
@@ -43,12 +45,20 @@
 // TODO: since now i am using trigger atom to update the balance atom use and make it a single state
 /////! TODO: immediately add a indicator light on the navbar to indicate if webhhook is operational.
 // TODO: update the interfaces used in transactionTable and its action from `schema/types` use prisma exported if possible.
-//! TODO: add delete user functionality [important]
+/////! TODO: add delete user functionality [important]
+// TODO: check this error:
+/*
+*   ⨯ Internal error: TypeError [ERR_INVALID_STATE]: Invalid state: ReadableStream is already closed
+*    at new NodeError (node:internal/errors:405:5)
+*    at ReadableByteStreamController.enqueue (node:internal/webstreams/readablestream:1151:13)
+*/
+//! TODO: update server action allowed origins.
 
 //! DB:
 ///// TODO: updated user id to Int -> String, check for possible errors
 ///// TODO: before start working with balances, txn and other schemas make sure to update autoincrement -> uuid()
 ///// TODO: create an admin role to monitor the website
+// TODO: check if db docker working fine with hono and all 4 simuntanelously.
 
 //! WEBHOOK: BE
 ///// TODO: hdfcwebhook update condition for `Failure` (this is trash we have better things in place)
@@ -61,10 +71,11 @@
 
 //! BANK: FE
 // TODO: add a loading state to the bank-page first page like a brand logo with a loading around it.
-// TODO: downgrader the eslint version to 8 for lint-staged in husky
+///// TODO: downgrader the eslint version to 8 for lint-staged in husky
+// TODO: check eslintrc.cjs and fix that by doing a clean and reinstalling the packages for now i have done some workaround.
 
 //! BANK: BE
-//! TODO: update the cors origin policy.
+/////! TODO: update the cors origin policy.
 
 //! END TODO:
 // TODO: add feature QR code support we can use it in mobile and store qr in db

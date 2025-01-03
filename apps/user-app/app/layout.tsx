@@ -29,7 +29,7 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} selection:bg-azureBlue-400/90 selection:text-white`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

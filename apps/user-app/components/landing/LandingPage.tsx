@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { use, useEffect, useState } from "react";
 import { motion } from "motion/react";
 import Link from "next/link";
 
@@ -13,8 +13,11 @@ import Features from "@/components/landing/Features";
 import HowItWorks from "@/components/landing/HowItWorks";
 import Footer from "@/components/landing/Footer";
 import BackToTop from "@/components/landing/BackToTop";
+import { LandingToast } from "@/components/landing/LandingToast";
 
 function LandingPage() {
+  LandingToast();
+
   return (
     <div className="relative flex flex-col min-h-screen">
       <main className="flex h-full flex-col items-center justify-center gap-4">

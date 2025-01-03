@@ -1,10 +1,4 @@
 import { SchemaTypes } from "@repo/db/client";
-import {
-  Transaction,
-  TransactionStatus,
-  TransactionType,
-  TransferMethod,
-} from "@repo/schema/types";
 
 interface BanksProps {
   name: SchemaTypes.Bank;

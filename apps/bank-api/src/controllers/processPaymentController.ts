@@ -64,61 +64,67 @@ async function processPaymentController(c: Context) {
     }
 
     // update database and perform txn
-    await db.$transaction(async (txn) => {
-      // Lock the sender row for update to prevent parallel transactions
-      const senderBalance =
-        await txn.$queryRaw`SELECT * FROM "BankAccount" WHERE "userId" = ${transactionInfo.senderUserId} FOR UPDATE`;
+    await db.$transaction(
+      async (txn) => {
+        // Lock the sender row for update to prevent parallel transactions
+        const senderBalance =
+          await txn.$queryRaw`SELECT * FROM "BankAccount" WHERE "userId" = ${transactionInfo.senderUserId} FOR UPDATE`;
 
-      // @ts-expect-error: Object is possibly 'undefined'.
-      if (!senderBalance || senderBalance[0].balance < transactionInfo.amount) {
-        throw new CustomError("Insufficient balance", 422);
+        // @ts-expect-error: Object is possibly 'undefined'.
+        if (!senderBalance || senderBalance[0].balance < transactionInfo.amount) {
+          throw new CustomError("Insufficient balance", 422);
+        }
+
+        const userData = await txn.bankAccount.findUnique({
+          where: { userId: transactionInfo.senderUserId! },
+          select: {
+            cardHolder: true,
+            cardNumber: true,
+            cardPinHash: true,
+            cardCvv: true,
+            cardExpiry: true,
+          },
+        });
+
+        if (!userData) {
+          throw new CustomError("User not found", 404);
+        }
+
+        if (
+          userData.cardHolder !== cardholderName ||
+          userData.cardNumber !== cardNumber ||
+          userData.cardCvv !== cvv ||
+          userData.cardExpiry !== expiry ||
+          (await compare(userData.cardPinHash, pin))
+        ) {
+          throw new CustomError("Invalid card details", 401);
+        }
+
+        // Deduct amount from sender
+        await txn.bankAccount.update({
+          where: { userId: transactionInfo.senderUserId! },
+          data: { balance: { decrement: transactionInfo.amount } },
+        });
+
+        // Credit amount to receiver
+        await txn.bankAccount.update({
+          where: { userId: transactionInfo.receiverUserId! },
+          data: { balance: { increment: transactionInfo.amount } },
+        });
+
+        // Update transaction
+        await txn.b2bTransaction.update({
+          where: { id: txnId },
+          data: {
+            status: "SUCCESS",
+          },
+        });
+      },
+      {
+        maxWait: 5000, // default: 2000
+        timeout: 10000, // default: 5000
       }
-
-      const userData = await txn.bankAccount.findUnique({
-        where: { userId: transactionInfo.senderUserId! },
-        select: {
-          cardHolder: true,
-          cardNumber: true,
-          cardPinHash: true,
-          cardCvv: true,
-          cardExpiry: true,
-        },
-      });
-
-      if (!userData) {
-        throw new CustomError("User not found", 404);
-      }
-
-      if (
-        userData.cardHolder !== cardholderName ||
-        userData.cardNumber !== cardNumber ||
-        userData.cardCvv !== cvv ||
-        userData.cardExpiry !== expiry ||
-        (await compare(userData.cardPinHash, pin))
-      ) {
-        throw new CustomError("Invalid card details", 401);
-      }
-
-      // Deduct amount from sender
-      await txn.bankAccount.update({
-        where: { userId: transactionInfo.senderUserId! },
-        data: { balance: { decrement: transactionInfo.amount } },
-      });
-
-      // Credit amount to receiver
-      await txn.bankAccount.update({
-        where: { userId: transactionInfo.receiverUserId! },
-        data: { balance: { increment: transactionInfo.amount } },
-      });
-
-      // Update transaction
-      await txn.b2bTransaction.update({
-        where: { id: txnId },
-        data: {
-          status: "SUCCESS",
-        },
-      });
-    });
+    );
 
     // update cache: idempotencyKey
     const idempotencyCache: IdepotencyCache = {
