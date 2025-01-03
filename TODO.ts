@@ -68,7 +68,8 @@
 
 //! BANK: FE
 // TODO: add a loading state to the bank-page first page like a brand logo with a loading around it.
-// TODO: downgrader the eslint version to 8 for lint-staged in husky
+///// TODO: downgrader the eslint version to 8 for lint-staged in husky
+// TODO: check eslintrc.cjs and fix that by doing a clean and reinstalling the packages for now i have done some workaround.
 
 //! BANK: BE
 //! TODO: update the cors origin policy.

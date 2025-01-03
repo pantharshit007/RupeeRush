@@ -6,7 +6,6 @@ build/
 
 apps/bank-api/**/*
 # Ignore all files in the bank page app, where eslint 9+ is used
-apps/bank-page/**/*
 
 # Ignore TODO.ts and other specific files
 TODO.ts
