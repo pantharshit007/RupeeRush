@@ -15,6 +15,11 @@ WEBHOOK_BANK_SECRET=<YOUR_WEBHOOK_BANK_SECRET>
 UPSTASH_REDIS_REST_URL=<Redis URL>
 UPSTASH_REDIS_REST_TOKEN=<Redis Token>
 
+# -----------------------------------------------------------------------------
+# Allowed origins for webhook and Bank API
+# -----------------------------------------------------------------------------
+ALLOWED_ORIGINS= https:localhost:4000, https://localhost:5173
+
 #------------------------------------------------------------------------------
 # Environment
 #------------------------------------------------------------------------------

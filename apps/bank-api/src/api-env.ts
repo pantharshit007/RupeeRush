@@ -7,6 +7,7 @@ export const zEnv = z.object({
   ENVIRONMENT: z.enum(["development", "production"]).default("development"),
   UPSTASH_REDIS_REST_URL: z.string().optional(),
   UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
+  ALLOWED_ORIGINS: z.string(),
 });
 
 export type Env = z.infer<typeof zEnv>;

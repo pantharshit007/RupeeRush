@@ -47,15 +47,18 @@
 // TODO: update the interfaces used in transactionTable and its action from `schema/types` use prisma exported if possible.
 /////! TODO: add delete user functionality [important]
 // TODO: check this error:
-/*  ⨯ Internal error: TypeError [ERR_INVALID_STATE]: Invalid state: ReadableStream is already closed
-    at new NodeError (node:internal/errors:405:5)
-    at ReadableByteStreamController.enqueue (node:internal/webstreams/readablestream:1151:13)
+/*
+*   ⨯ Internal error: TypeError [ERR_INVALID_STATE]: Invalid state: ReadableStream is already closed
+*    at new NodeError (node:internal/errors:405:5)
+*    at ReadableByteStreamController.enqueue (node:internal/webstreams/readablestream:1151:13)
 */
+//! TODO: update server action allowed origins.
 
 //! DB:
 ///// TODO: updated user id to Int -> String, check for possible errors
 ///// TODO: before start working with balances, txn and other schemas make sure to update autoincrement -> uuid()
 ///// TODO: create an admin role to monitor the website
+// TODO: check if db docker working fine with hono and all 4 simuntanelously.
 
 //! WEBHOOK: BE
 ///// TODO: hdfcwebhook update condition for `Failure` (this is trash we have better things in place)
@@ -72,7 +75,7 @@
 // TODO: check eslintrc.cjs and fix that by doing a clean and reinstalling the packages for now i have done some workaround.
 
 //! BANK: BE
-//! TODO: update the cors origin policy.
+/////! TODO: update the cors origin policy.
 
 //! END TODO:
 // TODO: add feature QR code support we can use it in mobile and store qr in db
