@@ -5,9 +5,9 @@
 ///// TODO: update transaction/page.tsx with all transactions
 ///// TODO: update / route
 ///// TODO: UPDATE p2p.tsx for showing transaction data such that receiver also is shown
-// TODO: move db calls to lib/actions
+///// TODO: move db calls to lib/actions, unplanned close
 // TODO: update transfer similarly to p2p.tsx : useffect, moving db to actions
-// TODO: fix auth form in login/register in 100%
+///// TODO: fix auth form in login/register in 100%
 // TODO: make sure no one is able to enter -ve amount in input boxes
 // TODO?: look into AppBarClient signout func. (i think its done)
 // TODO: add loading screen in `provider.tsx` suspense boundary
@@ -28,9 +28,10 @@
 // TODO: instead of SUCCESS/FAILURE/PENDING use icons tick, cross, hourglass with respective colors
 ////.! TODO: recent transactions are not visible in mobile view in wallet,p2p,b2b need fix
 // TODO: add a hard refresh button in transactions pages to refresh cache.
-// TODO: think of what to do in /dashboard/home
+///// TODO: think of what to do in /dashboard/home
 // TODO: update the website url to relative from env in email template
 // TODO: `b` shortcut for closing opening sidebar is not working.
+// TODO: think about if its a good idea to seperate small functions from `home.tsx`
 
 //! NEXT: BE
 ///// TODO: fix locked amount not updating or something...

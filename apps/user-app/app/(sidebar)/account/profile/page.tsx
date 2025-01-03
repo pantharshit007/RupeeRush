@@ -7,6 +7,7 @@ import UserInfo from "@/components/common/UserInfo";
 import { IoPerson } from "react-icons/io5";
 import { redirect } from "next/navigation";
 import { CREATE_BANK_ACCOUNT } from "@/utils/apiRoute";
+import { getAccountNoAction } from "@/actions/getCreditCard";
 
 async function ProfilePage() {
   const user = await serverUser();
@@ -14,11 +15,14 @@ async function ProfilePage() {
     redirect(CREATE_BANK_ACCOUNT);
   }
 
+  const accountNo = await getAccountNoAction(user?.id!);
+
   return (
     <UserInfo
       user={user}
       label="Profile"
       logo={<IoPerson className="text-blue-500" size={"27"} />}
+      accountNo={accountNo!}
       className="w-full h-[100dvh] flex flex-col justify-center items-center"
     />
   );
