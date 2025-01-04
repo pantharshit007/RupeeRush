@@ -85,7 +85,7 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "sway": {
+        sway: {
           "0%, 100%": { transform: "rotate(-28deg)" },
           "50%": { transform: "rotate(-20deg)" },
         },
@@ -93,7 +93,7 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "sway": "sway 5s ease-in-out infinite",
+        sway: "sway 3s ease-in-out infinite",
       },
       maxWidth: {
         maxContent: "1260px",

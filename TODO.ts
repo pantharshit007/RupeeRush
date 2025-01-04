@@ -73,6 +73,8 @@
 // TODO: add a loading state to the bank-page first page like a brand logo with a loading around it.
 ///// TODO: downgrader the eslint version to 8 for lint-staged in husky
 // TODO: check eslintrc.cjs and fix that by doing a clean and reinstalling the packages for now i have done some workaround.
+// TODO: change the `recieverName` to `receiverName` in `axis.tsx` and `hdfc.tsx` and `paymentpage.tdx` and `paymentDetailsController.ts`
+// TODO: add ts support its not available right now adding ignore in `PaymentPage.tsx`.
 
 //! BANK: BE
 /////! TODO: update the cors origin policy.

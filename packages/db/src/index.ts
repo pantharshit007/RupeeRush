@@ -9,20 +9,11 @@ const prismaClientSingleton = () => {
   if (useAdapter) {
     neonConfig.poolQueryViaFetch = true;
     const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-
-    pool
-      .connect()
-      .then(() => {
-        console.log("Successfully connected to pool");
-      })
-      .catch((err) => {
-        console.error("Pool connection test failed:", err);
-      });
-
     const adapter = new PrismaNeon(pool);
+
     return new PrismaClient({
       adapter,
-      log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
+      // log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
     } as never);
   }
   return new PrismaClient();

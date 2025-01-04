@@ -2,6 +2,8 @@
 
 A comprehensive, feature-rich payment platform inspired by Paytm, Venmo, and PayPal, combining seamless transactions with monorepo architecture using TypeScript.
 
+[![FrontPage](./apps/user-app//public/thumbnail.png)](https://youtu.be/1H4gU4ofW1A)
+
 ---
 
 ## **✨ Features**
@@ -76,7 +78,7 @@ RupeeRush
 Er Diagram of B2B Transaction can be found [here](https://claude.site/artifacts/f9363611-1200-485c-8531-41fda91c7aa8).
 
 Er Diagram of Database:
-![db_er_diagram](https://github.com/user-attachments/assets/885e69e3-6e96-4131-8121-cd7a03b97246)
+![db_er_diagram](https://res.cloudinary.com/di0av3xly/image/upload/v1735998401/RupeeRush/db_er_diagram_llxeuq.png)
 
 ### **Key Models**
 
@@ -145,12 +147,12 @@ Er Diagram of Database:
    cp .env.example .env
    ```
 
-   > [!IMPORTANT]
-   > If you want to run all 4 apps then mark `USE_ADAPTER` `false` for `app/webhook`
+> [!NOTE]
+> If you want to run all 4 apps then mark `USE_ADAPTER` `false` for `app/webhook`
 
-   > by default if you run `npm i` it will not pick up `USE_ADAPTER` from `.env` file, so the `flag` wouldn't be active and prisma client wouldn't work with `hono`, so after installation uncomment the line from `prisma/schema.prisma` and then from root run `npm run db:generate` to generate prisma client and seed the db.
-
-   > Reason for all this at the bottom.
+> [!IMPORTANT]
+   > By default if you run `npm i` it will not pick up `USE_ADAPTER` from `.env` file, so the `flag` wouldn't be active and prisma client wouldn't work with `hono`, so after installation uncomment the line from `prisma/schema.prisma` and then from root run `npm run db:generate` to generate prisma client and seed the db.
+   > The reason for all this at the bottom.
 
 4. **Set up the database**:
 
@@ -178,7 +180,6 @@ Er Diagram of Database:
 
 > [!NOTE]
 > First of all `user-app` and `webhook` works fine with docker db but the problem is with `bank-api` it doesn't work with local db, so i have to fix that, for now we have to use prostgres prod db.
-
 > I am using `USE_ADAPTER` flag to enable/disable the prisma adapter for neon, because sending prisma client along with driver adapter was causing my next middleware to go over 1MB limit (1.01MB) it's issue from there end since my middleware was within 200KB limit, but oh well this was the reason for which I had to disable it.
 
 ---
@@ -211,5 +212,3 @@ We welcome contributions! Please follow these steps:
 ## **License**
 
 This project is licensed under the MIT License.
-
----

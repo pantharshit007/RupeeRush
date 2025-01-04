@@ -15,7 +15,7 @@ const app = new Hono<{ Bindings: Env }>();
 app.use("/api/*", (c, next) => {
   const corsMiddlewareHandler = cors({
     origin: c.env.ALLOWED_ORIGINS,
-    allowMethods: ["GET", "POST"],
+    allowMethods: ["GET", "POST", "OPTIONS"],
     credentials: true,
   });
   return corsMiddlewareHandler(c, next);

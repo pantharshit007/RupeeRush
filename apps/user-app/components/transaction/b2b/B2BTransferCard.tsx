@@ -48,7 +48,7 @@ function B2BTransferCard() {
           // Preemptively open the window (popup blocker workaround)
           let popupWindow: Window | null = null;
 
-          const preemptiveLink = "about:blank"; // Temporary blank page
+          const preemptiveLink = `${PAGE}/loading`;
           popupWindow = window.open(preemptiveLink, "target", "height=600px,width=900px");
 
           const data = await createB2BTxnAction({

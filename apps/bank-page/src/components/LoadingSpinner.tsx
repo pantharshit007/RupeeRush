@@ -3,7 +3,7 @@ import { CheckCircle, Loader2 } from "lucide-react";
 export function LoadingSpinner() {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg flex items-center space-x-4">
+      <div className="bg-slate-50 p-6 rounded-lg shadow-lg flex items-center space-x-4">
         <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
         <p className="text-lg font-semibold">Processing payment...</p>
       </div>
@@ -23,7 +23,7 @@ export function LoadingState() {
 
 export function SuccessState() {
   return (
-    <div className="h-screen w-full flex items-center flex-col gap-y-6 justify-center">
+    <div className="h-screen w-full flex items-center flex-col gap-y-6 justify-center bg-slate-50">
       <CheckCircle className="h-8 w-8 text-green-500" />
       <span className="sr-only">Success</span>
       <p className="text-lg font-semibold block">Payment successful! 🎉</p>

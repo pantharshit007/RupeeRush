@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 import * as z from "zod";
@@ -13,33 +13,31 @@ function DemoDialog({ submitHandler }: { submitHandler: Function }) {
   const handleDemoClickAlice = () => {
     setShowDemo(false);
     const value: z.infer<typeof LoginSchema> = {
-        email: "alice@example.com",
-        password: "alice123",
-      };
-      submitHandler(value);
+      email: "alice@example.com",
+      password: "alice123",
+    };
+    submitHandler(value);
 
-      toast.info("Remember this",{
-        description: "Alice's Pin: 123456",
-        duration: 8000,
-      });
-
-    }
-
+    toast.info("Remember this", {
+      description: "Alice's Pin: 123456",
+      duration: 8000,
+    });
+  };
 
   const handleDemoClickBob = () => {
     setShowDemo(false);
     const value: z.infer<typeof LoginSchema> = {
-        email: "bob@example.com",
-        password: "bob123",
-      };
-      submitHandler(value);
+      email: "bob@example.com",
+      password: "bob123",
+    };
+    submitHandler(value);
 
-      toast.info("Remember this",{
-        description: "Bob's Pin: 654321",
-        duration: 8000,
-      });
+    toast.info("Remember this", {
+      description: "Bob's Pin: 654321",
+      duration: 8000,
+    });
   };
-  
+
   return (
     <div
       className={`${showDemo ? "" : "hidden"} justify-center items-center absolute bg-gradient-to-b from-azureBlue-400/90 via-azureBlue-500 to-azureBlue-700/90 top-52 md:top-[12%] xl:top-[15%] md:left-[17%] xl:left-[20%] right-[20%] p-6 rotate-[-28deg] z-20 rounded-md max-md:hidden w-[300px] origin-top-right animate-sway`}
@@ -58,7 +56,7 @@ function DemoDialog({ submitHandler }: { submitHandler: Function }) {
         </div>
 
         <div className=" gap-y-2 flex flex-col">
-          <p className="text-2xl font-extrabold text-richblack-5 flex items-center">
+          <p className="text-slate-100 text-2xl font-extrabold text-richblack-5 flex items-center">
             Try Demo &nbsp;
             <BsLightningChargeFill size={20} className="text-yellow-500" />
           </p>
@@ -66,7 +64,7 @@ function DemoDialog({ submitHandler }: { submitHandler: Function }) {
           {/* ALICE LOGIN */}
           <button
             onClick={handleDemoClickAlice}
-            className="bg-gradient-to-b from-azureBlue-600 to-azureBlue-700 font-medium font-mono mt-4 mb-1 text-richblack-25 px-4 py-2 rounded-md flex"
+            className="text-slate-100 bg-gradient-to-b from-azureBlue-600 to-azureBlue-700 font-medium font-mono mt-4 mb-1 text-richblack-25 px-4 py-2 rounded-md flex"
           >
             Login as Alice
           </button>
@@ -74,7 +72,7 @@ function DemoDialog({ submitHandler }: { submitHandler: Function }) {
           {/* BOB LOGIN */}
           <button
             onClick={handleDemoClickBob}
-            className="bg-gradient-to-b from-azureBlue-700 to-azureBlue-600 font-medium font-mono text-richblack-25 px-4 py-2 rounded-md flex"
+            className="text-slate-100 bg-gradient-to-b from-azureBlue-700 to-azureBlue-600 font-medium font-mono text-richblack-25 px-4 py-2 rounded-md flex"
           >
             Login as Bob
           </button>
