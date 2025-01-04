@@ -8,17 +8,16 @@ const steps = [
   {
     title: "Create Your Account",
     description:
-      "Sign up with your phone number and email. Complete KYC verification for instant account activation.",
+      "Sign up and get your credit card and account number automatically generated during onboarding.",
   },
   {
-    title: "Link Bank Account & Wallet",
+    title: "Access Your Information",
     description:
-      "Connect your bank account securely and set up your digital wallet for seamless transactions.",
+      "Find your credit card details in the Security section and account info in your Profile.",
   },
   {
     title: "Wallet Transfers",
-    description:
-      "Transfer money between your bank and wallet instantly using UPI ID or phone number.",
+    description: "Easily add or withdraw money between your wallet and bank account.",
   },
   {
     title: "P2P Transfers",

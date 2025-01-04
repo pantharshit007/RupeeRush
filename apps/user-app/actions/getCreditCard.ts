@@ -37,3 +37,39 @@ export const getCreditCardAction = async (userId: string): Promise<CreditCardPro
     return null;
   }
 };
+
+/**
+ * Fetches Bank Account Number of the user
+ * @param userId
+ * @returns accountNo
+ */
+export const getAccountNoAction = async (userId: string): Promise<string | null> => {
+  const session = await auth();
+
+  try {
+    if (!session || !session?.user || session.user.id !== userId) {
+      return null;
+    }
+
+    const cachedAccountNo = await cache.get(cacheType.ACCOUNT_NO, [userId]);
+    if (cachedAccountNo && cachedAccountNo.accountNo) {
+      return cachedAccountNo.accountNo;
+    }
+
+    const accountNo = await db.bankAccount.findUnique({
+      where: { userId },
+      select: { accountNumber: true },
+    });
+
+    if (!accountNo) {
+      return null;
+    }
+
+    // updating cache
+    await cache.set(cacheType.ACCOUNT_NO, [userId], accountNo);
+    return accountNo.accountNumber;
+  } catch (err: any) {
+    console.error("Error fetching credit card details:", err);
+    return null;
+  }
+};

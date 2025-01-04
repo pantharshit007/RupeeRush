@@ -129,12 +129,16 @@ body,
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3894FF;
+  background: #3894ff;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: hsla(212, 100%, 59%, 0.868);
+}
+
+.origin-top-right {
+  transform-origin: top right;
 }
 
 @layer utilities {

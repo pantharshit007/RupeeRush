@@ -20,7 +20,7 @@ function LoginButton({ children, mode = "redirect", asChild }: LoginButtonProp) 
     }
 
     if (mode === "signup") {
-      router.push("/auth/signup");
+      router.push("/auth/register");
     }
     return;
   }

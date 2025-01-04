@@ -39,7 +39,7 @@ async function NavBar() {
           {!session?.user ? (
             <>
               {/* Login */}
-              <LoginButton asChild mode="modal">
+              <LoginButton asChild>
                 <Button size="sm" variant={"ghost"} className="border-[1px]">
                   Login
                 </Button>

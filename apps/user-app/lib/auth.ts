@@ -57,12 +57,11 @@ const authOptions: NextAuthConfig = {
       if (user) {
         const existingUser = await getUserById(token.sub); //had to call coz of OAuth
         if (existingUser) {
-          token.name = existingUser.name || user.name;
-          token.email = existingUser.email || user.email;
           token.role = existingUser.role || user.role;
           token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled || user.isTwoFactorEnabled;
           token.isOAuth = !!profile;
           token.phoneNumber = existingUser?.phoneNumber || user?.phoneNumber;
+          token.upiId = existingUser?.upiId || user?.upiId;
           token.lastUpdate = Date.now();
         }
       }
@@ -70,11 +69,14 @@ const authOptions: NextAuthConfig = {
       // Handle update trigger: force session revalvate
       if (trigger === "update" && session?.user) {
         // 1st way: using the values passed inside session
-        token.name = session.user.name;
-        token.email = session.user.email;
-        token.phoneNumber = session.user.phoneNumber;
-        token.isTwoFactorEnabled = session.user.isTwoFactorEnabled;
+        token.name = session.user.name ?? token.name;
+        token.email = session.user.email ?? token.email;
+        token.isTwoFactorEnabled = session.user.isTwoFactorEnabled ?? token.isTwoFactorEnabled;
         token.lastUpdated = Date.now();
+
+        // For Onboarding
+        token.phoneNumber = session.user.phoneNumber ?? token.phoneNumber;
+        token.upiId = session.user.upiId ?? token.upiId;
 
         // 2nd way: Only fetch from DB when explicitly updating
         /*
@@ -107,6 +109,13 @@ const authOptions: NextAuthConfig = {
 
       if (token.phoneNumber && session.user) {
         session.user.phoneNumber = token.phoneNumber;
+        session.user.upiId = token.upiId;
+      }
+
+      // had to do this custom expiration thingy since theres not working.
+      const currentTime = Math.floor(Date.now() / 1000);
+      if (token.exp && token.exp < currentTime) {
+        return false;
       }
 
       return session;

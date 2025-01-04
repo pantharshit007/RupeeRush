@@ -3,9 +3,9 @@ import localFont from "next/font/local";
 import "@repo/ui/globals.css";
 import { Provider, ThemeProvider } from "@/components/Provider";
 import { Analytics } from "@vercel/analytics/react";
-// import { SessionProvider } from "next-auth/react";
 import { auth } from "@/lib/auth";
 import { Toaster } from "@/components/common/Toaster";
+import { siteConfig } from "@/config/siteConfig";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -16,10 +16,7 @@ const geistMono = localFont({
   variable: "--font-geist-mono",
 });
 
-export const metadata: Metadata = {
-  title: "RupeeRush",
-  description: "Send and Recieve money, rushingly fast! ",
-};
+export const metadata: Metadata = siteConfig;
 
 export default async function RootLayout({
   children,
@@ -29,7 +26,9 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} selection:bg-azureBlue-400/90 selection:text-white`}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

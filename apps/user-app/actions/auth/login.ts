@@ -53,7 +53,7 @@ export const loginAction = async (
 
   // If user enabled 2FA on there account
   if (existingUser.email && existingUser.isTwoFactorEnabled) {
-    // one 2nd visit user provide the `twoFactorCode`:`CODE`
+    // on 2nd visit user provide the `twoFactorCode`:`CODE`
     if (twoFactorCode) {
       const existingCode = await getTwoFactorCodeByEmail(existingUser.email);
 

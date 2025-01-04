@@ -4,7 +4,9 @@ import "dotenv/config";
 
 import { router } from "./route.js";
 
-const FRONTEND_URL = process.env.FE_URL;
+const FRONTEND_URL = process.env.FE_URL || "http://localhost:3000";
+
+const allowedOrigins = FRONTEND_URL.split(",").map((origin) => origin.trim()); // allow multiple origins
 
 const app = express();
 app.use(
@@ -17,7 +19,14 @@ app.use(
 );
 app.use(
   cors({
-    origin: FRONTEND_URL,
+    origin: function (origin, callback) {
+      // Check if the origin is in the list of allowed origins
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );

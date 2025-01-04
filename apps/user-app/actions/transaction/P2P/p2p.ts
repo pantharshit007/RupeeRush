@@ -32,52 +32,58 @@ export const createP2PTxnAction = async ({ ...props }: CreateP2PTxnProps) => {
   }
 
   try {
-    const result = await db.$transaction(async (txn: any) => {
-      const receiver = await validateReceiver({ txn, receiverIdentifier, transferMethod });
-      if (!receiver.success) {
-        throw new Error(receiver.message);
+    const result = await db.$transaction(
+      async (txn: any) => {
+        const receiver = await validateReceiver({ txn, receiverIdentifier, transferMethod });
+        if (!receiver.success) {
+          throw new Error(receiver.message);
+        }
+        if (receiver.receiverId === props.userId) {
+          throw new Error("You can't send money to yourself!");
+        }
+
+        const pinValid = await verifyWalletPin(pin, userId);
+        if (!pinValid.success) {
+          throw new Error(pinValid.message);
+        }
+
+        const walletBalance = await checkWalletBalance(userId);
+
+        if (!walletBalance.success || !walletBalance.balance) {
+          throw new Error(walletBalance.message);
+        }
+        if (walletBalance.balance < amount) {
+          throw new Error("Insufficient balance");
+        }
+
+        // transaction with webhook tracking
+        const tx = await createP2PTransaction({
+          txn,
+          ...props,
+          receiverId: receiver.receiverId!,
+          userUPI: pinValid.upiId!,
+        });
+
+        // TODO: we are sending pin, i think we should be verifying pin on webhook
+        // Prepare webhook payload with encrypted sensitive data
+        const webhookPayload = await prepareWebhookPayload({
+          transaction: tx,
+          props,
+          receiverId: receiver.receiverId!,
+        });
+
+        return {
+          success: true,
+          transactionId: tx.id,
+          payload: webhookPayload,
+          balance: walletBalance.balance,
+        };
+      },
+      {
+        maxWait: 5000, // default: 2000
+        timeout: 10000, // default: 5000
       }
-      if (receiver.receiverId === props.userId) {
-        throw new Error("You can't send money to yourself!");
-      }
-
-      const pinValid = await verifyWalletPin(pin, userId);
-      if (!pinValid.success) {
-        throw new Error(pinValid.message);
-      }
-
-      const walletBalance = await checkWalletBalance(userId);
-
-      if (!walletBalance.success || !walletBalance.balance) {
-        throw new Error(walletBalance.message);
-      }
-      if (walletBalance.balance < amount) {
-        throw new Error("Insufficient balance");
-      }
-
-      // transaction with webhook tracking
-      const tx = await createP2PTransaction({
-        txn,
-        ...props,
-        receiverId: receiver.receiverId!,
-        userUPI: pinValid.upiId!,
-      });
-
-      // TODO: we are sending pin, i think we should be verifying pin on webhook
-      // Prepare webhook payload with encrypted sensitive data
-      const webhookPayload = await prepareWebhookPayload({
-        transaction: tx,
-        props,
-        receiverId: receiver.receiverId!,
-      });
-
-      return {
-        success: true,
-        transactionId: tx.id,
-        payload: webhookPayload,
-        balance: walletBalance.balance,
-      };
-    });
+    );
 
     // Calling webhook API
     await processTransactionWebhook(result.transactionId, result.payload);

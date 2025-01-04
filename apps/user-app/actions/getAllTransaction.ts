@@ -5,7 +5,7 @@ import { cache, cacheType } from "@repo/db/cache";
 import db, { Prisma } from "@repo/db/client";
 import { TransactionStatus, TransactionType } from "@repo/schema/types";
 
-interface TransactionResponse {
+export interface TransactionResponse {
   id: string;
   date: Date;
   amount: number;

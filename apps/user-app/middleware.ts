@@ -21,10 +21,10 @@ export default auth(async (req) => {
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
-  console.log("--------------------------------------------------");
-  console.log("> route: " + req.nextUrl.pathname);
-  console.log("> Logged : " + isLoggedIn);
-  console.log("--------------------------------------------------");
+  // console.log("--------------------------------------------------");
+  // console.log("> route: " + req.nextUrl.pathname);
+  // console.log("> Logged : " + isLoggedIn);
+  // console.log("--------------------------------------------------");
 
   // API Auth routes - allow through
   if (isApiAuthRoute) {

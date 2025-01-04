@@ -12,12 +12,7 @@ import {
   ChevronsRight,
   MoveRight,
 } from "lucide-react";
-import {
-  Transaction,
-  TransactionStatus,
-  TransferMethod,
-  TransactionType,
-} from "@repo/schema/types";
+import { Transaction, TransactionStatus, TransactionType } from "@repo/schema/types";
 import { Button } from "@repo/ui/components/ui/button";
 import {
   Table,
@@ -56,7 +51,7 @@ export default function TransactionTable({ initialPage = 1 }: { initialPage: num
   const searchParams = useSearchParams();
   const user = useCurrentUser();
 
-  const sortedTransactions = useMemo(() => {
+  useMemo(() => {
     return transactions?.sort((a, b) => {
       return sortOrder === "asc"
         ? a.date.getTime() - b.date.getTime()

@@ -24,6 +24,7 @@ import { Button } from "@repo/ui/components/ui/button";
 import FormError from "@/components/common/FormError";
 import FormSuccess from "@/components/common/FormSuccess";
 import { loginAction } from "@/actions/auth/login";
+import DemoDialog from "@/components/common/DemoDialog";
 
 function LoginForm() {
   const router = useRouter();
@@ -103,6 +104,8 @@ function LoginForm() {
 
   return (
     <>
+      <DemoDialog submitHandler={submitHandler} />
+
       <CardWrapper
         header="🔐 Auth"
         headerLabel="Welcome Back"

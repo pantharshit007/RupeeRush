@@ -21,7 +21,7 @@ import { PaymentInfo } from "@/page/Hdfc";
 import { LoadingSpinner, SuccessState } from "@/components/LoadingSpinner";
 import { apiRequest } from "@/utils/api";
 import Error from "@/components/Error";
-import RR_Bank from "@/assets/RR_Bank.jpg";
+import RR_Bank from "@/assets/RR_Bank.png";
 import { Link } from "react-router-dom";
 import { env } from "@/utils/env";
 
@@ -152,7 +152,7 @@ export default function PaymentPage({
       </div>
 
       {/* Right Side - Light */}
-      <div className="w-full md:w-1/2 bg-white p-4 md:p-8">
+      <div className="w-full md:w-1/2 bg-slate-50 p-4 md:p-8">
         <div className="max-w-md mx-auto">
           <h2 className="text-xl md:text-2xl font-medium mb-8">Pay with card</h2>
 

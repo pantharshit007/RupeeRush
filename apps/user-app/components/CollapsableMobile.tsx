@@ -1,6 +1,5 @@
 "use client";
 import { SidebarTrigger, useSidebar } from "@repo/ui/components/ui/sidebar";
-import { FaHamburger } from "react-icons/fa";
 
 function CollapsableMobile() {
   const { isMobile } = useSidebar();

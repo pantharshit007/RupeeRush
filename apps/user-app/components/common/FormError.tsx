@@ -9,7 +9,7 @@ function FormError({ message }: FormErrorProps) {
   if (!message) return null;
 
   return (
-    <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive font-medium justify-center">
+    <div className="bg-destructive/15 dark:bg-destructive/40 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive dark:text-red-600 font-medium justify-center">
       <BsExclamationTriangle className="h-4 w-4" />
       <p>{message}</p>
     </div>

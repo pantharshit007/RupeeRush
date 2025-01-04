@@ -14,6 +14,7 @@ interface DialogWrapperProps {
   description: string;
   isDialogOpen: boolean;
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
+  className?: string;
 }
 
 function DialogWrapper({
@@ -22,10 +23,11 @@ function DialogWrapper({
   description,
   isDialogOpen,
   setIsDialogOpen,
+  className,
 }: DialogWrapperProps) {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogContent>
+      <DialogContent className={className}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
