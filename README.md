@@ -4,7 +4,7 @@ A comprehensive, feature-rich payment platform inspired by Paytm, Venmo, and Pay
 
 [![FrontPage](./apps/user-app//public/thumbnail.png)](https://youtu.be/1H4gU4ofW1A)
 
----
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/pantharshit007/RupeeRush)
 
 ## **✨ Features**
 
