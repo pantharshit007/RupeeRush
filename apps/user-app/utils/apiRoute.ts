@@ -5,7 +5,8 @@
  */
 export const publicRoutes = [
   "/",
-  "/auth/verification"
+  "/auth/verification",
+  "/api/redis-job",
 ];
 
 /**

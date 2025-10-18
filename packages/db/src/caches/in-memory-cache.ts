@@ -44,7 +44,10 @@ export class InMemoryCache implements CacheProps {
     return Promise.resolve(null);
   }
 
-  private generateKey(type: string, args: string[]): string {
+  private generateKey(type: string, args?: string[]): string {
+    if (!args || args.length === 0) {
+      return type;
+    }
     return `${type}:${args.join(":")}`;
   }
 }

@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import axios from "axios";
+import { CreditCardGenerator } from "@/utils/constant";
 
 export async function GET(req: Request) {
-  const URL =
-    "https://backend.lambdatest.com/api/dev-tools/credit-card-generator?type=American%20Express&no-of-cards=1";
+  const URL = CreditCardGenerator.generateUrl;
 
   const headers = {
     accept: "application/json",

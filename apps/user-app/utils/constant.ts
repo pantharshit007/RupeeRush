@@ -30,3 +30,8 @@ export const RETRY_CONFIG = {
   backoffMultiplier: 2, // Double the backoff each retry
   maxBackoffMs: 30000, // Max 30 seconds between retries
 };
+
+export const CreditCardGenerator = {
+  generateUrl:
+    "https://backend.lambdatest.com/api/dev-tools/credit-card-generator?type=American%20Express&no-of-cards=1",
+};
